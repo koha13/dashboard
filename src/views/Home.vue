@@ -1,18 +1,27 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
-  </div>
+	<div class="ui grid">
+		<div v-for="b in boards" :key="b.i" class="eight wide column">
+			<Pie v-if="b.type == 'Pie'" :board="b" />
+			<LineChart v-if="b.type == 'Line'" :board="b" />
+		</div>
+	</div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
+import Pie from "@/components/Pie";
+import LineChart from "@/components/LineChart";
 
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld
-  }
-}
+	components: {
+		Pie,
+		LineChart,
+	},
+	computed: {
+		boards: {
+			get() {
+				return this.$store.state.boards;
+			},
+		},
+	},
+};
 </script>
