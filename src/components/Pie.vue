@@ -2,6 +2,11 @@
 	<div class="highcharts-figure">
 		<div :id="board.name"></div>
 		<button class="ui button negative" @click="deleteChart">Delete</button>
+		<div class="ui message" v-if="log !== ''">
+			<p>
+				{{ log }}
+			</p>
+		</div>
 	</div>
 </template>
 
@@ -14,13 +19,15 @@ export default {
 	data() {
 		return {
 			interval: null,
+			log: "",
 		};
 	},
 	mounted() {
 		this.$store.dispatch("updateBoard", this.board.name).then((res) => {
+			this.log = res;
 			this.graph();
 			this.interval = setInterval(async () => {
-				await this.$store.dispatch("updateBoard", this.board.name);
+				let log = await this.$store.dispatch("updateBoard", this.board.name);
 				if (this.$route.name === "Home") this.graph();
 			}, this.board.intervalTime);
 		});
@@ -50,7 +57,7 @@ export default {
 					text: this.board.name,
 				},
 				tooltip: {
-					pointFormat: "<b>{point.percentage:.1f}%</b>",
+					pointFormat: "<b>{point.y} - {point.percentage:.1f}%</b>",
 				},
 				plotOptions: {
 					pie: {

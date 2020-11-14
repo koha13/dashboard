@@ -25,28 +25,30 @@ export default new Vuex.Store({
 		updateBoard(state, b) {
 			for (let i = 0; i < state.boards.length; i++) {
 				if (state.boards[i].name == b.name) {
-					if (b.type === "Pie") {
-						let data = [];
-						b.fields.map((f) => {
-							data.push({ name: f.name, y: f.value });
-						});
-						b.data = data;
-						state.boards[i] = b;
-					} else if (b.type === "Line") {
-						for (let i = 0; i < b.fields.length; i++) {
-							let check = false;
-							for (let j = 0; j < b.data.length; j++) {
-								if (b.fields[i].name === b.data[j].name) {
-									b.data[j].data.push(b.fields[i].value);
-									check = true;
-									break;
-								}
-							}
-							if (!check) {
-								b.data.push({ name: b.fields[i].name, data: [b.fields[i].value] });
+					if (state.boards[i].type === "Pie") {
+						let check = false;
+						for (let j = 0; j < state.boards[i].data.length; j++) {
+							if (state.boards[i].data[j].name === b.field) {
+								check = true;
+								state.boards[i].data[j].y = b.value;
+								break;
 							}
 						}
-						state.boards[i] = b;
+						if (!check) {
+							state.boards[i].data.unshift({ name: b.field, y: b.value });
+						}
+					} else if (state.boards[i].type === "Line") {
+						let check = false;
+						for (let j = 0; j < state.boards[i].data.length; j++) {
+							if (state.boards[i].data[j].name === b.field) {
+								state.boards[i].data[j].data.push(b.value);
+								check = true;
+								break;
+							}
+						}
+						if (!check) {
+							state.boards[i].data.push({ name: b.field, data: [b.value] });
+						}
 					}
 					break;
 				}
@@ -58,25 +60,24 @@ export default new Vuex.Store({
 	},
 	actions: {
 		updateBoard({ getters, commit }, value) {
-			return new Promise((resolve, reject) => {
+			return new Promise(async (resolve) => {
 				let b = getters.getBoard(value);
-				b.fields.map((f) => {
-					axios
-						.get(f.url)
-						.then((res) => {
-							let path = f.path.split("/");
-							let v = res.data;
-							path.map((p) => {
-								v = v[p];
-							});
-							f.value = v;
-							commit("updateBoard", b);
-							resolve();
-						})
-						.catch(() => {
-							reject();
+				let log = "";
+				for (let i = 0; i < b.fields.length; i++) {
+					let f = b.fields[i];
+					try {
+						let res = await axios.get(f.url);
+						let path = f.path.split("/");
+						let v = res.data;
+						path.map((p) => {
+							v = v[p];
 						});
-				});
+						commit("updateBoard", { name: b.name, field: f.name, value: v });
+					} catch (error) {
+						log = log.concat(`Can't update ${f.name}. `);
+					}
+				}
+				resolve(log);
 			});
 		},
 	},
