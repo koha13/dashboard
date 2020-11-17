@@ -63,16 +63,26 @@ export default new Vuex.Store({
 			return new Promise(async (resolve) => {
 				let b = getters.getBoard(value);
 				let log = "";
-				for (let i = 0; i < b.fields.length; i++) {
-					let f = b.fields[i];
+				let urls = [];
+				b.fields.map((f) => {
+					if (!urls.includes(f.url)) {
+						urls.push(f.url);
+					}
+				});
+				for (let i = 0; i < urls.length; i++) {
 					try {
-						let res = await axios.get(f.url);
-						let path = f.path.split("/");
-						let v = res.data;
-						path.map((p) => {
-							v = v[p];
-						});
-						commit("updateBoard", { name: b.name, field: f.name, value: v });
+						let res = await axios.get(urls[i]);
+						for (let j = 0; j < b.fields.length; j++) {
+							if (b.fields[j].url === urls[i]) {
+								let f = b.fields[j];
+								let path = f.path.split("/");
+								let v = res.data;
+								path.map((p) => {
+									v = v[p];
+								});
+								commit("updateBoard", { name: b.name, field: f.name, value: v });
+							}
+						}
 					} catch (error) {
 						log = log.concat(`Can't update ${f.name}. `);
 					}
