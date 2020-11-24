@@ -17,8 +17,21 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		boards: [],
+		datasources: [],
 	},
 	mutations: {
+		addDatasource(state, payload) {
+			console.log("here");
+			state.datasources.push(payload);
+		},
+		deletaDatasource(state, payload) {
+			for (let i = 0; i < state.datasources.length; i++) {
+				if (state.datasources[i].datasourceName === payload) {
+					state.datasources.splice(i, 1);
+					break;
+				}
+			}
+		},
 		addBoard(state, value) {
 			state.boards.push(value);
 		},
@@ -35,7 +48,7 @@ export default new Vuex.Store({
 							}
 						}
 						if (!check) {
-							state.boards[i].data.unshift({ name: b.field, y: b.value });
+							state.boards[i].data.push({ name: b.field, y: b.value });
 						}
 					} else if (state.boards[i].type === "Line") {
 						let check = false;
@@ -60,20 +73,24 @@ export default new Vuex.Store({
 	},
 	actions: {
 		updateBoard({ getters, commit }, value) {
-			return new Promise(async (resolve) => {
+			return new Promise(async (resolve, reject) => {
 				let b = getters.getBoard(value);
 				let log = "";
 				let urls = [];
 				b.fields.map((f) => {
-					if (!urls.includes(f.url)) {
-						urls.push(f.url);
+					if (!urls.includes({ link: f.url, header: f.header, data: f.data })) {
+						urls.push({ link: f.url, header: f.header, data: f.data });
 					}
 				});
 				for (let i = 0; i < urls.length; i++) {
 					try {
-						let res = await axios.get(urls[i]);
+						let res = await axios.get(
+							urls[i].link,
+							JSON.parse(urls[i].data),
+							JSON.parse(urls[i].header)
+						);
 						for (let j = 0; j < b.fields.length; j++) {
-							if (b.fields[j].url === urls[i]) {
+							if (b.fields[j].url === urls[i].link) {
 								let f = b.fields[j];
 								let path = f.path.split("/");
 								let v = res.data;
@@ -84,7 +101,7 @@ export default new Vuex.Store({
 							}
 						}
 					} catch (error) {
-						log = log.concat(`Can't update ${f.name}. `);
+						log = log.concat(`Can't update ${urls[i].link}. `);
 					}
 				}
 				resolve(log);

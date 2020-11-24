@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
 		<div id="nav">
-			<router-link to="/">Home</router-link> |
-			<router-link to="/create">Create</router-link>
+			<router-link to="/">Home</router-link> | <router-link to="/create">Create</router-link> |
+			<router-link to="/datasource">Create Datasource</router-link>
 		</div>
 		<keep-alive>
 			<router-view :key="$route.fullPath" exculde="/create" />

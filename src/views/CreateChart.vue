@@ -19,7 +19,7 @@
 				</div>
 				<div class="field">
 					<label>Add Field</label>
-					<div class="four fields">
+					<div class="three fields">
 						<div class="field">
 							<input type="text" placeholder="Field name" v-model="fieldName" />
 						</div>
@@ -28,6 +28,16 @@
 						</div>
 						<div class="field">
 							<input type="text" placeholder="Path" v-model="fieldPath" />
+						</div>
+					</div>
+				</div>
+				<div class="field">
+					<div class="three fields">
+						<div class="field">
+							<input type="text" placeholder="Url data" v-model="urlData" />
+						</div>
+						<div class="field">
+							<input type="text" placeholder="Url header" v-model="urlHeader" />
 						</div>
 						<div class="field">
 							<button class="ui button primary" @click.prevent="addField">Add</button>
@@ -49,7 +59,7 @@
 							<td data-label="Url">{{ f.url }}</td>
 							<td data-label="Path">{{ f.path }}</td>
 							<td>
-								<button class="ui button negative " @click.prevent="deleteField(f.name)">
+								<button class="ui button negative" @click.prevent="deleteField(f.name)">
 									Delete
 								</button>
 							</td>
@@ -73,6 +83,8 @@ export default {
 			fieldUrl: "",
 			fieldPath: "",
 			fields: [],
+			urlData: "{}",
+			urlHeader: "{}",
 		};
 	},
 
@@ -82,6 +94,8 @@ export default {
 				name: this.fieldName,
 				url: this.fieldUrl,
 				path: this.fieldPath,
+				data: this.urlData,
+				header: this.urlHeader,
 				value: 0,
 			});
 			this.clearInput();
@@ -90,13 +104,14 @@ export default {
 			this.fieldName = "";
 			this.fieldUrl = "";
 			this.fieldPath = "";
+			this.urlData = "{}";
+			this.urlHeader = "{}";
 		},
 		deleteField(fieldName) {
 			this.fields = this.fields.filter((f) => fieldName !== f.name);
 		},
 		submit() {
 			let id = this.$store.getters.getId;
-			console.log(id);
 			let data = {
 				name: this.boardName,
 				w: 10,
