@@ -6,10 +6,6 @@ import VuexPersist from "vuex-persist";
 const vuexLocalStorage = new VuexPersist({
 	key: "vuex", // The key to store the state on in the storage provider.
 	storage: window.localStorage, // or window.sessionStorage or localForage
-	// Function that passes the state and returns the state with only the objects you want to store.
-	// reducer: state => state,
-	// Function that passes a mutation and lets you decide if it should update the state in localStorage.
-	// filter: mutation => (true)
 });
 
 Vue.use(Vuex);
@@ -21,16 +17,10 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		addDatasource(state, payload) {
-			console.log("here");
 			state.datasources.push(payload);
 		},
-		deletaDatasource(state, payload) {
-			for (let i = 0; i < state.datasources.length; i++) {
-				if (state.datasources[i].datasourceName === payload) {
-					state.datasources.splice(i, 1);
-					break;
-				}
-			}
+		deleteDatasource(state, payload) {
+			state.datasources = state.datasources.filter((b) => b.datasourceName !== payload);
 		},
 		addBoard(state, value) {
 			state.boards.push(value);
@@ -70,41 +60,68 @@ export default new Vuex.Store({
 		deleteChart(state, value) {
 			state.boards = state.boards.filter((b) => b.name !== value);
 		},
+		vuegrid(state, value) {
+			state.boards = value;
+		},
 	},
 	actions: {
-		updateBoard({ getters, commit }, value) {
+		updateBoard({ getters, commit, dispatch }, value) {
 			return new Promise(async (resolve, reject) => {
 				let b = getters.getBoard(value);
 				let log = "";
-				let urls = [];
-				b.fields.map((f) => {
-					if (!urls.includes({ link: f.url, header: f.header, data: f.data })) {
-						urls.push({ link: f.url, header: f.header, data: f.data });
-					}
-				});
-				for (let i = 0; i < urls.length; i++) {
+				let fields = b.fields;
+				for (let i = 0; i < fields.length; i++) {
 					try {
-						let res = await axios.get(
-							urls[i].link,
-							JSON.parse(urls[i].data),
-							JSON.parse(urls[i].header)
-						);
-						for (let j = 0; j < b.fields.length; j++) {
-							if (b.fields[j].url === urls[i].link) {
-								let f = b.fields[j];
-								let path = f.path.split("/");
-								let v = res.data;
-								path.map((p) => {
-									v = v[p];
-								});
-								commit("updateBoard", { name: b.name, field: f.name, value: v });
-							}
-						}
+						let data = await dispatch("updateDatasource", fields[i].datasourceName);
+						commit("updateBoard", { name: b.name, field: fields[i].name, value: data });
 					} catch (error) {
-						log = log.concat(`Can't update ${urls[i].link}. `);
+						log = log.concat(`Can't update ${fields[i].name} \r\n`);
 					}
 				}
 				resolve(log);
+			});
+		},
+
+		updateDatasource({ getters }, datasourceName) {
+			let datasource = getters.getDatasource(datasourceName);
+			return new Promise(async (resolve, reject) => {
+				if (datasource.type === "json") {
+					let res;
+					try {
+						res = await axios.get(datasource.url);
+						res = res.data;
+						if (datasource.path != "") {
+							let spl = datasource.path.split("/");
+							for (let i = 0; i < spl.length; i++) {
+								res = res[spl[i]];
+							}
+						}
+						resolve(res);
+					} catch (error) {
+						reject(error);
+					}
+				} else if (datasource.type === "jmx") {
+					let res;
+					try {
+						res = await axios.post("http://localhost:8082/get", {
+							username: "",
+							password: "",
+							jmxUrl: datasource.jmxUrl,
+							objectName: datasource.objectName,
+							attribute: datasource.attribute,
+						});
+						res = res.data;
+						if (datasource.path != "") {
+							let spl = datasource.path.split("/");
+							for (let i = 0; i < spl.length; i++) {
+								res = res[spl[i]];
+							}
+						}
+						resolve(res);
+					} catch (error) {
+						reject(error);
+					}
+				}
 			});
 		},
 	},
@@ -118,6 +135,11 @@ export default new Vuex.Store({
 		getBoard: (state) => (id) => {
 			for (let i = 0; i < state.boards.length; i++) {
 				if (state.boards[i].name === id) return state.boards[i];
+			}
+		},
+		getDatasource: (state) => (id) => {
+			for (let i = 0; i < state.datasources.length; i++) {
+				if (state.datasources[i].datasourceName === id) return state.datasources[i];
 			}
 		},
 	},

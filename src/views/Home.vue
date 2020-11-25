@@ -1,24 +1,35 @@
 <template>
 	<div>
-		<div class="row">
-			<table class="ui celled table">
-				<thead>
-					<tr>
-						<th>Datasource Name</th>
-						<th>option</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="f in datasources" :key="f.name">
-						<td data-label="Field name">{{ f.datasourceName }}</td>
-						<td>
-							<button class="ui button negative" @click.prevent="deleteField(f.datasourceName)">
-								Delete
-							</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
+		<div class="ui centered grid">
+			<div class="five wide column">
+				<table class="ui celled small table">
+					<thead>
+						<tr>
+							<th>Datasource Name</th>
+							<th>option</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="f in datasources" :key="f.name">
+							<td data-label="Field name">{{ f.datasourceName }}</td>
+							<td class="collapsing">
+								<button
+									class="ui mini button negative"
+									@click.prevent="$store.commit('deleteDatasource', f.datasourceName)"
+								>
+									Delete
+								</button>
+								<button
+									class="ui mini button primary"
+									@click.prevent="$store.commit('deleteDatasource', f.datasourceName)"
+								>
+									Option
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 		<div class="row">
 			<div v-for="b in boards" :key="b.i" class="eight wide column">

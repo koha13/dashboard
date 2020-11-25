@@ -60,6 +60,17 @@ export default {
 	methods: {
 		submit() {
 			this.$store.commit("addDatasource", this.data);
+			this.data = {
+				type: "json",
+				datasourceName: "",
+				url: "",
+				path: "",
+				jmxUrl: "",
+				objectName: "",
+				attribute: "",
+				value: 0,
+			};
+			this.$router.push({ name: "Home" });
 		},
 	},
 };

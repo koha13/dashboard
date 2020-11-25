@@ -24,20 +24,7 @@
 							<input type="text" placeholder="Field name" v-model="fieldName" />
 						</div>
 						<div class="field">
-							<input type="text" placeholder="Url" v-model="fieldUrl" />
-						</div>
-						<div class="field">
-							<input type="text" placeholder="Path" v-model="fieldPath" />
-						</div>
-					</div>
-				</div>
-				<div class="field">
-					<div class="three fields">
-						<div class="field">
-							<input type="text" placeholder="Url data" v-model="urlData" />
-						</div>
-						<div class="field">
-							<input type="text" placeholder="Url header" v-model="urlHeader" />
+							<input type="text" placeholder="datasource name" v-model="datasourceName" />
 						</div>
 						<div class="field">
 							<button class="ui button primary" @click.prevent="addField">Add</button>
@@ -47,17 +34,14 @@
 				<table class="ui celled table">
 					<thead>
 						<tr>
-							<th>Field name</th>
-							<th>Url</th>
-							<th>Path</th>
-							<th>option</th>
+							<th>Name show up</th>
+							<th>Datasource name</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="f in fields" :key="f.name">
 							<td data-label="Field name">{{ f.name }}</td>
-							<td data-label="Url">{{ f.url }}</td>
-							<td data-label="Path">{{ f.path }}</td>
+							<td data-label="Url">{{ f.datasourceName }}</td>
 							<td>
 								<button class="ui button negative" @click.prevent="deleteField(f.name)">
 									Delete
@@ -77,14 +61,11 @@ export default {
 	data() {
 		return {
 			boardName: "",
-			intervalTime: 0,
+			intervalTime: 5000,
 			boardType: "Pie",
 			fieldName: "",
-			fieldUrl: "",
-			fieldPath: "",
+			datasourceName: "",
 			fields: [],
-			urlData: "{}",
-			urlHeader: "{}",
 		};
 	},
 
@@ -92,20 +73,14 @@ export default {
 		addField() {
 			this.fields.push({
 				name: this.fieldName,
-				url: this.fieldUrl,
-				path: this.fieldPath,
-				data: this.urlData,
-				header: this.urlHeader,
-				value: 0,
+				datasourceName: this.datasourceName,
 			});
 			this.clearInput();
 		},
 		clearInput() {
 			this.fieldName = "";
-			this.fieldUrl = "";
-			this.fieldPath = "";
-			this.urlData = "{}";
-			this.urlHeader = "{}";
+			this.datasourceName = "";
+			this.intervalTime = 5000;
 		},
 		deleteField(fieldName) {
 			this.fields = this.fields.filter((f) => fieldName !== f.name);
