@@ -28,29 +28,33 @@ export default new Vuex.Store({
 		updateBoard(state, b) {
 			for (let i = 0; i < state.boards.length; i++) {
 				if (state.boards[i].name == b.name) {
-					if (state.boards[i].type === "Pie") {
+					let board = state.boards[i];
+					if (board.type === "Pie") {
 						let check = false;
-						for (let j = 0; j < state.boards[i].data.length; j++) {
-							if (state.boards[i].data[j].name === b.field) {
+						for (let j = 0; j < board.data.length; j++) {
+							if (board.data[j].name === b.field) {
 								check = true;
-								state.boards[i].data[j].y = b.value;
+								board.data[j].y = b.value;
 								break;
 							}
 						}
 						if (!check) {
-							state.boards[i].data.push({ name: b.field, y: b.value });
+							board.data.push({ name: b.field, y: b.value });
 						}
-					} else if (state.boards[i].type === "Line") {
+					} else if (board.type === "Line") {
 						let check = false;
-						for (let j = 0; j < state.boards[i].data.length; j++) {
-							if (state.boards[i].data[j].name === b.field) {
-								state.boards[i].data[j].data.push(b.value);
+						for (let j = 0; j < board.data.length; j++) {
+							if (board.data[j].name === b.field) {
+								board.data[j].data.push(b.value);
+								if (board.data[j].data.length > 100) {
+									board.data[j].data.shift();
+								}
 								check = true;
 								break;
 							}
 						}
 						if (!check) {
-							state.boards[i].data.push({ name: b.field, data: [b.value] });
+							board.data.push({ name: b.field, data: [b.value] });
 						}
 					}
 					break;
@@ -96,7 +100,12 @@ export default new Vuex.Store({
 								res = res[spl[i]];
 							}
 						}
-						resolve(res);
+						let rsNum = parseFloat(res);
+						if (rsNum === NaN) {
+							resolve(res);
+						}
+						resolve(rsNum);
+						console.log(res);
 					} catch (error) {
 						reject(error);
 					}
