@@ -24,7 +24,12 @@
 							<input type="text" placeholder="Field name" v-model="fieldName" />
 						</div>
 						<div class="field">
-							<input type="text" placeholder="datasource name" v-model="datasourceName" />
+							<VueSimpleSuggest
+								v-model="datasourceName"
+								placeholder="datasource name"
+								:list="this.$store.getters.getDatasourcesName"
+							/>
+							<!-- <input type="text" placeholder="datasource name" v-model="datasourceName" /> -->
 						</div>
 						<div class="field">
 							<button class="ui button primary" @click.prevent="addField">Add</button>
@@ -57,7 +62,12 @@
 </template>
 
 <script>
+import VueSimpleSuggest from "vue-simple-suggest";
+import "vue-simple-suggest/dist/styles.css";
 export default {
+	components: {
+		VueSimpleSuggest,
+	},
 	data() {
 		return {
 			boardName: "",

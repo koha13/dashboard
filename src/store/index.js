@@ -142,6 +142,13 @@ export default new Vuex.Store({
 				if (state.datasources[i].datasourceName === id) return state.datasources[i];
 			}
 		},
+		getDatasourcesName(state) {
+			let rs = [];
+			for (let i = 0; i < state.datasources.length; i++) {
+				rs.push(state.datasources[i].datasourceName);
+			}
+			return rs;
+		},
 	},
 	modules: {},
 	plugins: [vuexLocalStorage.plugin],

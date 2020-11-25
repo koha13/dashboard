@@ -1,7 +1,10 @@
 <template>
 	<div>
 		<div class="ui centered grid">
-			<div class="five wide column">
+			<div class="row">
+				<p>Datasource</p>
+			</div>
+			<div class="five wide column" v-show="showDS">
 				<table class="ui celled small table">
 					<thead>
 						<tr>
@@ -29,6 +32,12 @@
 						</tr>
 					</tbody>
 				</table>
+			</div>
+			<div class="row" style="padding-top:0; margin-top: 0">
+				<button class="ui tiny button" @click="showDS = !showDS">
+					{{ showDS ? "hide" : "show" }}
+				</button>
+				<button class="ui tiny button">Add</button>
 			</div>
 		</div>
 		<div class="row">
@@ -85,6 +94,7 @@ export default {
 	data() {
 		return {
 			layout: [],
+			showDS: false,
 		};
 	},
 	activated() {
