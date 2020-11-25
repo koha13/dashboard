@@ -32,10 +32,34 @@
 			</div>
 		</div>
 		<div class="row">
-			<div v-for="b in boards" :key="b.i" class="eight wide column">
+			<grid-layout
+				@layout-updated="layoutUpdatedEvent"
+				:layout="layout"
+				:col-num="12"
+				:row-height="30"
+				:is-draggable="true"
+				:is-resizable="true"
+				:vertical-compact="true"
+				:use-css-transforms="true"
+			>
+				<grid-item
+					class="gridItem"
+					v-for="item in layout"
+					:x="item.x"
+					:y="item.y"
+					:w="item.w"
+					:h="item.h"
+					:i="item.i"
+					:key="item.name"
+				>
+					<Pie v-if="item.type == 'Pie'" :board="item" @update="updateLayout" />
+					<LineChart v-if="item.type == 'Line'" :board="item" @update="updateLayout" />
+				</grid-item>
+			</grid-layout>
+			<!-- <div v-for="b in boards" :key="b.i" class="eight wide column">
 				<Pie v-if="b.type == 'Pie'" :board="b" />
 				<LineChart v-if="b.type == 'Line'" :board="b" />
-			</div>
+			</div> -->
 		</div>
 	</div>
 </template>
@@ -43,11 +67,30 @@
 <script>
 import Pie from "@/components/Pie";
 import LineChart from "@/components/LineChart";
+import * as VueGridLayout from "vue-grid-layout";
+
+var GridLayout = VueGridLayout.GridLayout;
+var GridItem = VueGridLayout.GridItem;
 
 export default {
 	components: {
 		Pie,
 		LineChart,
+		GridLayout: GridLayout,
+		GridItem: GridItem,
+	},
+	created() {
+		this.layout = JSON.parse(JSON.stringify(this.layoutFromStore));
+	},
+	data() {
+		return {
+			layout: [],
+		};
+	},
+	activated() {
+		if (this.layoutFromStore !== this.layout) {
+			this.layout = JSON.parse(JSON.stringify(this.layoutFromStore));
+		}
 	},
 	computed: {
 		boards: {
@@ -60,6 +103,44 @@ export default {
 				return this.$store.state.datasources;
 			},
 		},
+		layoutFromStore: {
+			get() {
+				return this.$store.getters["getBoards"];
+			},
+			set(newLayout) {
+				this.$store.commit("vuegrid", newLayout);
+			},
+		},
+	},
+	methods: {
+		layoutUpdatedEvent: function(newLayout) {
+			let filtered;
+			filtered = newLayout.map((item) => {
+				return {
+					x: item.x,
+					y: item.y,
+					w: item.w,
+					h: item.h,
+					i: item.i,
+					name: item.name,
+					intervalTime: item.intervalTime,
+					fields: item.fields,
+					data: item.data,
+					type: item.type,
+				};
+			});
+			this.$store.commit("vuegrid", filtered);
+		},
+		updateLayout() {
+			if (this.layoutFromStore !== this.layout) {
+				this.layout = JSON.parse(JSON.stringify(this.layoutFromStore));
+			}
+		},
 	},
 };
 </script>
+<style scoped>
+.gridItem {
+	border: solid 1px black;
+}
+</style>

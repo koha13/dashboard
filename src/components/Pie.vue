@@ -38,6 +38,7 @@ export default {
 	methods: {
 		deleteChart() {
 			this.$store.commit("deleteChart", this.board.name);
+			this.$emit("update");
 		},
 		graph() {
 			Highcharts.setOptions({

@@ -89,8 +89,8 @@ export default {
 			let id = this.$store.getters.getId;
 			let data = {
 				name: this.boardName,
-				w: 10,
-				h: 8,
+				w: 6,
+				h: 12,
 				i: id,
 				x: 0,
 				y: 0,
