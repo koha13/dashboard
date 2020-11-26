@@ -56,6 +56,7 @@
 				<label>Value</label>
 				<input type="text" placeholder="value" v-model="data.value" />
 			</div>
+			<button class="ui button secondary" type="button" @click="testDS">Test</button>
 			<button class="ui button primary" type="submit">Submit</button>
 		</form>
 	</div>
@@ -99,14 +100,40 @@ export default {
 			this.data = {
 				type: "json",
 				datasourceName: "",
-				url: "",
-				path: "",
-				jmxUrl: "",
-				objectName: "",
-				attribute: "",
+				jmx: {
+					url: "",
+					objectName: "",
+					attribute: "",
+					username: "",
+					password: "",
+				},
+				json: {
+					url: "",
+					path: "",
+					method: "GET",
+					config: "{}",
+					body: "{}",
+				},
 				value: 0,
 			};
 			this.$router.push({ name: "Home" });
+		},
+		async testDS() {
+			try {
+				let a = await this.$store.dispatch("updateDatasourceWithDS", this.data);
+				this.$notify({
+					group: "noti",
+					title: "Test datasource: OK",
+					text: `Data get: ${a}`,
+				});
+			} catch (error) {
+				this.$notify({
+					group: "noti",
+					title: "Test datasource: FAIL",
+					text: `ERROR get: ${error}`,
+					type: "error",
+				});
+			}
 		},
 	},
 };

@@ -133,61 +133,72 @@ export default new Vuex.Store({
 			});
 		},
 
-		updateDatasource({ getters }, datasourceName) {
+		updateDatasource({ getters, dispatch }, datasourceName) {
 			let datasource = getters.getDatasource(datasourceName);
 			return new Promise(async (resolve, reject) => {
-				if (datasource.type === "json") {
-					let res;
-					try {
-						res = await axios({
-							method: datasource.json.method,
-							url: datasource.json.url,
-							data: JSON.parse(datasource.json.body),
-							config: JSON.parse(datasource.json.config),
-						});
-						res = res.data;
-						if (datasource.json.path != "") {
-							let spl = datasource.json.path.split("/");
-							for (let i = 0; i < spl.length; i++) {
-								res = res[spl[i]];
-							}
-						}
-						let rsNum = parseFloat(res);
-						if (rsNum === NaN) {
-							resolve(res);
-						}
-						resolve(rsNum);
-					} catch (error) {
-						console.log(error);
-						reject(error);
-					}
-				} else if (datasource.type === "jmx") {
-					let res;
-					try {
-						res = await axios.post("http://localhost:8082/get", {
-							username: "",
-							password: "",
-							jmxUrl: datasource.jmx.url,
-							objectName: datasource.jmx.objectName,
-							attribute: datasource.jmx.attribute,
-						});
-						res = res.data;
-						if (datasource.path != "") {
-							let spl = datasource.path.split("/");
-							for (let i = 0; i < spl.length; i++) {
-								res = res[spl[i]];
-							}
-						}
-						let rsNum = parseFloat(res);
-						if (rsNum === NaN) {
-							resolve(res);
-						}
-						resolve(rsNum);
-					} catch (error) {
-						reject(error);
-					}
-				}
+				dispatch("updateDS", { resolve, reject, datasource });
 			});
+		},
+
+		updateDatasourceWithDS({ dispatch }, datasource) {
+			return new Promise(async (resolve, reject) => {
+				dispatch("updateDS", { resolve, reject, datasource });
+			});
+		},
+
+		async updateDS({}, payload) {
+			let { resolve, reject, datasource } = payload;
+			if (datasource.type === "json") {
+				let res;
+				try {
+					res = await axios({
+						method: datasource.json.method,
+						url: datasource.json.url,
+						data: JSON.parse(datasource.json.body),
+						config: JSON.parse(datasource.json.config),
+					});
+					res = res.data;
+					if (datasource.json.path != "") {
+						let spl = datasource.json.path.split("/");
+						for (let i = 0; i < spl.length; i++) {
+							res = res[spl[i]];
+						}
+					}
+					let rsNum = parseFloat(res);
+					if (rsNum === NaN) {
+						resolve(res);
+					}
+					resolve(rsNum);
+				} catch (error) {
+					console.log(error);
+					reject(error);
+				}
+			} else if (datasource.type === "jmx") {
+				let res;
+				try {
+					res = await axios.post("http://localhost:8082/get", {
+						username: "",
+						password: "",
+						jmxUrl: datasource.jmx.url,
+						objectName: datasource.jmx.objectName,
+						attribute: datasource.jmx.attribute,
+					});
+					res = res.data;
+					if (datasource.path != "") {
+						let spl = datasource.path.split("/");
+						for (let i = 0; i < spl.length; i++) {
+							res = res[spl[i]];
+						}
+					}
+					let rsNum = parseFloat(res);
+					if (rsNum === NaN) {
+						resolve(res);
+					}
+					resolve(rsNum);
+				} catch (error) {
+					reject(error);
+				}
+			}
 		},
 	},
 	getters: {
