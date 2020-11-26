@@ -32,7 +32,25 @@ export default new Vuex.Store({
 			}
 		},
 		deleteDatasource(state, payload) {
-			state.datasources = state.datasources.filter((b) => b.datasourceName !== payload);
+			let usage = false;
+			for (let b of state.boards) {
+				for (let f of b.fields) {
+					if (f.datasourceName === payload) {
+						usage = true;
+						break;
+					}
+				}
+			}
+			if (usage) {
+				Vue.notify({
+					group: "noti",
+					title: "Can not delete this Datasource",
+					text: "Some boards are using this Datasource",
+					type: "error",
+				});
+			} else {
+				state.datasources = state.datasources.filter((b) => b.datasourceName !== payload);
+			}
 		},
 		addBoard(state, value) {
 			state.boards.push(value);
