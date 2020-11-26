@@ -17,7 +17,19 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		addDatasource(state, payload) {
-			state.datasources.push(payload);
+			let id = -1;
+			for (let i = 0; i < state.datasources.length; i++) {
+				if (state.datasources[i].datasourceName === payload.datasourceName) {
+					id = i;
+					break;
+				}
+			}
+			console.log(id);
+			if (id >= 0) {
+				state.datasources[id] = payload;
+			} else {
+				state.datasources.push(payload);
+			}
 		},
 		deleteDatasource(state, payload) {
 			state.datasources = state.datasources.filter((b) => b.datasourceName !== payload);
@@ -105,7 +117,6 @@ export default new Vuex.Store({
 							resolve(res);
 						}
 						resolve(rsNum);
-						console.log(res);
 					} catch (error) {
 						reject(error);
 					}

@@ -10,7 +10,10 @@
 			</select>
 		</div>
 		<div class="field">
-			<label>Datasource name</label>
+			<label
+				>Datasource name
+				{{ update ? " - Change datasource name will create new one. Keep to update" : "" }}</label
+			>
 			<input type="text" placeholder="datasource name" v-model="data.datasourceName" />
 		</div>
 		<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
@@ -43,8 +46,15 @@
 
 <script>
 export default {
+	created() {
+		if (this.$route.query.name) {
+			this.data = { ...this.$store.getters.getDatasource(this.$route.query.name) };
+			this.update = true;
+		}
+	},
 	data() {
 		return {
+			update: false,
 			data: {
 				type: "json",
 				datasourceName: "",

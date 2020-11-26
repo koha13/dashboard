@@ -22,10 +22,7 @@
 								>
 									Delete
 								</button>
-								<button
-									class="ui mini button primary"
-									@click.prevent="$store.commit('deleteDatasource', f.datasourceName)"
-								>
+								<button class="ui mini button primary" @click.prevent="updateDS(f.datasourceName)">
 									Option
 								</button>
 							</td>
@@ -145,6 +142,9 @@ export default {
 			if (this.layoutFromStore !== this.layout) {
 				this.layout = JSON.parse(JSON.stringify(this.layoutFromStore));
 			}
+		},
+		updateDS(name) {
+			this.$router.push({ name: "Datasource", query: { name } });
 		},
 	},
 };

@@ -20,6 +20,7 @@ export default {
 		return {
 			interval: null,
 			log: "",
+			chart: null,
 		};
 	},
 	mounted() {
@@ -28,7 +29,11 @@ export default {
 			this.graph();
 			this.interval = setInterval(async () => {
 				let log = await this.$store.dispatch("updateBoard", this.board.name);
-				if (this.$route.name === "Home") this.graph();
+				if (this.$route.name === "Home") {
+					this.chart.update({
+						series: this.board.data,
+					});
+				}
 			}, this.board.intervalTime);
 		});
 	},
@@ -41,16 +46,17 @@ export default {
 			this.$emit("update");
 		},
 		graph() {
-			Highcharts.setOptions({
-				plotOptions: {
-					series: {
-						animation: false,
-					},
-				},
-			});
-			Highcharts.chart(this.board.name, {
+			this.chart = Highcharts.chart(this.board.name, {
 				title: {
 					text: this.board.name,
+				},
+				chart: {
+					animation: false,
+				},
+				xAxis: {
+					labels: {
+						enabled: false,
+					},
 				},
 				legend: {
 					layout: "vertical",

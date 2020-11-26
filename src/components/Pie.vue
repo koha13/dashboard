@@ -20,6 +20,7 @@ export default {
 		return {
 			interval: null,
 			log: "",
+			chart: null,
 		};
 	},
 	mounted() {
@@ -28,7 +29,9 @@ export default {
 			this.graph();
 			this.interval = setInterval(async () => {
 				let log = await this.$store.dispatch("updateBoard", this.board.name);
-				if (this.$route.name === "Home") this.graph();
+				if (this.$route.name === "Home") {
+					this.chart.series[0].setData(this.$store.getters.getBoard(this.board.name).data);
+				}
 			}, this.board.intervalTime);
 		});
 	},
@@ -48,7 +51,7 @@ export default {
 					},
 				},
 			});
-			Highcharts.chart({
+			this.chart = new Highcharts.chart({
 				chart: {
 					renderTo: this.board.name,
 					type: "pie",

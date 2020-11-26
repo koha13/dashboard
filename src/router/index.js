@@ -3,7 +3,6 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import CreateChart from "../views/CreateChart.vue";
 import AddDatasource from "../views/AddDatasource.vue";
-import Test from "../views/Test.vue";
 
 Vue.use(VueRouter);
 
@@ -22,11 +21,6 @@ const routes = [
 		path: "/datasource",
 		name: "Datasource",
 		component: AddDatasource,
-	},
-	{
-		path: "/test",
-		name: "Test",
-		component: Test,
 	},
 	{
 		path: "/about",
