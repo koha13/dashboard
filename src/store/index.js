@@ -24,7 +24,6 @@ export default new Vuex.Store({
 					break;
 				}
 			}
-			console.log(id);
 			if (id >= 0) {
 				state.datasources[id] = payload;
 			} else {
@@ -140,7 +139,12 @@ export default new Vuex.Store({
 				if (datasource.type === "json") {
 					let res;
 					try {
-						res = await axios.get(datasource.url);
+						res = await axios({
+							method: datasource.method,
+							url: datasource.url,
+							data: JSON.parse(datasource.body),
+							config: JSON.parse(datasource.config),
+						});
 						res = res.data;
 						if (datasource.path != "") {
 							let spl = datasource.path.split("/");

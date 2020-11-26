@@ -31,7 +31,6 @@ export default {
 			this.graph();
 			bus.$on("reflow", () => {
 				this.chart.reflow();
-				console.log("Pie");
 			});
 			this.interval = setInterval(async () => {
 				this.log = await this.$store.dispatch("updateBoard", this.board.name);

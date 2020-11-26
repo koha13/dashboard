@@ -31,7 +31,6 @@ export default {
 		board: Object,
 	},
 	mounted() {
-		console.log(this.board);
 		this.$store.dispatch("updateBoard", this.board.name).then((res) => {
 			this.log = res;
 			this.interval = setInterval(async () => {

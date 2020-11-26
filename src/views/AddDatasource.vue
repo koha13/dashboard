@@ -22,6 +22,21 @@
 				<input type="text" placeholder="url" v-model="data.url" />
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
+				<label>Method</label>
+				<select class="ui fluid dropdown" v-model="data.method">
+					<option value="GET">GET</option>
+					<option value="POST">POST</option>
+				</select>
+			</div>
+			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
+				<label>Config</label>
+				<input type="text" placeholder="url" v-model="data.config" />
+			</div>
+			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
+				<label>Body</label>
+				<input type="text" placeholder="url" v-model="data.body" />
+			</div>
+			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>path</label>
 				<input type="text" placeholder="path" v-model="data.path" />
 			</div>
@@ -66,6 +81,9 @@ export default {
 				objectName: "",
 				attribute: "",
 				value: 0,
+				method: "GET",
+				config: "{}",
+				body: "{}",
 			},
 		};
 	},
