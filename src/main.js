@@ -7,7 +7,7 @@ import Notifications from "vue-notification";
 Vue.config.productionTip = false;
 Vue.use(Notifications);
 
-new Vue({
+export const bus = new Vue({
 	router,
 	store,
 	render: (h) => h(App),

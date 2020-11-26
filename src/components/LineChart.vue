@@ -1,7 +1,7 @@
 <template>
 	<div class="highcharts-figure">
 		<div :id="board.name" class="no-drag"></div>
-		<button class="ui button negative" @click="deleteChart">Delete</button>
+		<button class="ui button tiny negative" @click="deleteChart">Delete</button>
 		<div class="vue-draggable-handle"></div>
 		<div class="ui message" v-if="log !== ''">
 			<p>
@@ -13,6 +13,7 @@
 
 <script>
 import * as Highcharts from "highcharts";
+import { bus } from "@/main.js";
 export default {
 	props: {
 		board: Object,
@@ -28,8 +29,11 @@ export default {
 		this.$store.dispatch("updateBoard", this.board.name).then((res) => {
 			this.log = res;
 			this.graph();
+			bus.$on("reflow", () => {
+				this.chart.reflow();
+			});
 			this.interval = setInterval(async () => {
-				let log = await this.$store.dispatch("updateBoard", this.board.name);
+				this.log = await this.$store.dispatch("updateBoard", this.board.name);
 				if (this.$route.name === "Home") {
 					this.chart.update({
 						series: this.board.data,

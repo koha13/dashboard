@@ -77,6 +77,7 @@
 // drag-allow-from=".vue-draggable-handle" drag-ignore-from=".no-drag"
 
 <script>
+import { bus } from "@/main.js";
 import Pie from "@/components/Pie";
 import LineChart from "@/components/LineChart";
 import Table from "@/components/Table";
@@ -145,6 +146,7 @@ export default {
 				};
 			});
 			this.$store.commit("vuegrid", filtered);
+			bus.$emit("reflow");
 		},
 		updateLayout() {
 			if (this.layoutFromStore !== this.layout) {

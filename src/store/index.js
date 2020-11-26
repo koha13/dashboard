@@ -59,7 +59,7 @@ export default new Vuex.Store({
 			for (let i = 0; i < state.boards.length; i++) {
 				if (state.boards[i].name == b.name) {
 					let board = state.boards[i];
-					if (board.type === "Pie") {
+					if (board.type === "Pie" || board.type === "Table") {
 						let check = false;
 						for (let j = 0; j < board.data.length; j++) {
 							if (board.data[j].name === b.field) {
