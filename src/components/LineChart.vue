@@ -1,8 +1,8 @@
 <template>
 	<div class="highcharts-figure">
-		<div :id="board.name"></div>
+		<div :id="board.name" class="no-drag"></div>
 		<button class="ui button negative" @click="deleteChart">Delete</button>
-		<!-- <div class="vue-draggable-handle"></div> -->
+		<div class="vue-draggable-handle"></div>
 		<div class="ui message" v-if="log !== ''">
 			<p>
 				{{ log }}
@@ -89,7 +89,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .highcharts-figure,
 .highcharts-data-table table {
 	min-width: 320px;
@@ -126,5 +126,18 @@ export default {
 }
 .highcharts-data-table tr:hover {
 	background: #f1f7ff;
+}
+.vue-draggable-handle {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
+	right: 0;
+	padding: 0 8px 8px 0;
+	background-origin: content-box;
+	background-color: black;
+	box-sizing: border-box;
+	border-radius: 10px;
+	cursor: pointer;
 }
 </style>
