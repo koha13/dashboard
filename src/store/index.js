@@ -184,12 +184,6 @@ export default new Vuex.Store({
 						attribute: datasource.jmx.attribute,
 					});
 					res = res.data;
-					if (datasource.path != "") {
-						let spl = datasource.path.split("/");
-						for (let i = 0; i < spl.length; i++) {
-							res = res[spl[i]];
-						}
-					}
 					let rsNum = parseFloat(res);
 					if (rsNum === NaN) {
 						resolve(res);
