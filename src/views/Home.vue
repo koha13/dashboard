@@ -2,7 +2,15 @@
 	<div>
 		<div class="ui centered grid">
 			<div class="row">
-				<p>Datasource</p>
+				<button class="ui tiny button primary" @click="$router.push({ name: 'Chart' })">
+					New board
+				</button>
+				<button class="ui tiny button" @click="showDS = !showDS">
+					{{ showDS ? "Hide Datasource" : "Show Datasrouce" }}
+				</button>
+				<button class="ui tiny button" @click="$router.push({ name: 'Datasource' })">
+					Add Datasource
+				</button>
 			</div>
 			<div class="five wide column" v-show="showDS">
 				<table class="ui celled small table">
@@ -30,14 +38,8 @@
 					</tbody>
 				</table>
 			</div>
-			<div class="row" style="padding-top:0; margin-top: 0">
-				<button class="ui tiny button" @click="showDS = !showDS">
-					{{ showDS ? "hide" : "show" }}
-				</button>
-				<button class="ui tiny button">Add</button>
-			</div>
 		</div>
-		<div class="row">
+		<div class="row" style="margin-top:30px">
 			<grid-layout
 				@layout-updated="layoutUpdatedEvent"
 				:layout="layout"
