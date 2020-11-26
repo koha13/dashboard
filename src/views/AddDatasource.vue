@@ -19,38 +19,38 @@
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>URL</label>
-				<input type="text" placeholder="url" v-model="data.url" />
+				<input type="text" placeholder="url" v-model="data.json.url" />
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>Method</label>
-				<select class="ui fluid dropdown" v-model="data.method">
+				<select class="ui fluid dropdown" v-model="data.json.method">
 					<option value="GET">GET</option>
 					<option value="POST">POST</option>
 				</select>
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>Config</label>
-				<input type="text" placeholder="url" v-model="data.config" />
+				<input type="text" placeholder="url" v-model="data.json.config" />
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>Body</label>
-				<input type="text" placeholder="url" v-model="data.body" />
+				<input type="text" placeholder="url" v-model="data.json.body" />
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>path</label>
-				<input type="text" placeholder="path" v-model="data.path" />
+				<input type="text" placeholder="path" v-model="data.json.path" />
 			</div>
 			<div class="field" v-if="data.type == 'jmx'">
 				<label>JMX url</label>
-				<input type="text" placeholder="jmx url" v-model="data.jmxUrl" />
+				<input type="text" placeholder="jmx url" v-model="data.jmx.url" />
 			</div>
 			<div class="field" v-if="data.type == 'jmx'">
 				<label>Object name</label>
-				<input type="text" placeholder="object name" v-model="data.objectName" />
+				<input type="text" placeholder="object name" v-model="data.jmx.objectName" />
 			</div>
 			<div class="field" v-if="data.type == 'jmx'">
 				<label>Attribute</label>
-				<input type="text" placeholder="attribute" v-model="data.attribute" />
+				<input type="text" placeholder="attribute" v-model="data.jmx.attribute" />
 			</div>
 			<div class="field" v-if="data.type == 'value'">
 				<label>Value</label>
@@ -75,15 +75,21 @@ export default {
 			data: {
 				type: "json",
 				datasourceName: "",
-				url: "",
-				path: "",
-				jmxUrl: "",
-				objectName: "",
-				attribute: "",
+				jmx: {
+					url: "",
+					objectName: "",
+					attribute: "",
+					username: "",
+					password: "",
+				},
+				json: {
+					url: "",
+					path: "",
+					method: "GET",
+					config: "{}",
+					body: "{}",
+				},
 				value: 0,
-				method: "GET",
-				config: "{}",
-				body: "{}",
 			},
 		};
 	},
