@@ -106,8 +106,26 @@ export default new Vuex.Store({
 				let fields = b.fields;
 				for (let i = 0; i < fields.length; i++) {
 					try {
-						let data = await dispatch("updateDatasource", fields[i].datasourceName);
-						commit("updateBoard", { name: b.name, field: fields[i].name, value: data });
+						let spl = fields[i].datasourceName.split(/\s*\(M\)\s*/);
+						if (spl.length == 1) {
+							let data = await dispatch("updateDatasource", fields[i].datasourceName);
+							commit("updateBoard", { name: b.name, field: fields[i].name, value: data });
+						} else {
+							let calArr = [];
+							for (let j = 0; j < spl.length; j++) {
+								if (j % 2 === 0) {
+									let d = await dispatch("updateDatasource", spl[j]);
+									calArr.push(d.toString());
+								} else {
+									calArr.push(spl[j]);
+								}
+							}
+							commit("updateBoard", {
+								name: b.name,
+								field: fields[i].name,
+								value: eval(calArr.join("")),
+							});
+						}
 					} catch (error) {
 						log = log.concat(`Can't update ${fields[i].name} \r\n`);
 					}
@@ -155,7 +173,11 @@ export default new Vuex.Store({
 								res = res[spl[i]];
 							}
 						}
-						resolve(res);
+						let rsNum = parseFloat(res);
+						if (rsNum === NaN) {
+							resolve(res);
+						}
+						resolve(rsNum);
 					} catch (error) {
 						reject(error);
 					}

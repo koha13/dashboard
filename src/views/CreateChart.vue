@@ -29,6 +29,9 @@
 								placeholder="datasource name"
 								:list="this.$store.getters.getDatasourcesName"
 							/>
+							<div class="ui pointing label">
+								Support math operator: `ds1 (M)+(M) ds2`
+							</div>
 							<!-- <input type="text" placeholder="datasource name" v-model="datasourceName" /> -->
 						</div>
 						<div class="field">
