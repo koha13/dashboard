@@ -11,6 +11,7 @@
 					<select class="ui fluid dropdown" v-model="boardType">
 						<option value="Pie">Pie</option>
 						<option value="Line">Line</option>
+						<option value="Table">Table</option>
 					</select>
 				</div>
 				<div class="field">

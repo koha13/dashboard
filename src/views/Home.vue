@@ -64,6 +64,7 @@
 				>
 					<Pie v-if="item.type == 'Pie'" :board="item" @update="updateLayout" />
 					<LineChart v-if="item.type == 'Line'" :board="item" @update="updateLayout" />
+					<Table v-if="item.type == 'Table'" :board="item" @update="updateLayout" />
 				</grid-item>
 			</grid-layout>
 			<!-- <div v-for="b in boards" :key="b.i" class="eight wide column">
@@ -78,6 +79,7 @@
 <script>
 import Pie from "@/components/Pie";
 import LineChart from "@/components/LineChart";
+import Table from "@/components/Table";
 import * as VueGridLayout from "vue-grid-layout";
 
 var GridLayout = VueGridLayout.GridLayout;
@@ -87,8 +89,9 @@ export default {
 	components: {
 		Pie,
 		LineChart,
-		GridLayout: GridLayout,
-		GridItem: GridItem,
+		GridLayout,
+		GridItem,
+		Table,
 	},
 	created() {
 		this.layout = JSON.parse(JSON.stringify(this.layoutFromStore));
