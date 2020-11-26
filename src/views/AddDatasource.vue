@@ -44,6 +44,17 @@
 				<label>JMX url</label>
 				<input type="text" placeholder="jmx url" v-model="data.jmx.url" />
 			</div>
+			<div class="field">
+				<label>JMX auth</label>
+				<div class="two fields">
+					<div class="field">
+						<input type="text" placeholder="username" v-model="data.jmx.username" />
+					</div>
+					<div class="field">
+						<input type="text" placeholder="password" v-model="data.jmx.password" />
+					</div>
+				</div>
+			</div>
 			<div class="field" v-if="data.type == 'jmx'">
 				<label>Object name</label>
 				<input type="text" placeholder="object name" v-model="data.jmx.objectName" />

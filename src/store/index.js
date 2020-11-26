@@ -177,8 +177,8 @@ export default new Vuex.Store({
 				let res;
 				try {
 					res = await axios.post("http://localhost:8082/get", {
-						username: "",
-						password: "",
+						username: datasource.jmx.username,
+						password: datasource.jmx.password,
 						jmxUrl: datasource.jmx.url,
 						objectName: datasource.jmx.objectName,
 						attribute: datasource.jmx.attribute,
