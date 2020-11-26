@@ -1,7 +1,8 @@
 <template>
 	<div class="highcharts-figure">
-		<div :id="board.name"></div>
+		<div :id="board.name" class="no-drag"></div>
 		<button class="ui button negative" @click="deleteChart">Delete</button>
+		<div class="vue-draggable-handle"></div>
 		<div class="ui message" v-if="log !== ''">
 			<p>
 				{{ log }}

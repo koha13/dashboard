@@ -59,6 +59,8 @@
 					:h="item.h"
 					:i="item.i"
 					:key="item.name"
+					drag-allow-from=".vue-draggable-handle"
+					drag-ignore-from=".no-drag"
 				>
 					<Pie v-if="item.type == 'Pie'" :board="item" @update="updateLayout" />
 					<LineChart v-if="item.type == 'Line'" :board="item" @update="updateLayout" />
@@ -154,5 +156,20 @@ export default {
 <style scoped>
 .gridItem {
 	border: solid 1px black;
+}
+</style>
+<style>
+.vue-draggable-handle {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	bottom: 0;
+	left: 0;
+	padding: 0 8px 8px 0;
+	background-origin: content-box;
+	background-color: black;
+	box-sizing: border-box;
+	border-radius: 10px;
+	cursor: pointer;
 }
 </style>
