@@ -44,7 +44,7 @@
 				<label>JMX url</label>
 				<input type="text" placeholder="jmx url" v-model="data.jmx.url" />
 			</div>
-			<div class="field">
+			<div class="field" v-if="data.type == 'jmx'">
 				<label>JMX auth</label>
 				<div class="two fields">
 					<div class="field">
