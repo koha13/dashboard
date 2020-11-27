@@ -5,6 +5,9 @@
 				<button class="ui tiny button primary" @click="$router.push({ name: 'Chart' })">
 					New board
 				</button>
+				<button class="ui tiny button primary" @click="$router.push({ name: 'ActiveMQ' })">
+					Provip101
+				</button>
 				<button class="ui tiny button" @click="showDS = !showDS">
 					{{ showDS ? "Hide Datasource" : "Show Datasrouce" }}
 				</button>
@@ -13,7 +16,7 @@
 				</button>
 			</div>
 			<div class="five wide column" v-show="showDS">
-				<table class="ui celled small table">
+				<table class="ui  fixed single line celled small table">
 					<thead>
 						<tr>
 							<th>Datasource Name</th>

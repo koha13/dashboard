@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "../views/Home.vue";
 import CreateChart from "../views/CreateChart.vue";
 import AddDatasource from "../views/AddDatasource.vue";
+import ActiveMQ from "../views/ActiveMQ.vue";
 
 Vue.use(VueRouter);
 
@@ -23,12 +24,9 @@ const routes = [
 		component: AddDatasource,
 	},
 	{
-		path: "/about",
-		name: "About",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ "../views/About.vue"),
+		path: "/activemq",
+		name: "ActiveMQ",
+		component: ActiveMQ,
 	},
 ];
 
