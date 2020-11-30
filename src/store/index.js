@@ -155,6 +155,7 @@ export default new Vuex.Store({
 							});
 						}
 					} catch (error) {
+						console.log(error);
 						log = log.concat(`Can't update ${fields[i].name} \r\n`);
 					}
 				}

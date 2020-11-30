@@ -60,6 +60,9 @@
 							<td data-label="Url">{{ f.datasourceName }}</td>
 							<td data-label="Warning">{{ f.warning }}</td>
 							<td>
+								<button class="ui button positive" @click.prevent="updateField(f.name)">
+									Update
+								</button>
 								<button class="ui button negative" @click.prevent="deleteField(f.name)">
 									Delete
 								</button>
@@ -69,6 +72,46 @@
 				</table>
 				<button class="ui button primary" type="submit">Submit</button>
 			</form>
+		</div>
+		<div class="ui basic modal" id="updateField">
+			<div class="ui icon header">
+				<i class="pencil alternate icon"></i>
+				Update Field
+			</div>
+			<div class="content ui form">
+				<div class="field">
+					<div class="three fields">
+						<div class="field">
+							<input type="text" placeholder="Field name" v-model="updateFieldData.name" />
+						</div>
+						<div class="field">
+							<VueSimpleSuggest
+								v-model="updateFieldData.datasourceName"
+								placeholder="datasource name"
+								:list="this.$store.getters.getDatasourcesName"
+							/>
+							<div class="ui pointing label">
+								Support math operator: `ds1 (M)+(M) ds2`
+							</div>
+							<!-- <input type="text" placeholder="datasource name" v-model="datasourceName" /> -->
+						</div>
+						<div class="field">
+							<input type="text" placeholder="Warning" v-model="updateFieldData.warning" />
+							<div class="ui pointing label">
+								{{ stringTool }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="actions">
+				<div class="ui red basic cancel inverted button">
+					Cancel
+				</div>
+				<div class="ui green ok inverted button" @click="updateFieldDone">
+					Update
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -102,6 +145,11 @@ export default {
 			fields: [],
 			stringTool: ">, <, >=, <=, ==, !=. Default is >",
 			boardStored: null,
+			updateFieldData: {
+				name: "",
+				datasourceName: "",
+				warning: "",
+			},
 		};
 	},
 
@@ -115,6 +163,27 @@ export default {
 			this.fieldName = "";
 			this.datasourceName = "";
 			this.warning = "";
+		},
+		updateField(fieldName) {
+			for (let f of this.fields) {
+				if (f.name === fieldName) {
+					this.updateFieldData.name = f.name;
+					this.updateFieldData.datasourceName = f.datasourceName;
+					this.updateFieldData.warning = f.warning;
+					break;
+				}
+			}
+			$("#updateField").modal("show");
+		},
+		updateFieldDone() {
+			for (let f of this.fields) {
+				if (f.name === this.updateFieldData.name) {
+					f.name = this.updateFieldData.name;
+					f.datasourceName = this.updateFieldData.datasourceName;
+					f.warning = this.updateFieldData.warning;
+					break;
+				}
+			}
 		},
 		deleteField(fieldName) {
 			this.fields = this.fields.filter((f) => fieldName !== f.name);

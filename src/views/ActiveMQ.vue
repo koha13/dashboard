@@ -80,9 +80,18 @@ export default {
 	},
 	methods: {
 		show() {
-			axios.get("http://localhost:8082/preview?jmx=" + this.jmxUrl).then((res) => {
-				this.data = res.data;
-			});
+			axios
+				.get("http://localhost:8082/preview?jmx=" + this.jmxUrl)
+				.then((res) => {
+					this.data = res.data;
+				})
+				.catch((err) => {
+					this.$notify({
+						group: "noti",
+						title: "Can't get jmx information",
+						type: "error",
+					});
+				});
 		},
 		submit() {
 			let id = this.$store.getters.getId;
@@ -126,9 +135,11 @@ export default {
 				board.fields.push({
 					name: spl[spl.length - 1],
 					datasourceName: rs + "-" + spl[spl.length - 1],
+					warning: "",
 				});
 			}
 			this.$store.commit("addBoard", board);
+			this.data = "";
 			this.$router.push({ name: "Home" });
 		},
 	},

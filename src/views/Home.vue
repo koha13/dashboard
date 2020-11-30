@@ -20,7 +20,7 @@
 					<button class="ui green button" @click="showImportModal">Import</button>
 				</div>
 			</div>
-			<div class="five wide column" v-show="showDS">
+			<div class="nine wide column" v-show="showDS">
 				<table class="ui  fixed single line celled small table">
 					<thead>
 						<tr>

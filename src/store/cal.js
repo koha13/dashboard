@@ -1,15 +1,15 @@
 export default function checkWarning(payload) {
 	let { value, warningString } = payload;
-	if (warningString === "") {
+	if (warningString === "" || !warningString) {
 		return false;
 	}
 	let warningSign = false;
 	let compareOperatorList = ["<=", ">=", ">", "<", "==", "!="];
-	let check = false;
+	var check = false;
 	let v, rsNum;
 	for (let co of compareOperatorList) {
 		if (warningString.includes(co)) {
-			ckeck = true;
+			check = true;
 			switch (co) {
 				case "<":
 					v = warningString.substring(1);
