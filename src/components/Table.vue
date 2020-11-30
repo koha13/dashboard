@@ -1,15 +1,15 @@
 <template>
 	<div style="width:100%">
-		<table class="ui celled striped table no-drag">
+		<table class="ui celled selectable fixed striped table no-drag">
 			<thead>
 				<tr>
-					<th colspan="3">
+					<th colspan="2">
 						{{ this.board.name }}
 					</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="a in board.data" :key="a.name">
+				<tr v-for="a in board.data" :key="a.name" :class="{ negative: a.warning }">
 					<td>{{ a.name }}</td>
 					<td>{{ a.y }}</td>
 				</tr>

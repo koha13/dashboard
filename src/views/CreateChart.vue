@@ -39,8 +39,11 @@
 							<!-- <input type="text" placeholder="datasource name" v-model="datasourceName" /> -->
 						</div>
 						<div class="field">
-							<button class="ui button primary" @click.prevent="addField">Add</button>
+							<input type="text" placeholder="Warning" v-model="warning" />
 						</div>
+					</div>
+					<div class="field">
+						<button class="ui button primary" @click.prevent="addField">Add</button>
 					</div>
 				</div>
 				<table class="ui celled table">
@@ -48,12 +51,14 @@
 						<tr>
 							<th>Name show up</th>
 							<th>Datasource name</th>
+							<th>Warning</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr v-for="f in fields" :key="f.name">
 							<td data-label="Field name">{{ f.name }}</td>
 							<td data-label="Url">{{ f.datasourceName }}</td>
+							<td data-label="Warning">{{ f.warning }}</td>
 							<td>
 								<button class="ui button negative" @click.prevent="deleteField(f.name)">
 									Delete
@@ -93,6 +98,7 @@ export default {
 			boardType: "Pie",
 			fieldName: "",
 			datasourceName: "",
+			warning: "",
 			fields: [],
 		};
 	},
@@ -102,9 +108,11 @@ export default {
 			this.fields.push({
 				name: this.fieldName,
 				datasourceName: this.datasourceName,
+				warning: this.warning,
 			});
 			this.fieldName = "";
 			this.datasourceName = "";
+			this.warning = "";
 		},
 		deleteField(fieldName) {
 			this.fields = this.fields.filter((f) => fieldName !== f.name);

@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import VuexPersist from "vuex-persist";
+import checkWarning from "./cal";
 
 const vuexLocalStorage = new VuexPersist({
 	key: "vuex",
@@ -70,16 +71,18 @@ export default new Vuex.Store({
 				if (state.boards[i].name == b.name) {
 					let board = state.boards[i];
 					if (board.type === "Pie" || board.type === "Table") {
+						let warning = b.warning;
 						let check = false;
 						for (let j = 0; j < board.data.length; j++) {
 							if (board.data[j].name === b.field) {
 								check = true;
 								board.data[j].y = b.value;
+								board.data[j].warning = warning;
 								break;
 							}
 						}
 						if (!check) {
-							board.data.push({ name: b.field, y: b.value });
+							board.data.push({ name: b.field, y: b.value, warning });
 						}
 					} else if (board.type === "Line") {
 						let check = false;
@@ -130,7 +133,8 @@ export default new Vuex.Store({
 						let spl = fields[i].datasourceName.split(/\s*\(M\)\s*/);
 						if (spl.length == 1) {
 							let data = await dispatch("updateDatasource", fields[i].datasourceName);
-							commit("updateBoard", { name: b.name, field: fields[i].name, value: data });
+							let warning = checkWarning({ value: data, warningString: fields[i].warning });
+							commit("updateBoard", { name: b.name, field: fields[i].name, value: data, warning });
 						} else {
 							let calArr = [];
 							for (let j = 0; j < spl.length; j++) {
@@ -141,10 +145,13 @@ export default new Vuex.Store({
 									calArr.push(spl[j]);
 								}
 							}
+							let value = eval(calArr.join(""));
+							let warning = checkWarning({ value, warningString: fields[i].warning });
 							commit("updateBoard", {
 								name: b.name,
 								field: fields[i].name,
-								value: eval(calArr.join("")),
+								value,
+								warning,
 							});
 						}
 					} catch (error) {
