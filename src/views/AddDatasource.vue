@@ -10,11 +10,8 @@
 					<option value="value">Fixed Value</option>
 				</select>
 			</div>
-			<div class="field">
-				<label
-					>Datasource name
-					{{ update ? " - Change datasource name will create new one. Keep to update" : "" }}</label
-				>
+			<div :class="{ disabled: update, field: true, required: true }">
+				<label>Datasource name </label>
 				<input type="text" placeholder="datasource name" v-model="data.datasourceName" />
 			</div>
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">

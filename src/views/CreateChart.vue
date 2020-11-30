@@ -2,12 +2,9 @@
 	<div class="ui four column centered grid">
 		<div class="row">
 			<form @submit.prevent="submit" class="ui form">
-				<div class="field">
+				<div :class="{ disabled: update, field: true, required: true }">
 					<label>Board name</label>
 					<input type="text" v-model="boardName" placeholder="Board name" />
-					<div class="ui pointing label" v-if="update">
-						Change board name will create new one. Keep to update
-					</div>
 				</div>
 				<div class="field">
 					<label>Last Name</label>
