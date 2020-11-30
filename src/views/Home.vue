@@ -212,12 +212,22 @@ export default {
 	width: 20px;
 	height: 20px;
 	top: 0;
+	right: 20px;
+}
+.close-handle {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
 	right: 0;
-	padding: 0 8px 8px 0;
-	background-origin: content-box;
-	background-color: black;
-	box-sizing: border-box;
-	border-radius: 10px;
+	cursor: pointer;
+}
+.config-handle {
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	top: 0;
+	right: 40px;
 	cursor: pointer;
 }
 </style>

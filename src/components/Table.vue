@@ -15,8 +15,15 @@
 				</tr>
 			</tbody>
 		</table>
-		<button class="ui button tiny negative" @click="deleteChart">Delete</button>
-		<div class="vue-draggable-handle"></div>
+		<div class="vue-draggable-handle">
+			<i class="arrows alternate icon"></i>
+		</div>
+		<div class="close-handle" @click="deleteChart">
+			<i class="window close outline icon"></i>
+		</div>
+		<div class="config-handle">
+			<i class="pencil alternate icon"></i>
+		</div>
 		<div class="ui message" v-if="log !== ''">
 			<p>
 				{{ log }}
