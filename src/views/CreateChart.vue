@@ -1,5 +1,5 @@
 <template>
-	<div class="ui four column centered grid">
+	<div class="ui twelve column centered grid" style="padding: 10px">
 		<div class="row">
 			<form @submit.prevent="submit" class="ui form">
 				<div :class="{ disabled: update, field: true, required: true }">
@@ -37,6 +37,9 @@
 						</div>
 						<div class="field">
 							<input type="text" placeholder="Warning" v-model="warning" />
+							<div class="ui pointing label">
+								{{ stringTool }}
+							</div>
 						</div>
 					</div>
 					<div class="field">
@@ -79,12 +82,12 @@ export default {
 	},
 	created() {
 		if (this.$route.query.name) {
-			let boardStored = this.$store.getters.getBoard(this.$route.query.name);
+			this.boardStored = this.$store.getters.getBoard(this.$route.query.name);
 			this.update = true;
-			this.boardName = boardStored.name;
-			this.intervalTime = boardStored.intervalTime;
-			this.boardType = boardStored.type;
-			this.fields = boardStored.fields;
+			this.boardName = this.boardStored.name;
+			this.intervalTime = this.boardStored.intervalTime;
+			this.boardType = this.boardStored.type;
+			this.fields = this.boardStored.fields;
 		}
 	},
 	data() {
@@ -97,6 +100,8 @@ export default {
 			datasourceName: "",
 			warning: "",
 			fields: [],
+			stringTool: ">, <, >=, <=, ==, !=. Default is >",
+			boardStored: null,
 		};
 	},
 
@@ -115,14 +120,40 @@ export default {
 			this.fields = this.fields.filter((f) => fieldName !== f.name);
 		},
 		submit() {
+			if (this.boardName.trim() === "") {
+				this.$notify({
+					group: "noti",
+					title: "Board name can't be empty",
+					type: "error",
+				});
+				return;
+			} else if (this.fields.length == 0) {
+				this.$notify({
+					group: "noti",
+					title: "Fields = 0?",
+					type: "error",
+				});
+				return;
+			}
 			let id = this.$store.getters.getId;
+			let w = 6,
+				h = 12,
+				x = 0,
+				y = 0;
+			if (this.update) {
+				id = this.boardStored.i;
+				w = this.boardStored.w;
+				h = this.boardStored.h;
+				x = this.boardStored.x;
+				y = this.boardStored.y;
+			}
 			let data = {
 				name: this.boardName,
-				w: 6,
-				h: 12,
+				w,
+				h,
 				i: id,
-				x: 0,
-				y: 0,
+				x,
+				y,
 				intervalTime: this.intervalTime,
 				fields: this.fields,
 				data: [],

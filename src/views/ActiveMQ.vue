@@ -1,25 +1,28 @@
 <template>
-	<div>
-		<form class="ui form">
-			<div class="field">
-				<label>Board name</label>
-				<input type="text" v-model="boardName" />
-			</div>
-			<div class="field">
-				<label>JMX URL</label>
-				<input type="text" placeholder="Jmx url" v-model="jmxUrl" />
-			</div>
-			<div class="field">
-				<label>Username</label>
-				<input type="text" v-model="username" />
-			</div>
-			<div class="field">
-				<label>Password</label>
-				<input type="text" v-model="password" />
-			</div>
-			<button class="ui button" type="button" @click="show">Show</button>
-		</form>
-		<button class="ui button green" @click="submit">Create</button>
+	<div class="ui two column grid" style="margin: 0 100px">
+		<div class="four wide column">
+			<form class="ui form">
+				<div class="field">
+					<label>Board name</label>
+					<input type="text" v-model="boardName" />
+				</div>
+				<div class="field">
+					<label>JMX URL</label>
+					<input type="text" placeholder="Jmx url" v-model="jmxUrl" />
+				</div>
+				<div class="field">
+					<label>Username</label>
+					<input type="text" v-model="username" />
+				</div>
+				<div class="field">
+					<label>Password</label>
+					<input type="text" v-model="password" />
+				</div>
+				<button class="ui button" type="button" @click="show">Show</button>
+				<button class="ui button green" @click="submit">Create</button>
+			</form>
+		</div>
+
 		<vue-json-pretty
 			v-if="renderOK"
 			v-model="value"

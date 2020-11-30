@@ -1,5 +1,8 @@
 export default function checkWarning(payload) {
 	let { value, warningString } = payload;
+	if (warningString === "") {
+		return false;
+	}
 	let warningSign = false;
 	let compareOperatorList = ["<=", ">=", ">", "<", "==", "!="];
 	let check = false;
