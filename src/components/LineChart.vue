@@ -8,7 +8,10 @@
 		<div class="close-handle" @click="deleteChart">
 			<i class="window close outline icon"></i>
 		</div>
-		<div class="config-handle">
+		<div
+			class="config-handle"
+			@click="$router.push({ name: 'Chart', query: { name: board.name } })"
+		>
 			<i class="pencil alternate icon"></i>
 		</div>
 		<div class="ui message" v-if="log !== ''">

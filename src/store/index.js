@@ -51,8 +51,19 @@ export default new Vuex.Store({
 				state.datasources = state.datasources.filter((b) => b.datasourceName !== payload);
 			}
 		},
-		addBoard(state, value) {
-			state.boards.push(value);
+		addBoard(state, payload) {
+			let id = -1;
+			for (let i = 0; i < state.boards.length; i++) {
+				if (state.boards[i].name === payload.name) {
+					id = i;
+					break;
+				}
+			}
+			if (id >= 0) {
+				state.boards[id] = payload;
+			} else {
+				state.boards.push(payload);
+			}
 		},
 		updateBoard(state, b) {
 			for (let i = 0; i < state.boards.length; i++) {

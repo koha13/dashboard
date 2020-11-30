@@ -70,10 +70,6 @@
 					<Table v-if="item.type == 'Table'" :board="item" @update="updateLayout" />
 				</grid-item>
 			</grid-layout>
-			<!-- <div v-for="b in boards" :key="b.i" class="eight wide column">
-				<Pie v-if="b.type == 'Pie'" :board="b" />
-				<LineChart v-if="b.type == 'Line'" :board="b" />
-			</div> -->
 		</div>
 	</div>
 </template>

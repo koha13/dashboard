@@ -5,6 +5,9 @@
 				<div class="field">
 					<label>Board name</label>
 					<input type="text" v-model="boardName" placeholder="Board name" />
+					<div class="ui pointing label" v-if="update">
+						Change board name will create new one. Keep to update
+					</div>
 				</div>
 				<div class="field">
 					<label>Last Name</label>
@@ -72,8 +75,19 @@ export default {
 	components: {
 		VueSimpleSuggest,
 	},
+	created() {
+		if (this.$route.query.name) {
+			let boardStored = this.$store.getters.getBoard(this.$route.query.name);
+			this.update = true;
+			this.boardName = boardStored.name;
+			this.intervalTime = boardStored.intervalTime;
+			this.boardType = boardStored.type;
+			this.fields = boardStored.fields;
+		}
+	},
 	data() {
 		return {
+			update: false,
 			boardName: "",
 			intervalTime: 5000,
 			boardType: "Pie",
@@ -89,12 +103,8 @@ export default {
 				name: this.fieldName,
 				datasourceName: this.datasourceName,
 			});
-			this.clearInput();
-		},
-		clearInput() {
 			this.fieldName = "";
 			this.datasourceName = "";
-			this.intervalTime = 5000;
 		},
 		deleteField(fieldName) {
 			this.fields = this.fields.filter((f) => fieldName !== f.name);
@@ -114,6 +124,12 @@ export default {
 				type: this.boardType,
 			};
 			this.$store.commit("addBoard", data);
+			this.fieldName = "";
+			this.datasourceName = "";
+			this.intervalTime = 5000;
+			this.boardName = "";
+			this.fields = [];
+			this.boardType = "Pie";
 			this.$router.push({ name: "Home" });
 		},
 	},
