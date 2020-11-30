@@ -14,6 +14,11 @@
 				<button class="ui tiny button" @click="$router.push({ name: 'Datasource' })">
 					Add Datasource
 				</button>
+				<div class="ui buttons">
+					<button class="ui orange button" @click="showExportModal">Export</button>
+					<div class="or"></div>
+					<button class="ui green button" @click="showImportModal">Import</button>
+				</div>
 			</div>
 			<div class="five wide column" v-show="showDS">
 				<table class="ui  fixed single line celled small table">
@@ -71,6 +76,46 @@
 				</grid-item>
 			</grid-layout>
 		</div>
+		<div id="exportModal" class="ui modal">
+			<i class="close icon"></i>
+			<div class="header">Export data</div>
+			<div class="content expData">
+				<textarea
+					rows="5"
+					type="text"
+					id="expData"
+					:value="dataExport"
+					style="width:80%; margin-left:10%;max-height:300px"
+				/>
+			</div>
+			<div class="actions">
+				<div class="ui black deny button">
+					Close
+				</div>
+				<div class="ui positive button" @click="copyData">
+					Copy
+				</div>
+			</div>
+		</div>
+		<div id="importModal" class="ui modal">
+			<i class="close icon"></i>
+			<div class="header">Import data</div>
+			<textarea
+				name="Text1"
+				cols="40"
+				rows="5"
+				style="width:80%;margin-left:10%"
+				v-model="impData"
+			></textarea>
+			<div class="actions">
+				<div class="ui black deny button">
+					Close
+				</div>
+				<div class="ui positive button" @click="importData">
+					Import
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 // drag-allow-from=".vue-draggable-handle" drag-ignore-from=".no-drag"
@@ -100,6 +145,8 @@ export default {
 		return {
 			layout: [],
 			showDS: false,
+			dataExport: "",
+			impData: "",
 		};
 	},
 	activated() {
@@ -154,6 +201,38 @@ export default {
 		},
 		updateDS(name) {
 			this.$router.push({ name: "Datasource", query: { name } });
+		},
+		showExportModal() {
+			$("#exportModal").modal("show");
+			this.dataExport = JSON.stringify(this.$store.getters.getExportData);
+			Object.freeze(this.dataExport);
+		},
+		showImportModal() {
+			$("#importModal").modal("show");
+		},
+		copyData() {
+			let data = document.querySelector("#expData");
+			data.setAttribute("type", "text");
+			data.select();
+			console.log(data);
+			try {
+				var successful = document.execCommand("copy");
+				this.$notify({
+					group: "noti",
+					title: "COPIED DATA TO CLIPBOARD",
+				});
+			} catch (err) {}
+		},
+		importData() {
+			this.$store.commit("importData", this.impData);
+			this.$notify({
+				group: "noti",
+				title: "IMPORT DATA: OK",
+				text: `Reloading`,
+			});
+			setTimeout(() => {
+				document.location.reload(true);
+			}, 1000);
 		},
 	},
 };

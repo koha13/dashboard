@@ -16,7 +16,7 @@
 			</tbody>
 		</table>
 		<div class="vue-draggable-handle">
-			<i class="arrows alternate icon"></i>
+			<i class="table icon"></i>
 		</div>
 		<div class="close-handle" @click="deleteChart">
 			<i class="window close outline icon"></i>

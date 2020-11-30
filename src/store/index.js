@@ -108,9 +108,15 @@ export default new Vuex.Store({
 			state.boards = value;
 		},
 		deleteData(state) {
+			if (state == null || !state || state == {} || state == []) return;
 			for (let i = 0; i < state.boards.length; i++) {
 				state.boards[i].data = [];
 			}
+		},
+		importData(state, payload) {
+			let data = JSON.parse(payload);
+			state.boards = data.boards;
+			state.datasources = data.datasources;
 		},
 	},
 	actions: {
@@ -234,6 +240,13 @@ export default new Vuex.Store({
 				rs.push(state.datasources[i].datasourceName);
 			}
 			return rs;
+		},
+		getExportData(state) {
+			let data = JSON.parse(JSON.stringify(state));
+			for (let i = 0; i < data.boards.length; i++) {
+				data.boards[i].data = [];
+			}
+			return data;
 		},
 	},
 	modules: {},
