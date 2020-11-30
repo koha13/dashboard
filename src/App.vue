@@ -10,4 +10,10 @@
 		</keep-alive>
 	</div>
 </template>
-<style>
+<script>
+export default {
+	created() {
+		this.$store.commit("deleteData");
+	},
+};
+</script>

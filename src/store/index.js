@@ -4,8 +4,8 @@ import axios from "axios";
 import VuexPersist from "vuex-persist";
 
 const vuexLocalStorage = new VuexPersist({
-	key: "vuex", // The key to store the state on in the storage provider.
-	storage: window.localStorage, // or window.sessionStorage or localForage
+	key: "vuex",
+	storage: window.localStorage,
 });
 
 Vue.use(Vuex);
@@ -106,6 +106,11 @@ export default new Vuex.Store({
 		},
 		vuegrid(state, value) {
 			state.boards = value;
+		},
+		deleteData(state) {
+			for (let i = 0; i < state.boards.length; i++) {
+				state.boards[i].data = [];
+			}
 		},
 	},
 	actions: {
