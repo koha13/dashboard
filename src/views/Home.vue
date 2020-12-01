@@ -6,7 +6,7 @@
 					New board
 				</button>
 				<button class="ui tiny button primary" @click="$router.push({ name: 'ActiveMQ' })">
-					Provip101
+					ActiveMQ
 				</button>
 				<button class="ui tiny button" @click="showDS = !showDS">
 					{{ showDS ? "Hide Datasource" : "Show Datasrouce" }}

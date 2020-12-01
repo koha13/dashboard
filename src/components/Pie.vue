@@ -2,7 +2,7 @@
 	<div class="highcharts-figure">
 		<div :id="board.name" class="no-drag"></div>
 		<div class="vue-draggable-handle">
-			<i class="table icon"></i>
+			<i class="arrows alternate icon"></i>
 		</div>
 		<div class="close-handle" @click="deleteChart">
 			<i class="window close outline icon"></i>

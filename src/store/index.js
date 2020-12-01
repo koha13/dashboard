@@ -206,7 +206,7 @@ export default new Vuex.Store({
 			} else if (datasource.type === "jmx") {
 				let res;
 				try {
-					res = await axios.post("http://localhost:8082/get", {
+					res = await axios.post("http://192.168.40.158:8082/get", {
 						username: datasource.jmx.username,
 						password: datasource.jmx.password,
 						jmxUrl: datasource.jmx.url,

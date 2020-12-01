@@ -81,7 +81,7 @@ export default {
 	methods: {
 		show() {
 			axios
-				.get("http://localhost:8082/preview?jmx=" + this.jmxUrl)
+				.get("http://192.168.40.158:8082/preview?jmx=" + this.jmxUrl)
 				.then((res) => {
 					this.data = res.data;
 				})
@@ -109,10 +109,12 @@ export default {
 			};
 			for (let o of this.value) {
 				let spl = o.split(".");
-				let rs = "org.apache.activemq";
-				for (let i = 4; i < spl.length - 2; i++) {
-					rs = rs.concat(spl[i]);
+				let rs = "org.apache.activemq:";
+				for (let i = 3; i < spl.length - 2; i++) {
+					rs = rs.concat(",").concat(spl[i]);
 				}
+				rs = rs.replace(/:,/g, ":");
+				console.log(rs);
 				this.$store.commit("addDatasource", {
 					type: "jmx",
 					datasourceName: rs + "-" + spl[spl.length - 1],

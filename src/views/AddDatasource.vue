@@ -104,6 +104,14 @@ export default {
 	},
 	methods: {
 		submit() {
+			if (this.data.datasourceName == "") {
+				this.$notify({
+					group: "noti",
+					title: "Datasource name can't be empty",
+					type: "error",
+				});
+				return;
+			}
 			this.$store.commit("addDatasource", this.data);
 			this.data = {
 				type: "json",
