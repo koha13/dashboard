@@ -195,7 +195,7 @@ export default new Vuex.Store({
 						}
 					}
 					let rsNum = parseFloat(res);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						resolve(res);
 					}
 					resolve(rsNum);
@@ -215,7 +215,7 @@ export default new Vuex.Store({
 					});
 					res = res.data;
 					let rsNum = parseFloat(res);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						resolve(res);
 					}
 					resolve(rsNum);

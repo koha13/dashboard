@@ -14,7 +14,7 @@ export default function checkWarning(payload) {
 				case "<":
 					v = warningString.substring(1);
 					rsNum = parseFloat(v);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value < v) {
@@ -24,7 +24,7 @@ export default function checkWarning(payload) {
 				case ">":
 					v = warningString.substring(1);
 					rsNum = parseFloat(v);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value > v) {
@@ -34,7 +34,7 @@ export default function checkWarning(payload) {
 				case "<=":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value <= v) {
@@ -44,7 +44,7 @@ export default function checkWarning(payload) {
 				case ">=":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value >= v) {
@@ -54,7 +54,7 @@ export default function checkWarning(payload) {
 				case "==":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value == v) {
@@ -64,7 +64,7 @@ export default function checkWarning(payload) {
 				case "!=":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (rsNum === NaN) {
+					if (isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value != v) {
@@ -78,7 +78,7 @@ export default function checkWarning(payload) {
 	if (!check) {
 		v = warningString;
 		rsNum = parseFloat(v);
-		if (rsNum === NaN) {
+		if (isNaN(rsNum)) {
 			v = rsNum;
 		}
 		if (value > v) {
