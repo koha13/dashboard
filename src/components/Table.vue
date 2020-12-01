@@ -1,6 +1,6 @@
 <template>
 	<div style="width:100%">
-		<table class="ui celled selectable fixed striped table no-drag">
+		<table class="ui celled selectable fixed unstackable striped table no-drag">
 			<thead>
 				<tr>
 					<th colspan="2">
@@ -21,10 +21,7 @@
 		<div class="close-handle" @click="deleteChart">
 			<i class="window close outline icon"></i>
 		</div>
-		<div
-			class="config-handle"
-			@click="$router.push({ name: 'Chart', query: { id: board.i } })"
-		>
+		<div class="config-handle" @click="$router.push({ name: 'Chart', query: { id: board.i } })">
 			<i class="pencil alternate icon"></i>
 		</div>
 		<div class="ui message" v-if="log !== ''">

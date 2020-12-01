@@ -1,5 +1,5 @@
 <template>
-	<div class="ui twelve column centered grid" style="padding: 10px">
+	<div class="ui nine column centered grid" style="padding: 10px">
 		<div class="row">
 			<form @submit.prevent="submit" class="ui form">
 				<div :class="{ field: true, required: true }">

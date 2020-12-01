@@ -47,16 +47,17 @@
 				</table>
 			</div>
 		</div>
-		<div class="row" style="margin-top:30px">
+		<div class="row" style="margin-top:30px;width:100%;">
 			<grid-layout
 				@layout-updated="layoutUpdatedEvent"
-				:layout="layout"
-				:col-num="12"
+				:layout.sync="layout"
 				:row-height="30"
+				:col-num="12"
 				:is-draggable="true"
 				:is-resizable="true"
 				:vertical-compact="true"
 				:use-css-transforms="true"
+				:responsive="true"
 			>
 				<grid-item
 					class="gridItem"
@@ -147,6 +148,7 @@ export default {
 			showDS: false,
 			dataExport: "",
 			impData: "",
+			rowHeight: 30,
 		};
 	},
 	activated() {
