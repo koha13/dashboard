@@ -32,7 +32,6 @@ export default {
 	},
 	created() {
 		this.boardType = this.board.type;
-		console.log(this.boardType);
 	},
 	methods: {
 		deleteChart() {

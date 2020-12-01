@@ -105,7 +105,7 @@ export default {
 				intervalTime: 5000,
 				fields: [],
 				data: [],
-				type: "Line",
+				type: "Table",
 			};
 			for (let o of this.value) {
 				let spl = o.split(".");
@@ -114,7 +114,6 @@ export default {
 					rs = rs.concat(",").concat(spl[i]);
 				}
 				rs = rs.replace(/:,/g, ":");
-				console.log(rs);
 				this.$store.commit("addDatasource", {
 					type: "jmx",
 					datasourceName: rs + "-" + spl[spl.length - 1],

@@ -23,7 +23,7 @@
 		</div>
 		<div
 			class="config-handle"
-			@click="$router.push({ name: 'Chart', query: { name: board.name } })"
+			@click="$router.push({ name: 'Chart', query: { id: board.i } })"
 		>
 			<i class="pencil alternate icon"></i>
 		</div>
@@ -41,10 +41,10 @@ export default {
 		board: Object,
 	},
 	mounted() {
-		this.$store.dispatch("updateBoard", this.board.name).then((res) => {
+		this.$store.dispatch("updateBoard", this.board.i).then((res) => {
 			this.log = res;
 			this.interval = setInterval(async () => {
-				let log = await this.$store.dispatch("updateBoard", this.board.name);
+				let log = await this.$store.dispatch("updateBoard", this.board.i);
 			}, this.board.intervalTime);
 		});
 	},
@@ -56,7 +56,7 @@ export default {
 	},
 	methods: {
 		deleteChart() {
-			this.$store.commit("deleteChart", this.board.name);
+			this.$store.commit("deleteChart", this.board.i);
 			this.$emit("update");
 		},
 	},

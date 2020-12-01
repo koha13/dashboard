@@ -2,7 +2,7 @@
 	<div class="ui twelve column centered grid" style="padding: 10px">
 		<div class="row">
 			<form @submit.prevent="submit" class="ui form">
-				<div :class="{ disabled: update, field: true, required: true }">
+				<div :class="{ field: true, required: true }">
 					<label>Board name</label>
 					<input type="text" v-model="boardName" placeholder="Board name" />
 				</div>
@@ -120,12 +120,13 @@
 import VueSimpleSuggest from "vue-simple-suggest";
 import "vue-simple-suggest/dist/styles.css";
 export default {
+	name: "chart",
 	components: {
 		VueSimpleSuggest,
 	},
 	created() {
-		if (this.$route.query.name) {
-			this.boardStored = this.$store.getters.getBoard(this.$route.query.name);
+		if (this.$route.query.id) {
+			this.boardStored = this.$store.getters.getBoard(this.$route.query.id);
 			this.update = true;
 			this.boardName = this.boardStored.name;
 			this.intervalTime = this.boardStored.intervalTime;

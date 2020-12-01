@@ -55,7 +55,7 @@ export default new Vuex.Store({
 		addBoard(state, payload) {
 			let id = -1;
 			for (let i = 0; i < state.boards.length; i++) {
-				if (state.boards[i].name === payload.name) {
+				if (state.boards[i].i === payload.i) {
 					id = i;
 					break;
 				}
@@ -68,7 +68,7 @@ export default new Vuex.Store({
 		},
 		updateBoard(state, b) {
 			for (let i = 0; i < state.boards.length; i++) {
-				if (state.boards[i].name == b.name) {
+				if (state.boards[i].i == b.i) {
 					let board = state.boards[i];
 					if (board.type === "Pie" || board.type === "Table") {
 						let warning = b.warning;
@@ -105,7 +105,7 @@ export default new Vuex.Store({
 			}
 		},
 		deleteChart(state, value) {
-			state.boards = state.boards.filter((b) => b.name !== value);
+			state.boards = state.boards.filter((b) => b.i !== value);
 		},
 		vuegrid(state, value) {
 			state.boards = value;
@@ -134,7 +134,7 @@ export default new Vuex.Store({
 						if (spl.length == 1) {
 							let data = await dispatch("updateDatasource", fields[i].datasourceName);
 							let warning = checkWarning({ value: data, warningString: fields[i].warning });
-							commit("updateBoard", { name: b.name, field: fields[i].name, value: data, warning });
+							commit("updateBoard", { i: b.i, field: fields[i].name, value: data, warning });
 						} else {
 							let calArr = [];
 							for (let j = 0; j < spl.length; j++) {
@@ -148,7 +148,7 @@ export default new Vuex.Store({
 							let value = eval(calArr.join(""));
 							let warning = checkWarning({ value, warningString: fields[i].warning });
 							commit("updateBoard", {
-								name: b.name,
+								i: b.i,
 								field: fields[i].name,
 								value,
 								warning,
@@ -227,14 +227,18 @@ export default new Vuex.Store({
 	},
 	getters: {
 		getId(state) {
-			return state.boards.length + 1;
+			let max = 0;
+			for (let b of state.boards) {
+				if (b.i > max) max = b.i;
+			}
+			return max + 1;
 		},
 		getBoards(state) {
 			return state.boards;
 		},
 		getBoard: (state) => (id) => {
 			for (let i = 0; i < state.boards.length; i++) {
-				if (state.boards[i].name === id) return state.boards[i];
+				if (state.boards[i].i === id) return state.boards[i];
 			}
 		},
 		getDatasource: (state) => (id) => {

@@ -1,16 +1,13 @@
 <template>
 	<div class="highcharts-figure">
-		<div :id="board.name" class="no-drag"></div>
+		<div :id="board.i" class="no-drag"></div>
 		<div class="vue-draggable-handle">
 			<i class="arrows alternate icon"></i>
 		</div>
 		<div class="close-handle" @click="deleteChart">
 			<i class="window close outline icon"></i>
 		</div>
-		<div
-			class="config-handle"
-			@click="$router.push({ name: 'Chart', query: { name: board.name } })"
-		>
+		<div class="config-handle" @click="$router.push({ name: 'Chart', query: { id: board.i } })">
 			<i class="pencil alternate icon"></i>
 		</div>
 		<div class="ui message" v-if="log !== ''">
@@ -36,16 +33,17 @@ export default {
 		};
 	},
 	mounted() {
-		this.$store.dispatch("updateBoard", this.board.name).then((res) => {
+		this.$store.dispatch("updateBoard", this.board.i).then((res) => {
 			this.log = res;
 			this.graph();
 			bus.$on("reflow", () => {
 				this.chart.reflow();
 			});
 			this.interval = setInterval(async () => {
-				this.log = await this.$store.dispatch("updateBoard", this.board.name);
+				this.log = await this.$store.dispatch("updateBoard", this.board.i);
 				if (this.$route.name === "Home") {
-					this.chart.series[0].setData(this.$store.getters.getBoard(this.board.name).data);
+					this.chart.series[0].setData(this.$store.getters.getBoard(this.board.i).data);
+					this.chart.setTitle({ text: this.board.name });
 				}
 			}, this.board.intervalTime);
 		});
@@ -55,7 +53,7 @@ export default {
 	},
 	methods: {
 		deleteChart() {
-			this.$store.commit("deleteChart", this.board.name);
+			this.$store.commit("deleteChart", this.board.i);
 			this.$emit("update");
 		},
 		graph() {
@@ -68,7 +66,7 @@ export default {
 			});
 			this.chart = new Highcharts.chart({
 				chart: {
-					renderTo: this.board.name,
+					renderTo: this.board.i.toString(),
 					type: "pie",
 					animation: false,
 				},

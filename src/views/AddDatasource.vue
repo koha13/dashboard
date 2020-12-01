@@ -72,6 +72,7 @@
 
 <script>
 export default {
+	name: "datasource",
 	created() {
 		if (this.$route.query.name) {
 			this.data = { ...this.$store.getters.getDatasource(this.$route.query.name) };

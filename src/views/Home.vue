@@ -21,11 +21,11 @@
 				</div>
 			</div>
 			<div class="nine wide column" v-show="showDS">
-				<table class="ui  fixed single line celled small table">
+				<table class="ui fixed single line celled small table">
 					<thead>
 						<tr>
-							<th>Datasource Name</th>
-							<th>option</th>
+							<th class="twelve wide">Datasource Name</th>
+							<th class="four wide">option</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -66,7 +66,7 @@
 					:w="item.w"
 					:h="item.h"
 					:i="item.i"
-					:key="item.name"
+					:key="item.i"
 					drag-allow-from=".vue-draggable-handle"
 					drag-ignore-from=".no-drag"
 				>
@@ -214,7 +214,6 @@ export default {
 			let data = document.querySelector("#expData");
 			data.setAttribute("type", "text");
 			data.select();
-			console.log(data);
 			try {
 				var successful = document.execCommand("copy");
 				this.$notify({
