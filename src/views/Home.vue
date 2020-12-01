@@ -248,7 +248,7 @@ export default {
 .highcharts-data-table table {
 	min-width: 100px;
 	max-width: 800px;
-	min-height: 200px;
+	min-height: 100px;
 	max-height: 600px;
 	margin: 1em auto;
 }

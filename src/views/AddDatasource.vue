@@ -1,5 +1,5 @@
 <template>
-	<div class="ui four column centered grid">
+	<div class="ui four column centered grid container">
 		<form class="ui form" @submit.prevent="submit" style="width:400px">
 			<div class="field">
 				<label>Type</label>

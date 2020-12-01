@@ -9,6 +9,8 @@ const vuexLocalStorage = new VuexPersist({
 	storage: window.localStorage,
 });
 
+const BASE_API_URL = process.env.VUE_APP_BASE_API;
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -206,7 +208,7 @@ export default new Vuex.Store({
 			} else if (datasource.type === "jmx") {
 				let res;
 				try {
-					res = await axios.post("http://192.168.40.158:8082/get", {
+					res = await axios.post(BASE_API_URL + "/get", {
 						username: datasource.jmx.username,
 						password: datasource.jmx.password,
 						jmxUrl: datasource.jmx.url,

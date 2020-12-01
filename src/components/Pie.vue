@@ -68,7 +68,7 @@ export default {
 				chart: {
 					renderTo: this.board.i.toString(),
 					type: "pie",
-					animation: false,
+					animation: true,
 				},
 				title: {
 					text: this.board.name,

@@ -1,5 +1,5 @@
 <template>
-	<div class="ui nine column centered grid" style="padding: 10px">
+	<div class="ui nine column centered grid container" style="padding: 10px">
 		<div class="row">
 			<form @submit.prevent="submit" class="ui form">
 				<div :class="{ field: true, required: true }">
@@ -25,11 +25,14 @@
 							<input type="text" placeholder="Field name" v-model="fieldName" />
 						</div>
 						<div class="field">
-							<VueSimpleSuggest
-								v-model="datasourceName"
-								placeholder="datasource name"
-								:list="this.$store.getters.getDatasourcesName"
-							/>
+							<select class="ui search dropdown" v-model="datasourceName">
+								<option
+									:value="ds.datasourceName"
+									v-for="ds in $store.state.datasources"
+									:key="ds.datasourceName"
+									>{{ ds.datasourceName }}</option
+								>
+							</select>
 							<div class="ui pointing label">
 								Support math operator: `ds1 (M)+(M) ds2`
 							</div>

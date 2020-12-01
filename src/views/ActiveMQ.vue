@@ -1,6 +1,6 @@
 <template>
-	<div class="ui two column grid" style="margin: 0 100px">
-		<div class="four wide column">
+	<div class="ui grid container" style="margin: 0 100px">
+		<div class="eight wide column">
 			<form class="ui form">
 				<div class="field">
 					<label>Board name</label>
@@ -23,22 +23,24 @@
 			</form>
 		</div>
 
-		<vue-json-pretty
-			v-if="renderOK"
-			v-model="value"
-			:data="data"
-			:deep="deep"
-			:show-double-quotes="showDoubleQuotes"
-			:highlight-mouseover-node="highlightMouseoverNode"
-			:highlight-selected-node="highlightSelectedNode"
-			:show-length="showLength"
-			:show-line="showLine"
-			:select-on-click-node="selectOnClickNode"
-			:collapsed-on-click-brackets="collapsedOnClickBrackets"
-			:path-selectable="(path, data) => path.includes('attribute.')"
-			:selectable-type="selectableType"
-			:show-select-controller="showSelectController"
-		/>
+		<div class="eight wide column">
+			<vue-json-pretty
+				v-if="renderOK"
+				v-model="value"
+				:data="data"
+				:deep="deep"
+				:show-double-quotes="showDoubleQuotes"
+				:highlight-mouseover-node="highlightMouseoverNode"
+				:highlight-selected-node="highlightSelectedNode"
+				:show-length="showLength"
+				:show-line="showLine"
+				:select-on-click-node="selectOnClickNode"
+				:collapsed-on-click-brackets="collapsedOnClickBrackets"
+				:path-selectable="(path, data) => path.includes('attribute.')"
+				:selectable-type="selectableType"
+				:show-select-controller="showSelectController"
+			/>
+		</div>
 	</div>
 </template>
 
@@ -81,7 +83,7 @@ export default {
 	methods: {
 		show() {
 			axios
-				.get("http://192.168.40.158:8082/preview?jmx=" + this.jmxUrl)
+				.get(process.env.VUE_APP_BASE_API + "/preview?jmx=" + this.jmxUrl)
 				.then((res) => {
 					this.data = res.data;
 				})
