@@ -26,7 +26,7 @@
 						</div>
 						<div class="field">
 							<VueSimpleSuggest
-								v-model="updateFieldData.datasourceName"
+								v-model="datasourceName"
 								placeholder="datasource name"
 								:list="this.$store.getters.getDatasourcesName"
 							/>
@@ -177,6 +177,7 @@ export default {
 			$("#updateField").modal("show");
 		},
 		updateFieldDone() {
+			console.log(this.datasourceName);
 			for (let f of this.fields) {
 				if (f.name === this.updateFieldData.name) {
 					f.name = this.updateFieldData.name;

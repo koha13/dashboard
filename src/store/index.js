@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import VuexPersist from "vuex-persist";
 import checkWarning from "./cal";
+import { isNumber } from "highcharts";
 
 const vuexLocalStorage = new VuexPersist({
 	key: "vuex",
@@ -141,8 +142,12 @@ export default new Vuex.Store({
 							let calArr = [];
 							for (let j = 0; j < spl.length; j++) {
 								if (j % 2 === 0) {
-									let d = await dispatch("updateDatasource", spl[j]);
-									calArr.push(d.toString());
+									if (!isNaN(parseFloat(spl[j]))) {
+										calArr.push(spl[j].toString());
+									} else {
+										let d = await dispatch("updateDatasource", spl[j]);
+										calArr.push(d.toString());
+									}
 								} else {
 									calArr.push(spl[j]);
 								}
