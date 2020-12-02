@@ -25,14 +25,11 @@
 							<input type="text" placeholder="Field name" v-model="fieldName" />
 						</div>
 						<div class="field">
-							<select class="ui search dropdown" v-model="datasourceName">
-								<option
-									:value="ds.datasourceName"
-									v-for="ds in $store.state.datasources"
-									:key="ds.datasourceName"
-									>{{ ds.datasourceName }}</option
-								>
-							</select>
+							<VueSimpleSuggest
+								v-model="updateFieldData.datasourceName"
+								placeholder="datasource name"
+								:list="this.$store.getters.getDatasourcesName"
+							/>
 							<div class="ui pointing label">
 								Support math operator: `ds1 (M)+(M) ds2`
 							</div>

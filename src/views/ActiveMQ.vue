@@ -116,9 +116,10 @@ export default {
 					rs = rs.concat(",").concat(spl[i]);
 				}
 				rs = rs.replace(/:,/g, ":");
+				let datasourceName = spl[spl.length - 3].split("=")[1] + "-" + spl[spl.length - 1];
 				this.$store.commit("addDatasource", {
 					type: "jmx",
-					datasourceName: rs + "-" + spl[spl.length - 1],
+					datasourceName,
 					jmx: {
 						url: this.jmxUrl,
 						objectName: rs,
@@ -137,7 +138,7 @@ export default {
 				});
 				board.fields.push({
 					name: spl[spl.length - 1],
-					datasourceName: rs + "-" + spl[spl.length - 1],
+					datasourceName: datasourceName,
 					warning: "",
 				});
 			}
