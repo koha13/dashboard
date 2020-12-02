@@ -121,6 +121,7 @@ export default new Vuex.Store({
 		},
 		importData(state, payload) {
 			let data = JSON.parse(payload);
+			console.log(data.boards);
 			state.boards = data.boards;
 			state.datasources = data.datasources;
 		},

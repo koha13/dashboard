@@ -50,14 +50,13 @@
 		<div class="row" style="margin-top:30px;width:100%;">
 			<grid-layout
 				@layout-updated="layoutUpdatedEvent"
-				:layout.sync="layout"
+				:layout="layout"
 				:row-height="30"
 				:col-num="12"
 				:is-draggable="true"
 				:is-resizable="true"
 				:vertical-compact="true"
 				:use-css-transforms="true"
-				:responsive="true"
 			>
 				<grid-item
 					class="gridItem"
@@ -157,11 +156,6 @@ export default {
 		}
 	},
 	computed: {
-		boards: {
-			get() {
-				return this.$store.state.boards;
-			},
-		},
 		datasources: {
 			get() {
 				return this.$store.state.datasources;
@@ -234,6 +228,9 @@ export default {
 			setTimeout(() => {
 				document.location.reload(true);
 			}, 1000);
+		},
+		breakpointChangedEvent: function(newBreakpoint, newLayout) {
+			console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout);
 		},
 	},
 };

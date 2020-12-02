@@ -2,13 +2,16 @@
 	<div class="ui grid container" style="margin: 0 100px">
 		<div class="eight wide column">
 			<form class="ui form">
-				<div class="field">
+				<div class="field required">
 					<label>Board name</label>
-					<input type="text" v-model="boardName" />
+					<input type="text" placeholder="Board name" v-model="boardName" />
 				</div>
 				<div class="field">
 					<label>JMX URL</label>
 					<input type="text" placeholder="Jmx url" v-model="jmxUrl" />
+					<div class="ui pointing label">
+						service:jmx:rmi:///jndi/rmi://{host}:{port}/jmxrmi
+					</div>
 				</div>
 				<div class="field">
 					<label>Username</label>
@@ -18,8 +21,8 @@
 					<label>Password</label>
 					<input type="text" v-model="password" />
 				</div>
-				<button class="ui button" type="button" @click="show">Show</button>
-				<button class="ui button green" @click="submit">Create</button>
+				<button class="ui orange button" type="button" @click="show">Show</button>
+				<button class="ui button green" type="button" @click.prevent="submit">Create</button>
 			</form>
 		</div>
 
@@ -82,8 +85,20 @@ export default {
 	},
 	methods: {
 		show() {
+			if (this.jmxUrl.trim() === "") {
+				this.$notify({
+					group: "noti",
+					title: "JMX Url is empty",
+					type: "error",
+				});
+				return;
+			}
 			axios
-				.get(process.env.VUE_APP_BASE_API + "/preview?jmx=" + this.jmxUrl)
+				.post(process.env.VUE_APP_BASE_API + "/previewjmx", {
+					url: this.jmxUrl,
+					username: this.username,
+					password: this.password,
+				})
 				.then((res) => {
 					this.data = res.data;
 				})
@@ -96,6 +111,22 @@ export default {
 				});
 		},
 		submit() {
+			if (this.boardName.trim() === "") {
+				this.$notify({
+					group: "noti",
+					title: "Board name can't be empty",
+					type: "error",
+				});
+				return;
+			}
+			if (this.value.length === 0) {
+				this.$notify({
+					group: "noti",
+					title: "Pick atleast one attribute",
+					type: "error",
+				});
+				return;
+			}
 			let id = this.$store.getters.getId;
 			let board = {
 				name: this.boardName,
