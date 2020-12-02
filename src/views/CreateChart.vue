@@ -33,7 +33,6 @@
 							<div class="ui pointing label">
 								Support math operator: `ds1 (M)+(M) ds2`
 							</div>
-							<!-- <input type="text" placeholder="datasource name" v-model="datasourceName" /> -->
 						</div>
 						<div class="field">
 							<input type="text" placeholder="Warning" v-model="warning" />
@@ -49,21 +48,23 @@
 				<table class="ui celled table">
 					<thead>
 						<tr>
+							<th>#</th>
 							<th>Name show up</th>
 							<th>Datasource name</th>
 							<th>Warning</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="f in fields" :key="f.name">
+						<tr v-for="(f, index) in fields" :key="index">
+							<td data-label="#">{{ index + 1 }}</td>
 							<td data-label="Field name">{{ f.name }}</td>
 							<td data-label="Url">{{ f.datasourceName }}</td>
 							<td data-label="Warning">{{ f.warning }}</td>
 							<td>
-								<button class="ui button positive" @click.prevent="updateField(f.name)">
+								<button class="ui button positive" @click.prevent="updateField(index)">
 									Update
 								</button>
-								<button class="ui button negative" @click.prevent="deleteField(f.name)">
+								<button class="ui button negative" @click.prevent="deleteField(index)">
 									Delete
 								</button>
 							</td>
@@ -126,7 +127,9 @@ export default {
 	},
 	created() {
 		if (this.$route.query.id) {
-			this.boardStored = this.$store.getters.getBoard(this.$route.query.id);
+			this.boardStored = JSON.parse(
+				JSON.stringify(this.$store.getters.getBoard(this.$route.query.id))
+			);
 			this.update = true;
 			this.boardName = this.boardStored.name;
 			this.intervalTime = this.boardStored.intervalTime;
@@ -147,6 +150,7 @@ export default {
 			stringTool: ">, <, >=, <=, ==, !=. Default is >",
 			boardStored: null,
 			updateFieldData: {
+				id: 0,
 				name: "",
 				datasourceName: "",
 				warning: "",
@@ -165,30 +169,21 @@ export default {
 			this.datasourceName = "";
 			this.warning = "";
 		},
-		updateField(fieldName) {
-			for (let f of this.fields) {
-				if (f.name === fieldName) {
-					this.updateFieldData.name = f.name;
-					this.updateFieldData.datasourceName = f.datasourceName;
-					this.updateFieldData.warning = f.warning;
-					break;
-				}
-			}
+		updateField(i) {
+			this.updateFieldData.id = i;
+			this.updateFieldData.name = this.fields[i].name;
+			this.updateFieldData.datasourceName = this.fields[i].datasourceName;
+			this.updateFieldData.warning = this.fields[i].warning;
 			$("#updateField").modal("show");
 		},
 		updateFieldDone() {
-			console.log(this.datasourceName);
-			for (let f of this.fields) {
-				if (f.name === this.updateFieldData.name) {
-					f.name = this.updateFieldData.name;
-					f.datasourceName = this.updateFieldData.datasourceName;
-					f.warning = this.updateFieldData.warning;
-					break;
-				}
-			}
+			let i = this.updateFieldData.id;
+			this.fields[i].name = this.updateFieldData.name;
+			this.fields[i].datasourceName = this.updateFieldData.datasourceName;
+			this.fields[i].warning = this.updateFieldData.warning;
 		},
-		deleteField(fieldName) {
-			this.fields = this.fields.filter((f) => fieldName !== f.name);
+		deleteField(i) {
+			this.fields.splice(i, 1);
 		},
 		submit() {
 			if (this.boardName.trim() === "") {
