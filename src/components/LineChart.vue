@@ -67,7 +67,6 @@ export default {
 					text: this.board.name,
 				},
 				chart: {
-					type: "spline",
 					animation: false,
 				},
 				xAxis: {

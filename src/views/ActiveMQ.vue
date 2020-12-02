@@ -1,6 +1,13 @@
 <template>
 	<div class="ui grid container" style="margin: 0 100px">
 		<div class="eight wide column">
+			<div class="ui message">
+				<ul class="list">
+					<li>Enter jmx url then click show</li>
+					<li>Pick attribute in json viewer in the right</li>
+					<li>Enter boardname then click create</li>
+				</ul>
+			</div>
 			<form class="ui form">
 				<div class="field required">
 					<label>Board name</label>
