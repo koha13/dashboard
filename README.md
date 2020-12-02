@@ -1,5 +1,7 @@
 # dashboard
 
+## Update source of api server in .env file
+
 ## Project setup
 ```
 npm install
