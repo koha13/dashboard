@@ -41,7 +41,7 @@ export default {
 		this.$store.dispatch("updateBoard", this.board.i).then((res) => {
 			this.log = res;
 			this.interval = setInterval(async () => {
-				let log = await this.$store.dispatch("updateBoard", this.board.i);
+				this.log = await this.$store.dispatch("updateBoard", this.board.i);
 			}, this.board.intervalTime);
 		});
 	},
