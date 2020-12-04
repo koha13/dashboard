@@ -64,7 +64,14 @@
 				<label>Value</label>
 				<input type="text" placeholder="value" v-model="data.value" />
 			</div>
-			<button class="ui button secondary" type="button" @click="testDS">Test</button>
+			<button
+				class="ui button secondary"
+				type="button"
+				@click="testDS"
+				v-if="data.type !== 'value'"
+			>
+				Test
+			</button>
 			<button class="ui button primary" type="submit">Submit</button>
 		</form>
 	</div>

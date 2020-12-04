@@ -230,6 +230,12 @@ export default new Vuex.Store({
 				} catch (error) {
 					reject(error);
 				}
+			} else if (datasource.type === "value") {
+				let rsNum = parseFloat(datasource.value);
+				if (isNaN(rsNum)) {
+					resolve(res);
+				}
+				resolve(rsNum);
 			}
 		},
 	},
