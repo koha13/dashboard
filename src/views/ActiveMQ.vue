@@ -28,6 +28,18 @@
 					<label>Password</label>
 					<input type="text" v-model="password" />
 				</div>
+				<div class="field">
+					<label>Last Name</label>
+					<select class="ui fluid dropdown" v-model="boardType">
+						<option value="Pie">Pie</option>
+						<option value="Line">Line</option>
+						<option value="Table">Table</option>
+					</select>
+				</div>
+				<div class="field">
+					<label>IntervalTime</label>
+					<input type="text" v-model="intervalTime" />
+				</div>
 				<button class="ui orange button" type="button" @click="show">Show</button>
 				<button class="ui button green" type="button" @click.prevent="submit">Create</button>
 			</form>
@@ -66,6 +78,8 @@ export default {
 	},
 	data() {
 		return {
+			boardType: "Table",
+			intervalTime: 5000,
 			boardName: "",
 			jmxUrl: "",
 			username: "",
@@ -142,10 +156,10 @@ export default {
 				i: id,
 				x: 0,
 				y: 0,
-				intervalTime: 5000,
+				intervalTime: this.intervalTime,
 				fields: [],
 				data: [],
-				type: "Table",
+				type: this.boardType,
 			};
 			for (let o of this.value) {
 				let spl = o.split(".");
