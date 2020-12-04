@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="ui centered grid">
+		<!-- <div class="ui centered grid">
 			<div class="row">
 				<button class="ui tiny button primary" @click="$router.push({ name: 'Chart' })">
 					New board
@@ -46,7 +46,7 @@
 					</tbody>
 				</table>
 			</div>
-		</div>
+		</div> -->
 		<div class="row" style="margin-top:30px;width:100%;">
 			<grid-layout
 				@layout-updated="layoutUpdatedEvent"
