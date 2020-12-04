@@ -9,9 +9,6 @@ export default {
 	props: {
 		v: Number,
 	},
-	created() {
-		console.log(this.v);
-	},
 	data() {
 		return {
 			show: false,

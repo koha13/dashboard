@@ -2,8 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import VuexPersist from "vuex-persist";
-import checkWarning from "./cal";
-import { isNumber } from "highcharts";
+import { checkWarning, updateDS } from "./cal";
 
 const vuexLocalStorage = new VuexPersist({
 	key: "vuex",
@@ -177,7 +176,6 @@ export default new Vuex.Store({
 							});
 						}
 					} catch (error) {
-						console.log(error);
 						log = log.concat(`Can't update ${fields[i].name}. \r\n`);
 					}
 				}
@@ -185,89 +183,17 @@ export default new Vuex.Store({
 			});
 		},
 
-		updateDatasource({ getters, dispatch }, datasourceName) {
+		updateDatasource({ getters }, datasourceName) {
 			let datasource = getters.getDatasource(datasourceName);
 			return new Promise(async (resolve, reject) => {
-				dispatch("updateDS", { resolve, reject, datasource });
+				updateDS(resolve, reject, datasource, BASE_API_URL);
 			});
 		},
 
-		updateDatasourceWithDS({ dispatch }, datasource) {
+		updateDatasourceWithDS({}, datasource) {
 			return new Promise(async (resolve, reject) => {
-				dispatch("updateDS", { resolve, reject, datasource });
+				updateDS(resolve, reject, datasource, BASE_API_URL);
 			});
-		},
-
-		async updateDS({}, payload) {
-			let { resolve, reject, datasource } = payload;
-			if (datasource.type === "json") {
-				let res;
-				try {
-					res = await axios({
-						method: datasource.json.method,
-						url: datasource.json.url,
-						data: JSON.parse(datasource.json.body),
-						config: JSON.parse(datasource.json.config),
-					});
-					res = res.data;
-					if (datasource.json.path != "") {
-						let spl = datasource.json.path.split("/");
-						for (let i = 0; i < spl.length; i++) {
-							res = res[spl[i]];
-						}
-					}
-					let rsNum = parseFloat(res);
-					if (isNaN(rsNum)) {
-						resolve(res);
-					}
-					resolve(rsNum);
-				} catch (error) {
-					console.log(error);
-					reject(error);
-				}
-			} else if (datasource.type === "jmx") {
-				let res;
-				try {
-					res = await axios.post(BASE_API_URL + "/get", {
-						username: datasource.jmx.username,
-						password: datasource.jmx.password,
-						jmxUrl: datasource.jmx.url,
-						objectName: datasource.jmx.objectName,
-						attribute: datasource.jmx.attribute,
-					});
-					res = res.data;
-					let rsNum = parseFloat(res);
-					if (isNaN(rsNum)) {
-						resolve(res);
-					}
-					resolve(rsNum);
-				} catch (error) {
-					reject(error);
-				}
-			} else if (datasource.type === "value") {
-				let rsNum = parseFloat(datasource.value);
-				if (isNaN(rsNum)) {
-					resolve(res);
-				}
-				resolve(rsNum);
-			} else if (datasource.type === "redis") {
-				let res;
-				try {
-					res = await axios.post(BASE_API_URL + "/redis", {
-						url: datasource.redis.url,
-						attr: datasource.redis.attribute,
-						section: datasource.redis.section,
-					});
-					res = res.data;
-					let rsNum = parseFloat(res);
-					if (isNaN(rsNum)) {
-						resolve(res);
-					}
-					resolve(rsNum);
-				} catch (error) {
-					reject(error);
-				}
-			}
 		},
 	},
 	getters: {
