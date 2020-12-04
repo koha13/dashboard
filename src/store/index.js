@@ -73,7 +73,7 @@ export default new Vuex.Store({
 			for (let i = 0; i < state.boards.length; i++) {
 				if (state.boards[i].i == b.i) {
 					let board = state.boards[i];
-					if (board.type === "Pie" || board.type === "Table") {
+					if (board.type === "Pie") {
 						let warning = b.warning;
 						let check = false;
 						for (let j = 0; j < board.data.length; j++) {
@@ -86,6 +86,21 @@ export default new Vuex.Store({
 						}
 						if (!check) {
 							board.data.push({ name: b.field, y: b.value, warning });
+						}
+					} else if (board.type === "Table") {
+						let warning = b.warning;
+						let check = false;
+						for (let j = 0; j < board.data.length; j++) {
+							if (board.data[j].name === b.field) {
+								check = true;
+								board.data[j].change = b.value - board.data[j].y;
+								board.data[j].y = b.value;
+								board.data[j].warning = warning;
+								break;
+							}
+						}
+						if (!check) {
+							board.data.push({ name: b.field, y: b.value, warning, change: b.value });
 						}
 					} else if (board.type === "Line") {
 						let check = false;

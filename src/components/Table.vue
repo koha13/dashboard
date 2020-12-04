@@ -11,7 +11,10 @@
 			<tbody>
 				<tr v-for="a in board.data" :key="a.name" :class="{ negative: a.warning }">
 					<td>{{ a.name }}</td>
-					<td>{{ a.y }}</td>
+					<td style="position: relative;">
+						{{ a.y }}
+						<ChangeStatus :v="a.change" :key="board.name + a.name" />
+					</td>
 				</tr>
 			</tbody>
 		</table>
@@ -33,7 +36,11 @@
 </template>
 
 <script>
+import ChangeStatus from "@/components/ChangeStatus";
 export default {
+	components: {
+		ChangeStatus,
+	},
 	props: {
 		board: Object,
 	},
