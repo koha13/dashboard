@@ -1,6 +1,6 @@
 <template>
 	<div
-		class="ui nine column centered grid container"
+		class="ui four column centered grid"
 		style="padding:15px; background:white; border-radius:5px; margin-top:20px"
 	>
 		<div class="row">

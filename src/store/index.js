@@ -250,6 +250,23 @@ export default new Vuex.Store({
 					resolve(res);
 				}
 				resolve(rsNum);
+			} else if (datasource.type === "redis") {
+				let res;
+				try {
+					res = await axios.post(BASE_API_URL + "/redis", {
+						url: datasource.redis.url,
+						attr: datasource.redis.attribute,
+						section: datasource.redis.section,
+					});
+					res = res.data;
+					let rsNum = parseFloat(res);
+					if (isNaN(rsNum)) {
+						resolve(res);
+					}
+					resolve(rsNum);
+				} catch (error) {
+					reject(error);
+				}
 			}
 		},
 	},

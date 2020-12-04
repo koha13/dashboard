@@ -20,7 +20,7 @@
 					<p class="header">ActiveMQ chart</p>
 				</div>
 			</div>
-			<div class="ui centered card">
+			<div class="ui centered card" @click="$router.push({ name: 'Redis' })">
 				<div class="image">
 					<img src="https://cdn.auth0.com/blog/logos/redis-icon-logo.png" />
 				</div>

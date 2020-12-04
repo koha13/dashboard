@@ -1,5 +1,5 @@
 <template>
-	<div class="ui grid container" style="margin: 20px">
+	<div class="ui grid" style="margin: 20px">
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<div class="ui message">
 				<ul class="list">
@@ -29,7 +29,7 @@
 					<input type="text" v-model="password" />
 				</div>
 				<div class="field">
-					<label>Last Name</label>
+					<label>Board type</label>
 					<select class="ui fluid dropdown" v-model="boardType">
 						<option value="Pie">Pie</option>
 						<option value="Line">Line</option>
@@ -86,7 +86,6 @@ export default {
 			password: "",
 			renderOK: true,
 			data: "",
-			val: JSON.stringify(this.data),
 			value: [],
 			selectableType: "multiple",
 			showSelectController: true,

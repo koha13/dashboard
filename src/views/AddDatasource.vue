@@ -1,5 +1,5 @@
 <template>
-	<div class="ui four column centered grid container" style="margin-top:20px">
+	<div class="ui four column centered grid" style="margin-top:20px">
 		<form
 			class="ui form"
 			@submit.prevent="submit"
@@ -11,6 +11,7 @@
 					<option value="json">JSON</option>
 					<option value="jolokia">Jolokia</option>
 					<option value="jmx">JMX</option>
+					<option value="redis">Redis</option>
 					<option value="value">Fixed Value</option>
 				</select>
 			</div>
@@ -40,6 +41,18 @@
 			<div class="field" v-if="data.type == 'json' || data.type == 'jolokia'">
 				<label>path</label>
 				<input type="text" placeholder="path" v-model="data.json.path" />
+			</div>
+			<div class="field" v-if="data.type == 'redis'">
+				<label>URL</label>
+				<input type="text" placeholder="url" v-model="data.redis.url" />
+			</div>
+			<div class="field" v-if="data.type == 'redis'">
+				<label>Section</label>
+				<input type="text" placeholder="Section" v-model="data.redis.section" />
+			</div>
+			<div class="field" v-if="data.type == 'redis'">
+				<label>Attribute</label>
+				<input type="text" placeholder="Attribute" v-model="data.redis.attribute" />
 			</div>
 			<div class="field" v-if="data.type == 'jmx'">
 				<label>JMX url</label>
@@ -109,6 +122,11 @@ export default {
 					method: "GET",
 					config: "{}",
 					body: "{}",
+				},
+				redis: {
+					url: "",
+					section: "",
+					attribute: "",
 				},
 				value: 0,
 			},
