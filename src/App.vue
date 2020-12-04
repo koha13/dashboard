@@ -1,5 +1,5 @@
 <template>
-	<div id="app" style="margin-top:20px">
+	<div id="app">
 		<Sidebar />
 		<notifications group="noti" position="bottom left" />
 		<keep-alive exclude="chart,datasource">

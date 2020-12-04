@@ -76,46 +76,6 @@
 				</grid-item>
 			</grid-layout>
 		</div>
-		<div id="exportModal" class="ui modal">
-			<i class="close icon"></i>
-			<div class="header">Export data</div>
-			<div class="content expData">
-				<textarea
-					rows="5"
-					type="text"
-					id="expData"
-					:value="dataExport"
-					style="width:80%; margin-left:10%;max-height:300px"
-				/>
-			</div>
-			<div class="actions">
-				<div class="ui black deny button">
-					Close
-				</div>
-				<div class="ui positive button" @click="copyData">
-					Copy
-				</div>
-			</div>
-		</div>
-		<div id="importModal" class="ui modal">
-			<i class="close icon"></i>
-			<div class="header">Import data</div>
-			<textarea
-				name="Text1"
-				cols="40"
-				rows="5"
-				style="width:80%;margin-left:10%"
-				v-model="impData"
-			></textarea>
-			<div class="actions">
-				<div class="ui black deny button">
-					Close
-				</div>
-				<div class="ui positive button" @click="importData">
-					Import
-				</div>
-			</div>
-		</div>
 	</div>
 </template>
 // drag-allow-from=".vue-draggable-handle" drag-ignore-from=".no-drag"
@@ -144,9 +104,6 @@ export default {
 	data() {
 		return {
 			layout: [],
-			showDS: false,
-			dataExport: "",
-			impData: "",
 			rowHeight: 30,
 		};
 	},
@@ -195,49 +152,14 @@ export default {
 				this.layout = JSON.parse(JSON.stringify(this.layoutFromStore));
 			}
 		},
-		updateDS(name) {
-			this.$router.push({ name: "Datasource", query: { name } });
-		},
-		showExportModal() {
-			$("#exportModal").modal("show");
-			this.dataExport = JSON.stringify(this.$store.getters.getExportData);
-			Object.freeze(this.dataExport);
-		},
-		showImportModal() {
-			$("#importModal").modal("show");
-		},
-		copyData() {
-			let data = document.querySelector("#expData");
-			data.setAttribute("type", "text");
-			data.select();
-			try {
-				var successful = document.execCommand("copy");
-				this.$notify({
-					group: "noti",
-					title: "COPIED DATA TO CLIPBOARD",
-				});
-			} catch (err) {}
-		},
-		importData() {
-			this.$store.commit("importData", this.impData);
-			this.$notify({
-				group: "noti",
-				title: "IMPORT DATA: OK",
-				text: `Reloading`,
-			});
-			setTimeout(() => {
-				document.location.reload(true);
-			}, 1000);
-		},
-		breakpointChangedEvent: function(newBreakpoint, newLayout) {
-			console.log("BREAKPOINT CHANGED breakpoint=", newBreakpoint, ", layout: ", newLayout);
-		},
 	},
 };
 </script>
 <style scoped>
 .gridItem {
-	border: solid 1px black;
+	background: white;
+	border-radius: 10px;
+	box-shadow: 3px 3px 10px;
 }
 </style>
 <style>
