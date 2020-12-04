@@ -121,7 +121,6 @@ export default new Vuex.Store({
 		},
 		importData(state, payload) {
 			let data = JSON.parse(payload);
-			console.log(data.boards);
 			state.boards = data.boards;
 			state.datasources = data.datasources;
 		},
@@ -164,7 +163,7 @@ export default new Vuex.Store({
 						}
 					} catch (error) {
 						console.log(error);
-						log = log.concat(`Can't update ${fields[i].name} \r\n`);
+						log = log.concat(`Can't update ${fields[i].name}. \r\n`);
 					}
 				}
 				resolve(log);
