@@ -1,6 +1,6 @@
 <template>
-	<div class="ui grid container" style="margin: 0 100px">
-		<div class="eight wide column">
+	<div class="ui grid container" style="margin: 20px">
+		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<div class="ui message">
 				<ul class="list">
 					<li>Enter jmx url then click show</li>
@@ -45,7 +45,7 @@
 			</form>
 		</div>
 
-		<div class="eight wide column">
+		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<vue-json-pretty
 				v-if="renderOK"
 				v-model="value"
@@ -72,7 +72,7 @@ import "vue-json-pretty/lib/styles.css";
 import axios from "axios";
 
 export default {
-	name: "App",
+	name: "ActiveMQ",
 	components: {
 		VueJsonPretty,
 	},

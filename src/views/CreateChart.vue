@@ -1,5 +1,8 @@
 <template>
-	<div class="ui nine column centered grid container" style="padding: 10px">
+	<div
+		class="ui nine column centered grid container"
+		style="padding:15px; background:white; border-radius:5px; margin-top:20px"
+	>
 		<div class="row">
 			<form @submit.prevent="submit" class="ui form">
 				<div :class="{ field: true, required: true }">

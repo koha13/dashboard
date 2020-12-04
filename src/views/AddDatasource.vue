@@ -1,6 +1,10 @@
 <template>
 	<div class="ui four column centered grid container" style="margin-top:20px">
-		<form class="ui form" @submit.prevent="submit" style="width:400px">
+		<form
+			class="ui form"
+			@submit.prevent="submit"
+			style="width:400px; padding:15px; background:white; border-radius:5px"
+		>
 			<div class="field">
 				<label>Type</label>
 				<select class="ui fluid dropdown" v-model="data.type">
