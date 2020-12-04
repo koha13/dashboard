@@ -8,7 +8,7 @@
 			<i class="block layout icon"></i>
 			Datasource
 		</router-link>
-		<a class="item" @click="showModalCreate">
+		<a class="item" @click="$router.push({ name: 'Create' })">
 			<i class="plus icon"></i>
 			Create
 		</a>
@@ -20,37 +20,6 @@
 			<i class="cloud upload icon"></i>
 			Export
 		</a>
-		<div class="ui basic modal" id="modal-create">
-			<div class="ui icon header">
-				<i class="plus square icon"></i>
-				Create
-				<br />
-				<br />
-				<div class="actions">
-					<div
-						class="ui green ok inverted button"
-						style="width:200px"
-						@click="$router.push({ name: 'Chart' })"
-					>
-						New board
-					</div>
-					<div
-						class="ui green ok inverted button"
-						style="width:200px"
-						@click="$router.push({ name: 'ActiveMQ' })"
-					>
-						New ActiveMQ monitor
-					</div>
-					<div
-						class="ui green ok inverted button"
-						style="width:200px"
-						@click="$router.push({ name: 'Datasource' })"
-					>
-						New datasource
-					</div>
-				</div>
-			</div>
-		</div>
 		<div id="exportModal" class="ui modal">
 			<i class="close icon"></i>
 			<div class="header">Export data</div>
@@ -103,9 +72,6 @@ export default {
 		};
 	},
 	methods: {
-		showModalCreate() {
-			$("#modal-create").modal("show");
-		},
 		showExportModal() {
 			$("#exportModal").modal("show");
 			this.dataExport = JSON.stringify(this.$store.getters.getExportData);

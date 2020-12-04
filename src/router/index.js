@@ -5,6 +5,7 @@ import CreateChart from "../views/CreateChart.vue";
 import AddDatasource from "../views/AddDatasource.vue";
 import ActiveMQ from "../views/ActiveMQ.vue";
 import Datasources from "../views/Datasources.vue";
+import Create from "../views/Create.vue";
 import Test from "../views/Test.vue";
 
 Vue.use(VueRouter);
@@ -34,6 +35,11 @@ const routes = [
 		path: "/ds",
 		name: "Datasources",
 		component: Datasources,
+	},
+	{
+		path: "/create",
+		name: "Create",
+		component: Create,
 	},
 	{
 		path: "/test",
