@@ -30,7 +30,7 @@
 			</div>
 		</div>
 		<div class="ui divider"></div>
-		<h2 class="ui header">Create chart</h2>
+		<h2 class="ui header">Create DS</h2>
 		<div class="ui six doubling cards">
 			<div class="ui centered card" @click="$router.push({ name: 'Datasource' })">
 				<div class="image">
