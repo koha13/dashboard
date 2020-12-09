@@ -93,7 +93,12 @@ export default new Vuex.Store({
 						for (let j = 0; j < board.data.length; j++) {
 							if (board.data[j].name === b.field) {
 								check = true;
-								board.data[j].change = b.value - board.data[j].y;
+								if (!isNaN(parseFloat(b.value))) {
+									board.data[j].change = b.value - board.data[j].y;
+								} else {
+									if (b.value === board.data[j].y) board.data[j].change = "";
+									else board.data[j].change = board.data[j].y;
+								}
 								board.data[j].y = b.value;
 								board.data[j].warning = warning;
 								break;

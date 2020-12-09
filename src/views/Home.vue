@@ -1,52 +1,5 @@
 <template>
 	<div>
-		<!-- <div class="ui centered grid">
-			<div class="row">
-				<button class="ui tiny button primary" @click="$router.push({ name: 'Chart' })">
-					New board
-				</button>
-				<button class="ui tiny button primary" @click="$router.push({ name: 'ActiveMQ' })">
-					ActiveMQ
-				</button>
-				<button class="ui tiny button" @click="showDS = !showDS">
-					{{ showDS ? "Hide Datasource" : "Show Datasrouce" }}
-				</button>
-				<button class="ui tiny button" @click="$router.push({ name: 'Datasource' })">
-					Add Datasource
-				</button>
-				<div class="ui buttons">
-					<button class="ui orange button" @click="showExportModal">Export</button>
-					<div class="or"></div>
-					<button class="ui green button" @click="showImportModal">Import</button>
-				</div>
-			</div>
-			<div class="nine wide column" v-show="showDS">
-				<table class="ui fixed single line celled small table">
-					<thead>
-						<tr>
-							<th class="twelve wide">Datasource Name</th>
-							<th class="four wide">option</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr v-for="f in datasources" :key="f.name">
-							<td data-label="Field name">{{ f.datasourceName }}</td>
-							<td class="collapsing">
-								<button
-									class="ui mini button negative"
-									@click.prevent="$store.commit('deleteDatasource', f.datasourceName)"
-								>
-									Delete
-								</button>
-								<button class="ui mini button primary" @click.prevent="updateDS(f.datasourceName)">
-									Option
-								</button>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-		</div> -->
 		<div class="row" style="margin-top:30px;width:100%;">
 			<grid-layout
 				@layout-updated="layoutUpdatedEvent"
@@ -158,7 +111,7 @@ export default {
 <style scoped>
 .gridItem {
 	background: white;
-	border-radius: 10px;
+	border-radius: 3px;
 	box-shadow: 3px 3px 10px;
 }
 </style>
@@ -224,5 +177,9 @@ export default {
 	top: 0;
 	right: 40px;
 	cursor: pointer;
+}
+.row .vue-grid-item.vue-grid-placeholder {
+	background: green;
+	border-radius: 3px;
 }
 </style>

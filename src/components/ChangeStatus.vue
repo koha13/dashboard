@@ -1,5 +1,8 @@
 <template>
-	<div style="position: absolute;top:0;right:0; width:50px;height:10px;font-size:10px;" v-if="show">
+	<div
+		style="position: absolute;top:0;right:0; width:100%;height:10px;font-size:10px;padding:0 3px"
+		v-if="show"
+	>
 		<p style="float:right;color:black"><i :class="icon"></i>{{ data }}</p>
 	</div>
 </template>
@@ -18,21 +21,26 @@ export default {
 	},
 	watch: {
 		v: function(newVal, oldVal) {
-			if (oldVal != newVal) {
-				if (typeof this.v === "number") {
-					this.show = true;
-					if (this.v > 0) {
-						this.icon = "arrow up icon";
-						this.data = this.v;
-					} else if (this.v == 0) {
-						this.icon = "minus icon";
-						this.data = 0;
-					} else {
-						this.data = -this.v;
-						this.icon = "arrow down icon";
-					}
+			if (typeof this.v === "number") {
+				console.log(this.v);
+				this.show = true;
+				if (this.v > 0) {
+					this.icon = "arrow up icon";
+					this.data = this.v;
+				} else if (this.v == 0) {
+					this.icon = "minus icon";
+					this.data = 0;
 				} else {
-					this.show = false;
+					this.data = -this.v;
+					this.icon = "arrow down icon";
+				}
+			} else {
+				this.show = true;
+				this.data = this.v;
+				if (this.data === "") {
+					this.icon = "minus icon";
+				} else {
+					this.icon = "sync icon";
 				}
 			}
 		},
