@@ -18,16 +18,19 @@
 				</tr>
 			</tbody>
 		</table>
-		<div class="vue-draggable-handle">
-			<i class="arrows alternate icon"></i>
+		<div>
+			<div class="vue-draggable-handle">
+				<i class="arrows alternate icon"></i>
+			</div>
+			<div class="close-handle" @click="deleteChart">
+				<i class="window close outline icon"></i>
+			</div>
+			<div class="config-handle" @click="$router.push({ name: 'Chart', query: { id: board.i } })">
+				<i class="pencil alternate icon"></i>
+			</div>
 		</div>
-		<div class="close-handle" @click="deleteChart">
-			<i class="window close outline icon"></i>
-		</div>
-		<div class="config-handle" @click="$router.push({ name: 'Chart', query: { id: board.i } })">
-			<i class="pencil alternate icon"></i>
-		</div>
-		<div class="ui message" v-if="log !== ''">
+
+		<div class="ui message" v-if="log !== ''" style="font-size:12px">
 			<p>
 				{{ log }}
 			</p>
@@ -43,6 +46,9 @@ export default {
 	},
 	props: {
 		board: Object,
+	},
+	destroyed() {
+		clearInterval(this.interval);
 	},
 	mounted() {
 		this.$store.dispatch("updateBoard", this.board.i).then((res) => {

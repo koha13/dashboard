@@ -127,7 +127,7 @@ export default {
 				let attribute = spl[2];
 				this.$store.commit("addDatasource", {
 					type: "redis",
-					datasourceName: this.url + attribute,
+					datasourceName: this.url + "-" + attribute,
 					redis: {
 						url: this.url,
 						section,
@@ -137,7 +137,7 @@ export default {
 				});
 				board.fields.push({
 					name: attribute,
-					datasourceName: this.url + attribute,
+					datasourceName: this.url + "-" + attribute,
 					warning: "",
 				});
 			}

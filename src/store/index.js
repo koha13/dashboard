@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import axios from "axios";
 import VuexPersist from "vuex-persist";
 import { checkWarning, updateDS } from "./cal";
+import { combineAndGetData } from "./fetchData";
 
 const vuexLocalStorage = new VuexPersist({
 	key: "vuex",
@@ -145,48 +146,65 @@ export default new Vuex.Store({
 				let b = getters.getBoard(value);
 				let log = "";
 				let fields = b.fields;
+				let dsList = [];
 				for (let i = 0; i < fields.length; i++) {
 					try {
 						let spl = fields[i].datasourceName.split(/\s*\(M\)\s*/);
 						if (spl.length == 1) {
-							let data = await dispatch("updateDatasource", fields[i].datasourceName);
-							let warning = checkWarning({ value: data, warningString: fields[i].warning });
-							commit("updateBoard", { i: b.i, field: fields[i].name, value: data, warning });
+							dsList.push(getters.getDatasource(spl[0]));
 						} else {
-							let calArr = [];
 							for (let j = 0; j < spl.length; j++) {
 								if (j % 2 === 0) {
-									if (!isNaN(parseFloat(spl[j]))) {
-										calArr.push(spl[j].toString());
-									} else {
-										let d = await dispatch("updateDatasource", spl[j]);
-										calArr.push(d.toString());
+									if (isNaN(parseFloat(spl[j]))) {
+										dsList.push(getters.getDatasource(spl[j]));
 									}
-								} else {
-									calArr.push(spl[j]);
 								}
 							}
-							let value = eval(calArr.join(""));
-							let warning = checkWarning({ value, warningString: fields[i].warning });
-							commit("updateBoard", {
-								i: b.i,
-								field: fields[i].name,
-								value,
-								warning,
-							});
 						}
-					} catch (error) {
-						log = log.concat(`Can't update ${fields[i].name}. \r\n`);
+					} catch (error) {}
+				}
+				let dataDS = await combineAndGetData(dsList);
+				for (let f of fields) {
+					let spl = f.datasourceName.split(/\s*\(M\)\s*/);
+					let value = 0;
+					if (spl.length == 1) {
+						if (dataDS[f.datasourceName] === "koha13FAILED") {
+							log += `Can't update ${f.datasourceName}.\r\n`;
+						} else {
+							value = dataDS[f.datasourceName];
+						}
+					} else {
+						let calArr = [];
+						for (let j = 0; j < spl.length; j++) {
+							if (j % 2 === 0) {
+								if (!isNaN(parseFloat(spl[j]))) {
+									calArr.push(spl[j].toString());
+								} else {
+									if (dataDS[spl[j]] === "koha13FAILED") {
+										log += `Can't update ${f.datasourceName}. `;
+										break;
+									}
+									let d = dataDS[spl[j]];
+									calArr.push(d.toString());
+								}
+							} else {
+								calArr.push(spl[j]);
+							}
+						}
+						value = eval(calArr.join(""));
 					}
+					let warning = checkWarning({
+						value,
+						warningString: f.warning,
+					});
+					commit("updateBoard", {
+						i: b.i,
+						field: f.name,
+						value,
+						warning,
+					});
 				}
 				resolve(log);
-			});
-		},
-
-		updateDatasource({ getters }, datasourceName) {
-			let datasource = getters.getDatasource(datasourceName);
-			return new Promise(async (resolve, reject) => {
-				updateDS(resolve, reject, datasource, BASE_API_URL);
 			});
 		},
 
