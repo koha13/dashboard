@@ -174,7 +174,7 @@ export default new Vuex.Store({
 					let value = 0;
 					if (spl.length == 1) {
 						if (dataDS[f.datasourceName] === "koha13FAILED") {
-							log += `Can't update ${f.datasourceName}.\r\n`;
+							log += `Can't update ${f.name}.\r\n`;
 						} else {
 							value = dataDS[f.datasourceName];
 						}
@@ -186,7 +186,7 @@ export default new Vuex.Store({
 									calArr.push(spl[j].toString());
 								} else {
 									if (dataDS[spl[j]] === "koha13FAILED") {
-										log += `Can't update ${f.datasourceName}. `;
+										log += `Can't update ${f.name}. `;
 										break;
 									}
 									let d = dataDS[spl[j]];
