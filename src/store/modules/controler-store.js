@@ -30,6 +30,36 @@ const actions = {
 				});
 		});
 	},
+	fetchConnectorData({ getters }, payload) {
+		let jmx = getters.getController(payload.url);
+		return new Promise((resolve, reject) => {
+			axios
+				.post("http://localhost:8082/newjmx", {
+					url: jmx.url,
+					username: jmx.username,
+					password: jmx.password,
+					bunch: [
+						{
+							objectName: payload.objectName,
+							attributes: [
+								"Active",
+								"ClientId",
+								"ConsumedCount",
+								"DequeueCounter",
+								"DestinationName",
+								"DiscardedCount",
+								"DispatchedCounter",
+								"EnqueueCounter",
+								"MessageCountAwaitingAcknowledge",
+							],
+						},
+					],
+				})
+				.then((res) => {
+					resolve(res.data);
+				});
+		});
+	},
 	invoke({}, payload) {
 		return new Promise((resolve, reject) => {
 			switch (payload.method) {

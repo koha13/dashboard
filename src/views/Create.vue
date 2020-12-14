@@ -1,5 +1,5 @@
 <template>
-	<div style="margin-top:20px">
+	<div style="padding-top:20px">
 		<h2 class="ui header">Create chart</h2>
 		<div class="ui ten doubling cards">
 			<div class="ui centered card" @click="$router.push({ name: 'Chart' })">

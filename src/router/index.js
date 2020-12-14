@@ -10,6 +10,7 @@ import Create from "../views/Create.vue";
 import CreateAMQController from "../views/CreateAMQController.vue";
 import Controllers from "../views/Controllers.vue";
 import AMQControlerDetail from "../views/AMQControlerDetail.vue";
+import ConnectorDetail from "../views/ConnectorDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -63,6 +64,11 @@ const routes = [
 		path: "/amq",
 		name: "AMQControlerDetail",
 		component: AMQControlerDetail,
+	},
+	{
+		path: "/connector-detail",
+		name: "ConnectorDetail",
+		component: ConnectorDetail,
 	},
 ];
 

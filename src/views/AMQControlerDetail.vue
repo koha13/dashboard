@@ -1,5 +1,5 @@
 <template>
-	<div class="ui grid" style="margin: 20px">
+	<div class="ui grid" style="padding: 20px">
 		<div class="ui row">
 			<div class="ui message">
 				<div class="header">
@@ -46,7 +46,21 @@
 					<td>{{ con.slow }}</td>
 					<td>{{ con.destinations }}</td>
 					<td class="collapsing">
-						<button class="ui mini primary button">Detail</button>
+						<button
+							class="ui mini primary button"
+							v-if="con.destinations.length > 0"
+							@click="
+								$router.push({
+									name: 'ConnectorDetail',
+									query: {
+										objectName: con.consumer,
+										url,
+									},
+								})
+							"
+						>
+							Detail
+						</button>
 						<button class="ui mini negative button">Stop</button>
 					</td>
 				</tr>
@@ -83,7 +97,6 @@ export default {
 	activated() {
 		if (this.url != this.$route.query.url) {
 			this.connectors = [];
-			console.log(this.$store.getters.getController(this.$route.query.url));
 			let { url, username, password } = this.$store.getters.getController(this.$route.query.url);
 			this.url = url;
 			this.username = username;
