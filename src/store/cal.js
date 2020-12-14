@@ -16,7 +16,7 @@ const checkWarning = function(payload) {
 				case "<":
 					v = warningString.substring(1);
 					rsNum = parseFloat(v);
-					if (isNaN(rsNum)) {
+					if (!isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value < v) {
@@ -26,7 +26,7 @@ const checkWarning = function(payload) {
 				case ">":
 					v = warningString.substring(1);
 					rsNum = parseFloat(v);
-					if (isNaN(rsNum)) {
+					if (!isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value > v) {
@@ -36,7 +36,7 @@ const checkWarning = function(payload) {
 				case "<=":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (isNaN(rsNum)) {
+					if (!isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value <= v) {
@@ -46,7 +46,7 @@ const checkWarning = function(payload) {
 				case ">=":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (isNaN(rsNum)) {
+					if (!isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value >= v) {
@@ -56,7 +56,7 @@ const checkWarning = function(payload) {
 				case "==":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (isNaN(rsNum)) {
+					if (!isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value == v) {
@@ -66,7 +66,7 @@ const checkWarning = function(payload) {
 				case "!=":
 					v = warningString.substring(2);
 					rsNum = parseFloat(v);
-					if (isNaN(rsNum)) {
+					if (!isNaN(rsNum)) {
 						v = rsNum;
 					}
 					if (value != v) {
