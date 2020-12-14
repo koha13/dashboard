@@ -30,6 +30,59 @@ const actions = {
 				});
 		});
 	},
+	invoke({}, payload) {
+		return new Promise((resolve, reject) => {
+			switch (payload.method) {
+				case "restart":
+					axios
+						.post("http://localhost:8082/activemq/restartAMQ", {
+							url: payload.url,
+							username: payload.username,
+							password: payload.password,
+							objectName: payload.objectName,
+							safekey: payload.safekey,
+						})
+						.then(() => {
+							resolve();
+						})
+						.catch((err) => {
+							reject(err);
+						});
+					break;
+				case "gc":
+					axios
+						.post("http://localhost:8082/activemq/gcAMQ", {
+							url: payload.url,
+							username: payload.username,
+							password: payload.password,
+							objectName: payload.objectName,
+							safekey: payload.safekey,
+						})
+						.then(() => {
+							resolve();
+						})
+						.catch((err) => {
+							reject(err);
+						});
+					break;
+				case "stop":
+					axios
+						.post("http://localhost:8082/activemq/stopConnector", {
+							url: payload.url,
+							username: payload.username,
+							password: payload.password,
+							objectName: payload.objectName,
+							safekey: payload.safekey,
+						})
+						.then(() => {
+							resolve();
+						})
+						.catch((err) => {
+							reject(err);
+						});
+			}
+		});
+	},
 };
 
 const getters = {

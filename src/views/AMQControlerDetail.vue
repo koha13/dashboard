@@ -11,11 +11,11 @@
 			</div>
 		</div>
 		<div class="ui row">
-			<button class="ui secondary button">
+			<button class="ui secondary button" @click="restartController">
 				<i class="sync alternate icon"></i>
 				Restart
 			</button>
-			<button class="ui negative button">
+			<button class="ui negative button" @click="gcController">
 				<i class="trash alternate icon"></i>
 				GC
 			</button>
@@ -52,6 +52,28 @@
 				</tr>
 			</tbody>
 		</table>
+		<div id="confirm-modal" class="ui mini modal">
+			<i class="close icon"></i>
+			<div class="header">
+				Confirm Safe Key
+			</div>
+			<div class="content">
+				<div class="ui form">
+					<div class="field">
+						<label>Safe key</label>
+						<input type="password" v-model="safekey" placeholder="****" />
+					</div>
+				</div>
+			</div>
+			<div class="actions" @click="safekey = ''">
+				<div class="ui deny button">
+					Cancel
+				</div>
+				<div class="ui positive button" @click="invoke">
+					Confirm
+				</div>
+			</div>
+		</div>
 	</div>
 </template>
 
@@ -61,14 +83,62 @@ export default {
 	name: "Test",
 	created() {
 		let { url, username, password } = this.$route.params;
-		this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
-			this.connectors = res;
-		});
+		this.url = url;
+		this.username = username;
+		this.password = password;
+		if (Object.entries(this.$route.params).length != 0) {
+			this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
+				this.connectors = res;
+			});
+		}
 	},
 	data() {
 		return {
 			connectors: [],
+			safekey: "",
+			method: "",
+			objectName: "",
+			url: "",
+			username: "",
+			password: "",
 		};
+	},
+	methods: {
+		restartController() {
+			this.method = "restart";
+			this.objectName = "org.apache.activemq:type=Broker,brokerName=localhost";
+			$("#confirm-modal").modal("show");
+		},
+		gcController() {
+			this.method = "gc";
+			this.objectName = "org.apache.activemq:type=Broker,brokerName=localhost";
+			$("#confirm-modal").modal("show");
+		},
+		async invoke() {
+			try {
+				let data = await this.$store.dispatch("invoke", {
+					safekey: this.safekey,
+					method: this.method,
+					objectName: this.objectName,
+					url: this.url,
+					username: this.username,
+					password: this.password,
+				});
+				this.$notify({
+					group: "noti",
+					title: "Done",
+				});
+				this.safekey = "";
+			} catch (error) {
+				this.$notify({
+					group: "noti",
+					title: "Failed",
+					type: "error",
+				});
+			} finally {
+				this.safekey = "";
+			}
+		},
 	},
 };
 </script>
