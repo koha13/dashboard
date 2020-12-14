@@ -80,18 +80,21 @@
 <script>
 import axios from "axios";
 export default {
-	name: "Test",
-	created() {
-		let { url, username, password } = this.$route.params;
-		this.url = url;
-		this.username = username;
-		this.password = password;
-		if (Object.entries(this.$route.params).length != 0) {
-			this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
-				this.connectors = res;
-			});
+	activated() {
+		if (this.url != this.$route.params) {
+			this, (this.connectors = []);
+			let { url, username, password } = this.$route.params;
+			this.url = url;
+			this.username = username;
+			this.password = password;
+			if (Object.entries(this.$route.params).length != 0) {
+				this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
+					this.connectors = res;
+				});
+			}
 		}
 	},
+	created() {},
 	data() {
 		return {
 			connectors: [],
