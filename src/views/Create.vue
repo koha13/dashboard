@@ -1,7 +1,7 @@
 <template>
 	<div style="margin-top:20px">
 		<h2 class="ui header">Create chart</h2>
-		<div class="ui six doubling cards">
+		<div class="ui ten doubling cards">
 			<div class="ui centered card" @click="$router.push({ name: 'Chart' })">
 				<div class="image">
 					<img
@@ -30,9 +30,9 @@
 			</div>
 		</div>
 		<div class="ui divider"></div>
-		<h2 class="ui header">Create DS</h2>
-		<div class="ui six doubling cards">
-			<div class="ui centered card" @click="$router.push({ name: 'Datasource' })">
+		<h2 class="ui header">Create Other</h2>
+		<div class="ui ten doubling cards">
+			<router-link class="ui centered card" tag="div" :to="{ name: 'Datasource' }">
 				<div class="image">
 					<img
 						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNLXjkMMHXBgG71TqX__8AnIYSjeL2v5ktnwMTRpEaMHFzZPfTk4sTQAtRLHnP0YRAHWXFlEWGA9kBOKcJC_E2bJFyPN1JtppiiQ&amp;usqp=CAU&amp;ec=45732301"
@@ -41,7 +41,17 @@
 				<div class="content">
 					<p class="header">Create datasource</p>
 				</div>
-			</div>
+			</router-link>
+			<router-link class="ui centered card" tag="div" :to="{ name: 'CreateAMQController' }">
+				<div class="image">
+					<img
+						src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/wrench.png"
+					/>
+				</div>
+				<div class="content">
+					<p class="header">ActiveMQ controller</p>
+				</div>
+			</router-link>
 		</div>
 	</div>
 </template>

@@ -7,7 +7,9 @@ import ActiveMQ from "../views/ActiveMQ.vue";
 import Redis from "../views/Redis.vue";
 import Datasources from "../views/Datasources.vue";
 import Create from "../views/Create.vue";
-import Test from "../views/Test.vue";
+import CreateAMQController from "../views/CreateAMQController.vue";
+import Controllers from "../views/Controllers.vue";
+import AMQControlerDetail from "../views/AMQControlerDetail.vue";
 
 Vue.use(VueRouter);
 
@@ -48,9 +50,19 @@ const routes = [
 		component: Create,
 	},
 	{
-		path: "/test",
-		name: "Test",
-		component: Test,
+		path: "/create-amq-controller",
+		name: "CreateAMQController",
+		component: CreateAMQController,
+	},
+	{
+		path: "/controllers",
+		name: "Controllers",
+		component: Controllers,
+	},
+	{
+		path: "/amq",
+		name: "AMQControlerDetail",
+		component: AMQControlerDetail,
 	},
 ];
 

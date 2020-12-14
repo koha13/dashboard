@@ -1,0 +1,41 @@
+<template>
+	<div class="ui grid" style="margin: 20px">
+		<table class="ui selectable celled small table" style="padding:0">
+			<thead>
+				<tr>
+					<th colspan="7">
+						All connectors
+					</th>
+				</tr>
+				<tr>
+					<th>Name</th>
+					<th>ActiveMQ Url</th>
+					<th>Option</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr v-for="con in $store.getters.allControllers" :key="con.amqurl">
+					<td>{{ con.name }}</td>
+					<td>{{ con.amqurl }}</td>
+					<td>
+						<router-link
+							:to="{
+								name: 'AMQControlerDetail',
+								params: { url: con.amqurl, username: con.username, password: con.password },
+							}"
+							tag="button"
+							class="ui mini primary button"
+							>Control</router-link
+						>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</template>
+
+<script>
+export default {};
+</script>
+
+<style></style>

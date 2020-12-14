@@ -2,7 +2,7 @@
 	<div id="app">
 		<Sidebar />
 		<notifications group="noti" position="bottom left" />
-		<keep-alive exclude="chart,datasource,ActiveMQ,Redis">
+		<keep-alive exclude="chart,datasource,ActiveMQ,Redis,Test">
 			<router-view :key="$route.fullPath" style="margin-left:100px" />
 		</keep-alive>
 	</div>

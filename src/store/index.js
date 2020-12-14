@@ -1,9 +1,9 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from "axios";
 import VuexPersist from "vuex-persist";
 import { checkWarning, updateDS } from "./cal";
 import { combineAndGetData } from "./fetchData";
+import controllerStore from "./modules/controler-store";
 
 const vuexLocalStorage = new VuexPersist({
 	key: "vuex",
@@ -255,6 +255,6 @@ export default new Vuex.Store({
 			return data;
 		},
 	},
-	modules: {},
+	modules: { controllerStore },
 	plugins: [vuexLocalStorage.plugin],
 });
