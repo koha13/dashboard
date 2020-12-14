@@ -6,7 +6,7 @@
 					ActiveMQ
 				</div>
 				<p>
-					{{ this.$route.params.url }}
+					{{ this.url }}
 				</p>
 			</div>
 		</div>
@@ -46,7 +46,7 @@
 					<td>{{ con.slow }}</td>
 					<td>{{ con.destinations }}</td>
 					<td class="collapsing">
-						<button class="ui mini button">Reset stat</button>
+						<button class="ui mini primary button">Detail</button>
 						<button class="ui mini negative button">Stop</button>
 					</td>
 				</tr>
@@ -81,13 +81,14 @@
 import axios from "axios";
 export default {
 	activated() {
-		if (this.url != this.$route.params) {
-			this, (this.connectors = []);
-			let { url, username, password } = this.$route.params;
+		if (this.url != this.$route.query.url) {
+			this.connectors = [];
+			console.log(this.$store.getters.getController(this.$route.query.url));
+			let { url, username, password } = this.$store.getters.getController(this.$route.query.url);
 			this.url = url;
 			this.username = username;
 			this.password = password;
-			if (Object.entries(this.$route.params).length != 0) {
+			if (url && url != "" && url !== "undefined") {
 				this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
 					this.connectors = res;
 				});

@@ -21,7 +21,7 @@
 						<router-link
 							:to="{
 								name: 'AMQControlerDetail',
-								params: { url: con.url, username: con.username, password: con.password },
+								query: { url: con.url },
 							}"
 							tag="button"
 							class="ui mini primary button"

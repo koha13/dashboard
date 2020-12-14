@@ -87,6 +87,13 @@ const actions = {
 
 const getters = {
 	allControllers: (state) => state.controllers,
+	getController: (state) => (url) => {
+		for (let c of state.controllers) {
+			if (c.url === url) {
+				return c;
+			}
+		}
+	},
 };
 
 export default {
