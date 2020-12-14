@@ -8,6 +8,10 @@
 			<i class="block layout icon"></i>
 			Datasource
 		</router-link>
+		<router-link class="item" :to="{ name: 'Controllers' }">
+			<i class="wrench icon"></i>
+			Controllers
+		</router-link>
 		<a class="item" @click="$router.push({ name: 'Create' })">
 			<i class="plus icon"></i>
 			Create
