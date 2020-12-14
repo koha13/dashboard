@@ -10,7 +10,7 @@
 			</div>
 			<div class="field required">
 				<label>AMQ Url</label>
-				<input type="text" v-model="amqurl" placeholder="AMQ Url" />
+				<input type="text" v-model="url" placeholder="AMQ Url" />
 				<div class="ui pointing label">
 					{host}:{port} default port is 1099
 				</div>
@@ -33,7 +33,7 @@ export default {
 	data() {
 		return {
 			name: "",
-			amqurl: "",
+			url: "",
 			username: "",
 			password: "",
 		};
@@ -42,10 +42,11 @@ export default {
 		submit() {
 			this.$store.commit("addController", {
 				name: this.name,
-				amqurl: `service:jmx:rmi:///jndi/rmi://${this.amqurl}/jmxrmi`,
+				url: `service:jmx:rmi:///jndi/rmi://${this.url}/jmxrmi`,
 				username: this.username,
 				password: this.password,
 			});
+			this.$router.push({ name: "Controllers" });
 		},
 	},
 };

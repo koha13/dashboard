@@ -1,12 +1,15 @@
 import axios from "axios";
 
 const state = () => ({
-	controllers: ["asd"],
+	controllers: [],
 });
 
 const mutations = {
 	addController(state, value) {
 		state.controllers.push(value);
+	},
+	deleteController(state, value) {
+		state.controllers = state.controllers.filter((b) => b.url !== value);
 	},
 };
 
