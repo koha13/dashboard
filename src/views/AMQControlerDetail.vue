@@ -20,7 +20,7 @@
 				GC
 			</button>
 		</div>
-		<table class="ui selectable celled small table" style="padding:0">
+		<table class="ui selectable celled small table" style="padding:0;box-shadow: 3px 3px 10px;">
 			<thead>
 				<tr>
 					<th colspan="7">

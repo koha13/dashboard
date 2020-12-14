@@ -22,7 +22,10 @@
 				<div :class="{ ui: true, active: dimmer, inverted: true, dimmer: true }">
 					<div class="ui indeterminate text loader">Refresh data</div>
 				</div>
-				<table class="ui selectable celled small table" style="padding:0;margin:0">
+				<table
+					class="ui selectable celled small table"
+					style="padding:0;margin:0;box-shadow: 3px 3px 10px;"
+				>
 					<thead>
 						<tr>
 							<th>Attribute</th>

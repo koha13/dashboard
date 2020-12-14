@@ -3,7 +3,7 @@
 		<Sidebar />
 		<notifications group="noti" position="bottom left" />
 		<keep-alive exclude="chart,datasource,ActiveMQ,Redis">
-			<router-view :key="$route.fullPath" style="margin-left:100px" />
+			<router-view :key="$route.fullPath" style="margin-left:90px; margin-right:5px" />
 		</keep-alive>
 	</div>
 </template>

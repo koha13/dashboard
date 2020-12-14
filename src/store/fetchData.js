@@ -28,7 +28,7 @@ async function combineAndGetData(dsList) {
 						}
 					}
 					if (!checkB) {
-						b.push({
+						c.bunch.push({
 							objectName: ds.jmx.objectName,
 							attributes: [ds.jmx.attribute],
 						});
@@ -45,7 +45,7 @@ async function combineAndGetData(dsList) {
 						}
 					}
 					if (!checkB) {
-						b.push({
+						c.bunch.push({
 							section: ds.redis.section,
 							attributes: [ds.redis.attribute],
 						});
