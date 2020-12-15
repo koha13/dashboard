@@ -125,9 +125,10 @@ export default {
 				let spl = o.split(".");
 				let section = spl[1];
 				let attribute = spl[2];
+				let datasourceName = this.url.substring(8).match(/.+(?=\/*)/)[0] + "-" + attribute;
 				this.$store.commit("addDatasource", {
 					type: "redis",
-					datasourceName: this.url + "-" + attribute,
+					datasourceName,
 					redis: {
 						url: this.url,
 						section,
@@ -137,7 +138,7 @@ export default {
 				});
 				board.fields.push({
 					name: attribute,
-					datasourceName: this.url + "-" + attribute,
+					datasourceName,
 					warning: "",
 				});
 			}
