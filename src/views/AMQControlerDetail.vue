@@ -32,11 +32,7 @@
 					<tr>
 						<th colspan="7">
 							All connectors
-							<button
-								:class="{ ui: true, primary: true, button: true, disabled: dimmer }"
-								style="margin:0 10px"
-								@click="fetchData"
-							>
+							<button class="ui primary mini button" style="margin:0 10px" @click="fetchData">
 								Refresh
 							</button>
 						</th>
