@@ -41,9 +41,15 @@
 				<tr v-for="con in connectors" :key="con.objectName">
 					<td>{{ con.clientId }}</td>
 					<td>{{ con.remoteAddress }}</td>
-					<td>{{ con.connected }}</td>
-					<td>{{ con.active }}</td>
-					<td>{{ con.slow }}</td>
+					<td :class="{ positive: con.connected, negative: !con.connected }">
+						{{ con.connected }}
+					</td>
+					<td :class="{ positive: con.active, negative: !con.active }">
+						{{ con.active }}
+					</td>
+					<td :class="{ positive: !con.slow, negative: con.slow }">
+						{{ con.slow }}
+					</td>
 					<td>{{ con.destinations }}</td>
 					<td class="collapsing">
 						<button
@@ -104,6 +110,7 @@ export default {
 			if (url && url != "" && url !== "undefined") {
 				this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
 					this.connectors = res;
+					console.log(this.connectors);
 				});
 			}
 		}

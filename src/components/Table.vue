@@ -9,7 +9,7 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="a in board.data" :key="a.name" :class="{ negative: a.warning }">
+				<tr v-for="(a, index) in board.data" :key="index" :class="{ negative: a.warning }">
 					<td>{{ a.name }}</td>
 					<td style="position: relative;">
 						{{ a.y }}

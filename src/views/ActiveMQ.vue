@@ -162,9 +162,20 @@ export default {
 			};
 			for (let o of this.value) {
 				let spl = o.split(".");
+				console.log(spl);
 				let rs = "org.apache.activemq:";
 				for (let i = 3; i < spl.length - 2; i++) {
 					rs = rs.concat(",").concat(spl[i]);
+				}
+				let prefixName = "";
+				for (let p of spl) {
+					if (p.includes("destinationName")) {
+						prefixName = p.split("=")[1];
+						break;
+					}
+				}
+				if (prefixName !== "") {
+					prefixName += "-";
 				}
 				rs = rs.replace(/:,/g, ":");
 				let datasourceName = spl[spl.length - 3].split("=")[1] + "-" + spl[spl.length - 1];
@@ -188,7 +199,7 @@ export default {
 					value: 0,
 				});
 				board.fields.push({
-					name: spl[spl.length - 1],
+					name: prefixName + spl[spl.length - 1],
 					datasourceName: datasourceName,
 					warning: "",
 				});

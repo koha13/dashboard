@@ -10,7 +10,7 @@
 <script>
 export default {
 	props: {
-		v: [String, Number],
+		v: [String, Number, Boolean],
 	},
 	data() {
 		return {
@@ -21,13 +21,14 @@ export default {
 	},
 	watch: {
 		v: function(newVal, oldVal) {
-			if (typeof this.v === "number") {
-				console.log(this.v);
+			if (!isNaN(parseFloat(this.v))) {
+				console.log("here");
 				this.show = true;
 				if (this.v > 0) {
 					this.icon = "arrow up icon";
 					this.data = this.v;
 				} else if (this.v == 0) {
+					console.log("here");
 					this.icon = "minus icon";
 					this.data = 0;
 				} else {
