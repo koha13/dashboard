@@ -90,7 +90,7 @@ const checkWarning = function(payload) {
 	return warningSign;
 };
 
-const updateDS = async function(resolve, reject, datasource, BASE_API_URL) {
+const updateDS = async function(resolve, reject, datasource) {
 	if (datasource.type === "json") {
 		let res;
 		try {
@@ -118,7 +118,7 @@ const updateDS = async function(resolve, reject, datasource, BASE_API_URL) {
 	} else if (datasource.type === "jmx") {
 		let res;
 		try {
-			res = await axios.post(BASE_API_URL + "/get", {
+			res = await axios.post(`${process.env.VUE_APP_BASE_API}/get`, {
 				username: datasource.jmx.username,
 				password: datasource.jmx.password,
 				jmxUrl: datasource.jmx.url,
@@ -143,7 +143,7 @@ const updateDS = async function(resolve, reject, datasource, BASE_API_URL) {
 	} else if (datasource.type === "redis") {
 		let res;
 		try {
-			res = await axios.post(BASE_API_URL + "/redis", {
+			res = await axios.post(`${process.env.VUE_APP_BASE_API}/redis`, {
 				url: datasource.redis.url,
 				attr: datasource.redis.attribute,
 				section: datasource.redis.section,

@@ -218,7 +218,7 @@ export default new Vuex.Store({
 
 		updateDatasourceWithDS({}, datasource) {
 			return new Promise(async (resolve, reject) => {
-				updateDS(resolve, reject, datasource, BASE_API_URL);
+				updateDS(resolve, reject, datasource);
 			});
 		},
 	},

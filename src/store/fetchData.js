@@ -68,7 +68,7 @@ async function fetchData(combine, dsList) {
 	for (let c of combine) {
 		if (c.type === "jmx") {
 			try {
-				let data = await axios.post("http://localhost:8082/newjmx", {
+				let data = await axios.post(`${process.env.VUE_APP_BASE_API}/newjmx`, {
 					url: c.url,
 					username: c.username,
 					password: c.password,
@@ -136,7 +136,7 @@ async function fetchData(combine, dsList) {
 			}
 		} else if (c.type === "redis") {
 			try {
-				let data = await axios.post("http://localhost:8082/redis", {
+				let data = await axios.post(`${process.env.VUE_APP_BASE_API}/redis`, {
 					url: c.url,
 					bunch: c.bunch,
 				});

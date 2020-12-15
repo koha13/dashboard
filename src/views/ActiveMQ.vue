@@ -162,7 +162,6 @@ export default {
 			};
 			for (let o of this.value) {
 				let spl = o.split(".");
-				console.log(spl);
 				let rs = "org.apache.activemq:";
 				for (let i = 3; i < spl.length - 2; i++) {
 					rs = rs.concat(",").concat(spl[i]);

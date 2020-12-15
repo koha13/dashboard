@@ -110,7 +110,6 @@ export default {
 			if (url && url != "" && url !== "undefined") {
 				this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
 					this.connectors = res;
-					console.log(this.connectors);
 				});
 			}
 		}
