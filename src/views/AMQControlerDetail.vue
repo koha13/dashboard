@@ -20,58 +20,73 @@
 				GC
 			</button>
 		</div>
-		<table class="ui selectable celled small table" style="padding:0;box-shadow: 3px 3px 10px;">
-			<thead>
-				<tr>
-					<th colspan="7">
-						All connectors
-					</th>
-				</tr>
-				<tr>
-					<th>ClientId</th>
-					<th>RemoteAddress</th>
-					<th>Connected</th>
-					<th>Active</th>
-					<th>Slow</th>
-					<th>Destination</th>
-					<th>Option</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr v-for="con in connectors" :key="con.objectName">
-					<td>{{ con.clientId }}</td>
-					<td>{{ con.remoteAddress }}</td>
-					<td :class="{ positive: con.connected, negative: !con.connected }">
-						{{ con.connected }}
-					</td>
-					<td :class="{ positive: con.active, negative: !con.active }">
-						{{ con.active }}
-					</td>
-					<td :class="{ positive: !con.slow, negative: con.slow }">
-						{{ con.slow }}
-					</td>
-					<td>{{ con.destinations }}</td>
-					<td class="collapsing">
-						<button
-							class="ui mini primary button"
-							v-if="con.destinations.length > 0"
-							@click="
-								$router.push({
-									name: 'ConnectorDetail',
-									query: {
-										objectName: con.consumer,
-										url,
-									},
-								})
-							"
-						>
-							Detail
-						</button>
-						<button class="ui mini negative button">Stop</button>
-					</td>
-				</tr>
-			</tbody>
-		</table>
+		<div class="ui segment" style="width:100%; height:100%;padding:0;">
+			<div :class="{ ui: true, active: dimmer, inverted: true, dimmer: true }">
+				<div class="ui indeterminate text loader">Refresh data</div>
+			</div>
+			<table
+				class="ui selectable celled small table"
+				style="padding:0;margin:0;box-shadow: 3px 3px 10px;"
+			>
+				<thead>
+					<tr>
+						<th colspan="7">
+							All connectors
+							<button
+								:class="{ ui: true, primary: true, button: true, disabled: dimmer }"
+								style="margin:0 10px"
+								@click="fetchData"
+							>
+								Refresh
+							</button>
+						</th>
+					</tr>
+					<tr>
+						<th>ClientId</th>
+						<th>RemoteAddress</th>
+						<th>Connected</th>
+						<th>Active</th>
+						<th>Slow</th>
+						<th>Destination</th>
+						<th>Option</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr v-for="con in connectors" :key="con.objectName">
+						<td>{{ con.clientId }}</td>
+						<td>{{ con.remoteAddress }}</td>
+						<td :class="{ positive: con.connected, negative: !con.connected }">
+							{{ con.connected }}
+						</td>
+						<td :class="{ positive: con.active, negative: !con.active }">
+							{{ con.active }}
+						</td>
+						<td :class="{ positive: !con.slow, negative: con.slow }">
+							{{ con.slow }}
+						</td>
+						<td>{{ con.destinations }}</td>
+						<td class="collapsing">
+							<button
+								class="ui mini primary button"
+								v-if="con.destinations.length > 0"
+								@click="
+									$router.push({
+										name: 'ConnectorDetail',
+										query: {
+											objectName: con.consumer,
+											url,
+										},
+									})
+								"
+							>
+								Detail
+							</button>
+							<button class="ui mini negative button">Stop</button>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
 		<div id="confirm-modal" class="ui mini modal">
 			<i class="close icon"></i>
 			<div class="header">
@@ -108,9 +123,7 @@ export default {
 			this.username = username;
 			this.password = password;
 			if (url && url != "" && url !== "undefined") {
-				this.$store.dispatch("fetchCon", { url, username, password }).then((res) => {
-					this.connectors = res;
-				});
+				this.fetchData();
 			}
 		}
 	},
@@ -124,9 +137,29 @@ export default {
 			url: "",
 			username: "",
 			password: "",
+			dimmer: false,
 		};
 	},
 	methods: {
+		async fetchData() {
+			this.dimmer = true;
+			this.connectors = [];
+			try {
+				let res = await this.$store.dispatch("fetchCon", {
+					url: this.url,
+					username: this.username,
+					password: this.password,
+				});
+				setTimeout(() => {
+					this.connectors = res;
+					this.dimmer = false;
+				}, 500);
+			} catch (error) {
+				setTimeout(() => {
+					this.dimmer = false;
+				}, 500);
+			}
+		},
 		restartController() {
 			this.method = "restart";
 			this.objectName = "org.apache.activemq:type=Broker,brokerName=localhost";

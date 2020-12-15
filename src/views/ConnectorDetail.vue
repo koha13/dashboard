@@ -10,7 +10,7 @@
 		</div>
 		<div class="ui row">
 			<button
-				:class="{ ui: true, secondary: true, button: true, disabled: dimmer }"
+				:class="{ ui: true, primary: true, button: true, disabled: dimmer }"
 				@click="fetchData"
 			>
 				<i class="sync alternate icon"></i>
