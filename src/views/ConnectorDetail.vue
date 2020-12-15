@@ -72,6 +72,11 @@ export default {
 			} catch (error) {
 				setTimeout(() => {
 					this.dimmer = false;
+					this.$notify({
+						group: "noti",
+						title: "Failed",
+						type: "error",
+					});
 				}, 500);
 			}
 		},

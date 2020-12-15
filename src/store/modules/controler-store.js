@@ -57,6 +57,9 @@ const actions = {
 				})
 				.then((res) => {
 					resolve(res.data);
+				})
+				.catch((error) => {
+					reject(error);
 				});
 		});
 	},
