@@ -143,10 +143,11 @@ export default new Vuex.Store({
 			let data = JSON.parse(payload);
 			state.boards = data.boards;
 			state.datasources = data.datasources;
+			state.controllerStore = data.controllerStore;
 		},
 	},
 	actions: {
-		updateBoard({ getters, commit, dispatch }, value) {
+		updateBoard({ getters, commit }, value) {
 			return new Promise(async (resolve, reject) => {
 				let b = getters.getBoard(value);
 				let log = "";
@@ -166,7 +167,9 @@ export default new Vuex.Store({
 								}
 							}
 						}
-					} catch (error) {}
+					} catch (error) {
+						reject(error);
+					}
 				}
 				let dataDS = await combineAndGetData(dsList);
 				for (let f of fields) {
