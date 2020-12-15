@@ -1,7 +1,7 @@
 <template>
 	<div style="padding-top:20px">
 		<h2 class="ui header">Create chart</h2>
-		<div class="ui ten doubling cards">
+		<div class="ui six doubling cards">
 			<div class="ui centered card" @click="$router.push({ name: 'Chart' })">
 				<div class="image">
 					<img
@@ -31,7 +31,7 @@
 		</div>
 		<div class="ui divider"></div>
 		<h2 class="ui header">Create Other</h2>
-		<div class="ui ten doubling cards">
+		<div class="ui six doubling cards">
 			<router-link class="ui centered card" tag="div" :to="{ name: 'Datasource' }">
 				<div class="image">
 					<img

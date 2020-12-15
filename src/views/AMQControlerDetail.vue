@@ -1,6 +1,6 @@
 <template>
-	<div class="ui grid" style="padding: 20px">
-		<div class="ui row">
+	<div class="ui centered grid" style="padding-top:10px;margin-right:10px">
+		<div class="row">
 			<div class="ui message">
 				<div class="header">
 					ActiveMQ
@@ -10,7 +10,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="ui row">
+		<div class="row">
 			<button class="ui secondary button" @click="restartController">
 				<i class="sync alternate icon"></i>
 				Restart
@@ -20,68 +20,70 @@
 				GC
 			</button>
 		</div>
-		<div class="ui segment" style="width:100%; height:100%;padding:0;">
-			<div :class="{ ui: true, active: dimmer, inverted: true, dimmer: true }">
-				<div class="ui indeterminate text loader">Refresh data</div>
+		<div class="row">
+			<div class="ui segment" style="width:100%; height:100%;padding:0;">
+				<div :class="{ ui: true, active: dimmer, inverted: true, dimmer: true }">
+					<div class="ui indeterminate text loader">Refresh data</div>
+				</div>
+				<table
+					class="ui selectable celled small table"
+					style="padding:0;margin:0;box-shadow: 3px 3px 10px;"
+				>
+					<thead>
+						<tr>
+							<th colspan="7">
+								All connectors
+								<button class="ui primary mini button" style="margin:0 10px" @click="fetchData">
+									Refresh
+								</button>
+							</th>
+						</tr>
+						<tr>
+							<th>ClientId</th>
+							<th>RemoteAddress</th>
+							<th>Connected</th>
+							<th>Active</th>
+							<th>Slow</th>
+							<th>Destination</th>
+							<th>Option</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="con in connectors" :key="con.objectName">
+							<td>{{ con.clientId }}</td>
+							<td>{{ con.remoteAddress }}</td>
+							<td :class="{ positive: con.connected, negative: !con.connected }">
+								{{ con.connected }}
+							</td>
+							<td :class="{ positive: con.active, negative: !con.active }">
+								{{ con.active }}
+							</td>
+							<td :class="{ positive: !con.slow, negative: con.slow }">
+								{{ con.slow }}
+							</td>
+							<td>{{ con.destinations }}</td>
+							<td class="collapsing">
+								<button
+									class="ui mini primary button"
+									v-if="con.destinations.length > 0"
+									@click="
+										$router.push({
+											name: 'ConnectorDetail',
+											query: {
+												objectName: con.consumer,
+												url,
+											},
+										})
+									"
+								>
+									Detail
+								</button>
+								<button class="ui mini negative button">Stop</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<table
-				class="ui selectable celled small table"
-				style="padding:0;margin:0;box-shadow: 3px 3px 10px;"
-			>
-				<thead>
-					<tr>
-						<th colspan="7">
-							All connectors
-							<button class="ui primary mini button" style="margin:0 10px" @click="fetchData">
-								Refresh
-							</button>
-						</th>
-					</tr>
-					<tr>
-						<th>ClientId</th>
-						<th>RemoteAddress</th>
-						<th>Connected</th>
-						<th>Active</th>
-						<th>Slow</th>
-						<th>Destination</th>
-						<th>Option</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="con in connectors" :key="con.objectName">
-						<td>{{ con.clientId }}</td>
-						<td>{{ con.remoteAddress }}</td>
-						<td :class="{ positive: con.connected, negative: !con.connected }">
-							{{ con.connected }}
-						</td>
-						<td :class="{ positive: con.active, negative: !con.active }">
-							{{ con.active }}
-						</td>
-						<td :class="{ positive: !con.slow, negative: con.slow }">
-							{{ con.slow }}
-						</td>
-						<td>{{ con.destinations }}</td>
-						<td class="collapsing">
-							<button
-								class="ui mini primary button"
-								v-if="con.destinations.length > 0"
-								@click="
-									$router.push({
-										name: 'ConnectorDetail',
-										query: {
-											objectName: con.consumer,
-											url,
-										},
-									})
-								"
-							>
-								Detail
-							</button>
-							<button class="ui mini negative button">Stop</button>
-						</td>
-					</tr>
-				</tbody>
-			</table>
 		</div>
 		<div id="confirm-modal" class="ui mini modal">
 			<i class="close icon"></i>

@@ -145,6 +145,15 @@ export default new Vuex.Store({
 			state.datasources = data.datasources;
 			state.controllerStore = data.controllerStore;
 		},
+		fixLayout(state) {
+			let t = 0;
+			for (let b of state.boards) {
+				b.y = b.y + t;
+				b.x = 0;
+				b.w = 12;
+				t += b.h;
+			}
+		},
 	},
 	actions: {
 		updateBoard({ getters, commit }, value) {

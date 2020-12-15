@@ -1,14 +1,16 @@
 <template>
-	<div class="ui grid" style="padding: 20px">
-		<div class="ui row">
+	<div class="ui centered grid" style="padding-top:10px;margin-right:10px">
+		<div class="row">
 			<div class="ui message">
 				<div class="header">
 					Connector
 				</div>
-				<p>{{ this.$route.query.objectName }}</p>
+				<p style="word-break: break-all;">
+					{{ $route.query.objectName }}
+				</p>
 			</div>
 		</div>
-		<div class="ui row">
+		<div class="row">
 			<button
 				:class="{ ui: true, primary: true, button: true, disabled: dimmer }"
 				@click="fetchData"
@@ -17,7 +19,7 @@
 				Refresh
 			</button>
 		</div>
-		<div class="ui row">
+		<div class="row">
 			<div class="ui segment" style="width:100%; height:100%;padding:0;">
 				<div :class="{ ui: true, active: dimmer, inverted: true, dimmer: true }">
 					<div class="ui indeterminate text loader">Refresh data</div>

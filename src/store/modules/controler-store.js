@@ -42,8 +42,8 @@ const actions = {
 						{
 							objectName: payload.objectName,
 							attributes: [
-								"Active",
 								"ClientId",
+								"Active",
 								"ConsumedCount",
 								"DequeueCounter",
 								"DestinationName",

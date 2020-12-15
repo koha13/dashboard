@@ -15,6 +15,9 @@ export default {
 	},
 	created() {
 		this.$store.commit("deleteData");
+		if ($(window).width() < 600) {
+			this.$store.commit("fixLayout");
+		}
 	},
 };
 </script>
