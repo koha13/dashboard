@@ -167,9 +167,13 @@ export default {
 					rs = rs.concat(",").concat(spl[i]);
 				}
 				let prefixName = "";
-				for (let p of spl) {
-					if (p.includes("destinationName")) {
-						prefixName = p.split("=")[1];
+				for (let i = spl.length - 1; i >= 0; i--) {
+					if (spl[i].includes("clientId")) {
+						let temp = spl[i].split("=")[1].split("-");
+						prefixName = temp[temp.length - 1];
+						break;
+					} else if (spl[i].includes("destinationName")) {
+						prefixName = spl[i].split("=")[1];
 						break;
 					}
 				}
@@ -177,7 +181,7 @@ export default {
 					prefixName += "-";
 				}
 				rs = rs.replace(/:,/g, ":");
-				let datasourceName = spl[spl.length - 3].split("=")[1] + "-" + spl[spl.length - 1];
+				let datasourceName = prefixName + spl[spl.length - 1];
 				this.$store.commit("addDatasource", {
 					type: "jmx",
 					datasourceName,
