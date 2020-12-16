@@ -1,5 +1,5 @@
 <template>
-	<div class="ui centered grid" style="padding-top:10px;margin-right:10px">
+	<div class="ui centered grid" style="width:100%;margin:0;padding:10px">
 		<div class="row">
 			<table class="ui selectable celled small table" style="padding:0;box-shadow: 3px 3px 10px;">
 				<thead>

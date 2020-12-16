@@ -78,4 +78,11 @@ const router = new VueRouter({
 	routes,
 });
 
+router.beforeEach((to, from, next) => {
+	if ($(window).width() < 600) {
+		$("#sidebar").sidebar("hide");
+	}
+	next();
+});
+
 export default router;

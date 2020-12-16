@@ -3,7 +3,7 @@
 		class="ui four column centered grid"
 		style="padding:15px; background:white; border-radius:5px; padding-top:20px"
 	>
-		<form @submit.prevent="submit" class="ui form" style="width:40%">
+		<form @submit.prevent="submit" class="ui form" style="width:400px">
 			<div class="field required">
 				<label>Name</label>
 				<input type="text" v-model="name" placeholder="Name" />

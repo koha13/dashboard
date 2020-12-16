@@ -1,5 +1,5 @@
 <template>
-	<div class="ui centered grid" style="padding-top:10px;margin-right:10px">
+	<div class="ui centered grid" style="width:100%;margin:0;padding:10px">
 		<div class="row">
 			<div class="ui message">
 				<div class="header">
@@ -25,7 +25,7 @@
 					<div class="ui indeterminate text loader">Refresh data</div>
 				</div>
 				<table
-					class="ui selectable celled small table"
+					class="ui unstackable selectable celled small table"
 					style="padding:0;margin:0;box-shadow: 3px 3px 10px;"
 				>
 					<thead>

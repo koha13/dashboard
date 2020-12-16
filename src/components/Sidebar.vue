@@ -1,5 +1,5 @@
 <template>
-	<div class="ui left demo vertical three item visible sidebar labeled icon menu">
+	<div id="sidebar" class="ui left demo vertical three item visible sidebar labeled icon menu">
 		<router-link class="item" to="/">
 			<i class="dashboard icon"></i>
 			Dashboard
@@ -24,7 +24,7 @@
 			<i class="cloud upload icon"></i>
 			Export
 		</a>
-		<div id="exportModal" class="ui modal">
+		<div id="exportModal" class="ui mini modal" style="width:400px">
 			<i class="close icon"></i>
 			<div class="header">Export data</div>
 			<div class="content expData">
@@ -45,7 +45,7 @@
 				</div>
 			</div>
 		</div>
-		<div id="importModal" class="ui modal">
+		<div id="importModal" class="ui mini modal" style="width:400px">
 			<i class="close icon"></i>
 			<div class="header">Import data</div>
 			<textarea
@@ -77,11 +77,17 @@ export default {
 	},
 	methods: {
 		showExportModal() {
+			if ($(window).width() < 600) {
+				$("#sidebar").sidebar("hide");
+			}
 			$("#exportModal").modal("show");
 			this.dataExport = JSON.stringify(this.$store.getters.getExportData);
 			Object.freeze(this.dataExport);
 		},
 		showImportModal() {
+			if ($(window).width() < 600) {
+				$("#sidebar").sidebar("hide");
+			}
 			$("#importModal").modal("show");
 		},
 		copyData() {
