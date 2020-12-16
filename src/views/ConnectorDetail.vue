@@ -35,7 +35,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr v-for="con in data[$route.query.objectName]" :key="con.name">
+						<tr
+							v-for="con in data[$route.query.objectName]"
+							:key="con.name"
+							style="word-break: break-all;"
+						>
 							<td>{{ con.name }}</td>
 							<td>{{ con.value }}</td>
 						</tr>

@@ -1,9 +1,14 @@
 <template>
 	<div id="app">
-		<div style="width:100vw; height:35px;background:white" v-if="mgl === '0px'">
-			<button class="ui icon button" style="background:transparent">
+		<div style="width:100vw; height:35px;background:white;position: relative;">
+			<button class="ui icon button" style="background:transparent" v-if="mgl === '0px'">
 				<i class="bars icon" @click="toggleSidebar"></i>
 			</button>
+			<img
+				src="https://icons-for-free.com/iconfiles/png/512/dashboard-1320568680781126244.png"
+				alt=""
+				style="width:35px; position: absolute;left: 50%;-ms-transform: translateX(-50%);transform: translateX(-50%);"
+			/>
 		</div>
 		<Sidebar />
 		<notifications group="noti" position="bottom left" />
