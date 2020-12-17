@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
-		<div style="width:100vw; height:35px;background:white;position: relative;">
-			<button class="ui icon button" style="background:transparent" v-if="mgl === '0px'">
+		<div class="header-main" style="width:100vw; height:35px;background:white;position: relative;">
+			<button class="ui icon button" style="background:transparent">
 				<i class="bars icon" @click="toggleSidebar"></i>
 			</button>
 			<img
@@ -12,7 +12,7 @@
 		</div>
 		<Sidebar />
 		<notifications group="noti" position="bottom left" />
-		<div :style="{ 'margin-left': mgl, 'margin-right': '5px' }">
+		<div class="rv">
 			<keep-alive exclude="chart,datasource,ActiveMQ,Redis">
 				<router-view :key="$route.fullPath" />
 			</keep-alive>
@@ -21,26 +21,27 @@
 </template>
 <script>
 import Sidebar from "@/components/Sidebar";
-$(document).ready(function() {
-	if ($(window).width() < 600) {
-		$("#sidebar").removeClass("visible");
-	}
-});
 export default {
 	components: {
 		Sidebar,
 	},
 	created() {
 		this.$store.commit("deleteData");
-		if ($(window).width() < 600) {
+		$(document).ready(() => {
+			if ($(window).width() < 800) {
+				$("#sidebar").removeClass("visible");
+			}
 			this.$store.commit("fixLayout");
-			this.mgl = "0px";
-		}
-	},
-	data() {
-		return {
-			mgl: "90px",
-		};
+		});
+		$(window).resize(() => {
+			var width = $(window).width();
+			if (width < 800) {
+				$("#sidebar").removeClass("visible");
+				this.$store.commit("fixLayout");
+			} else {
+				$("#sidebar").addClass("visible");
+			}
+		});
 	},
 	methods: {
 		toggleSidebar() {
@@ -49,3 +50,21 @@ export default {
 	},
 };
 </script>
+<style>
+.header-main {
+	display: none;
+}
+.rv {
+	margin-left: 90px;
+	margin-right: 5px;
+}
+@media only screen and (max-width: 800px) {
+	.header-main {
+		display: block !important;
+	}
+	.rv {
+		margin-left: 0px;
+		margin-right: 5px;
+	}
+}
+</style>
