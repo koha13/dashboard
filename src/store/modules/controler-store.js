@@ -68,7 +68,7 @@ const actions = {
 			switch (payload.method) {
 				case "restart":
 					axios
-						.post("http://localhost:8082/activemq/restartAMQ", {
+						.post(`${process.env.VUE_APP_BASE_API}/activemq/restartAMQ`, {
 							url: payload.url,
 							username: payload.username,
 							password: payload.password,
@@ -84,7 +84,7 @@ const actions = {
 					break;
 				case "gc":
 					axios
-						.post("http://localhost:8082/activemq/gcAMQ", {
+						.post(`${process.env.VUE_APP_BASE_API}/activemq/gcAMQ`, {
 							url: payload.url,
 							username: payload.username,
 							password: payload.password,
@@ -100,7 +100,7 @@ const actions = {
 					break;
 				case "stop":
 					axios
-						.post("http://localhost:8082/activemq/stopConnector", {
+						.post(`${process.env.VUE_APP_BASE_API}/activemq/stopConnector`, {
 							url: payload.url,
 							username: payload.username,
 							password: payload.password,
