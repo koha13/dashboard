@@ -9,7 +9,7 @@ const mutations = {
 		state.controllers.push(value);
 	},
 	deleteController(state, value) {
-		state.controllers = state.controllers.filter((b) => b.url !== value);
+		state.controllers = state.controllers.filter((b) => b.name !== value);
 	},
 };
 
@@ -17,7 +17,7 @@ const actions = {
 	fetchCon({}, payload) {
 		return new Promise((resolve, reject) => {
 			axios
-				.post("http://localhost:8082/activemq/connectors", {
+				.post(`${process.env.VUE_APP_BASE_API}/activemq/connectors`, {
 					url: payload.url,
 					username: payload.username,
 					password: payload.password,
@@ -34,7 +34,7 @@ const actions = {
 		let jmx = getters.getController(payload.url);
 		return new Promise((resolve, reject) => {
 			axios
-				.post("http://localhost:8082/newjmx", {
+				.post(`${process.env.VUE_APP_BASE_API}/newjmx`, {
 					url: jmx.url,
 					username: jmx.username,
 					password: jmx.password,

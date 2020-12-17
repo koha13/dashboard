@@ -30,7 +30,7 @@
 							>
 							<button
 								class="ui mini negative button"
-								@click="$store.commit('deleteController', con.url)"
+								@click="$store.commit('deleteController', con.name)"
 							>
 								Delete
 							</button>
