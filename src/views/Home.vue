@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<div class="row" style="padding-top:30px;width:100%;">
+		<div class="row" style="padding-top:5px;width:100%;">
 			<grid-layout
 				@layout-updated="layoutUpdatedEvent"
 				:layout="layout"

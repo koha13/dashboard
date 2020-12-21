@@ -42,7 +42,7 @@
 				{{ log }}
 			</p>
 		</div>
-		<div class="ui mini modal" id="confirmDeleteBoardModal">
+		<div class="ui mini modal" :id="`confirmDeleteBoardModal${board.i}`">
 			<div class="header">Delete board: {{ board.name }}</div>
 			<div class="actions">
 				<div class="ui deny button">
@@ -86,7 +86,7 @@ export default {
 	},
 	methods: {
 		toggleConfirmDeleteBoardModal() {
-			$("#confirmDeleteBoardModal")
+			$(`#confirmDeleteBoardModal${this.board.i}`)
 				.modal("setting", "closable", false)
 				.modal("show");
 		},
