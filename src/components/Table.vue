@@ -29,7 +29,7 @@
 			<div class="vue-draggable-handle">
 				<i class="arrows alternate icon"></i>
 			</div>
-			<div class="close-handle" @click="deleteChart">
+			<div class="close-handle" @click="toggleConfirmDeleteBoardModal">
 				<i class="window close outline icon"></i>
 			</div>
 			<div class="config-handle" @click="$router.push({ name: 'Chart', query: { id: board.i } })">
@@ -41,6 +41,18 @@
 			<p>
 				{{ log }}
 			</p>
+		</div>
+		<div class="ui mini modal" id="confirmDeleteBoardModal">
+			<div class="header">Delete board: {{ board.name }}</div>
+			<div class="actions">
+				<div class="ui deny button">
+					Cancel
+				</div>
+				<div class="ui negative right labeled icon danger button" @click="deleteChart">
+					Delete
+					<i class="trash alternate icon"></i>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -73,6 +85,11 @@ export default {
 		};
 	},
 	methods: {
+		toggleConfirmDeleteBoardModal() {
+			$("#confirmDeleteBoardModal")
+				.modal("setting", "closable", false)
+				.modal("show");
+		},
 		deleteChart() {
 			this.$store.commit("deleteChart", this.board.i);
 			this.$emit("update");
@@ -91,7 +108,7 @@ export default {
 	},
 	watch: {
 		board: {
-			handler(newVal, oldVal) {
+			handler() {
 				this.blinkFunc();
 			},
 			deep: true,
