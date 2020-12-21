@@ -159,14 +159,14 @@ export default {
 	position: absolute;
 	width: 20px;
 	height: 20px;
-	top: 0;
+	top: 14px;
 	right: 20px;
 }
 .close-handle {
 	position: absolute;
 	width: 20px;
 	height: 20px;
-	top: 0;
+	top: 14px;
 	right: 0;
 	cursor: pointer;
 }
@@ -174,12 +174,15 @@ export default {
 	position: absolute;
 	width: 20px;
 	height: 20px;
-	top: 0;
+	top: 14px;
 	right: 40px;
 	cursor: pointer;
 }
 .row .vue-grid-item.vue-grid-placeholder {
 	background: green;
 	border-radius: 3px;
+}
+.highcharts-figure {
+	margin-top: 8px !important;
 }
 </style>

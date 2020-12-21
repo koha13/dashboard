@@ -58,7 +58,6 @@ export default {
 		clearInterval(this.interval);
 	},
 	mounted() {
-		console.log(this.board);
 		this.$store.dispatch("updateBoard", this.board.i).then((res) => {
 			this.log = res;
 			this.interval = setInterval(async () => {
