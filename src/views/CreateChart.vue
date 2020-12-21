@@ -37,11 +37,19 @@
 								Support math operator: `ds1 (M)+(M) ds2`
 							</div>
 						</div>
-						<div class="field">
+						<div class="field" v-if="boardType === 'Table'">
 							<input type="text" placeholder="Warning" v-model="warning" />
 							<div class="ui pointing label">
 								{{ stringTool }}
 							</div>
+						</div>
+						<div class="one wide field" style="position: relative;" v-if="boardType === 'Table'">
+							<input
+								type="color"
+								placeholder="Color"
+								v-model="warningColor"
+								style="position: relative; top:8px"
+							/>
 						</div>
 					</div>
 					<div class="field">
@@ -99,11 +107,23 @@
 							</div>
 							<!-- <input type="text" placeholder="datasource name" v-model="datasourceName" /> -->
 						</div>
-						<div class="field">
+						<div class="field" v-if="this.boardType === 'Table'">
 							<input type="text" placeholder="Warning" v-model="updateFieldData.warning" />
 							<div class="ui pointing label">
 								{{ stringTool }}
 							</div>
+						</div>
+						<div
+							class="one wide field"
+							style="position: relative;"
+							v-if="this.boardType === 'Table'"
+						>
+							<input
+								type="color"
+								placeholder="Color"
+								v-model="updateFieldData.warningColor"
+								style="position: relative; top:8px"
+							/>
 						</div>
 					</div>
 				</div>
@@ -152,11 +172,13 @@ export default {
 			fields: [],
 			stringTool: ">, <, >=, <=, ==, !=. Default is >",
 			boardStored: null,
+			warningColor: "#FF0000",
 			updateFieldData: {
 				id: 0,
 				name: "",
 				datasourceName: "",
 				warning: "",
+				warningColor: "",
 			},
 		};
 	},
@@ -167,6 +189,7 @@ export default {
 				name: this.fieldName,
 				datasourceName: this.datasourceName,
 				warning: this.warning,
+				warningColor: this.warningColor,
 			});
 			this.fieldName = "";
 			this.datasourceName = "";
@@ -177,6 +200,7 @@ export default {
 			this.updateFieldData.name = this.fields[i].name;
 			this.updateFieldData.datasourceName = this.fields[i].datasourceName;
 			this.updateFieldData.warning = this.fields[i].warning;
+			this.updateFieldData.warningColor = this.fields[i].warningColor;
 			$("#updateField").modal("show");
 		},
 		updateFieldDone() {
@@ -184,6 +208,7 @@ export default {
 			this.fields[i].name = this.updateFieldData.name;
 			this.fields[i].datasourceName = this.updateFieldData.datasourceName;
 			this.fields[i].warning = this.updateFieldData.warning;
+			this.fields[i].warningColor = this.updateFieldData.warningColor;
 		},
 		deleteField(i) {
 			this.fields.splice(i, 1);

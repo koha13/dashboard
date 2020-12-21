@@ -105,7 +105,13 @@ export default new Vuex.Store({
 							}
 						}
 						if (!check) {
-							board.data.push({ name: b.field, y: b.value, warning, change: b.value });
+							board.data.push({
+								name: b.field,
+								y: b.value,
+								warning,
+								warningColor: b.warningColor,
+								change: b.value,
+							});
 						}
 					} else if (board.type === "Line") {
 						let check = false;
@@ -219,6 +225,7 @@ export default new Vuex.Store({
 						field: f.name,
 						value,
 						warning,
+						warningColor: f.warningColor,
 					});
 				}
 				resolve(log);

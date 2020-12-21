@@ -9,7 +9,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr v-for="(a, index) in board.data" :key="index" :class="{ negative: a.warning }">
+				<tr
+					v-for="(a, index) in board.data"
+					:key="index"
+					:style="{
+						background: a.warning ? a.warningColor + '32' : '',
+						color: a.warning ? a.warningColor : '',
+					}"
+				>
 					<td>{{ a.name }}</td>
 					<td style="position: relative;">
 						{{ a.y }}
@@ -51,6 +58,7 @@ export default {
 		clearInterval(this.interval);
 	},
 	mounted() {
+		console.log(this.board);
 		this.$store.dispatch("updateBoard", this.board.i).then((res) => {
 			this.log = res;
 			this.interval = setInterval(async () => {
@@ -72,5 +80,3 @@ export default {
 	},
 };
 </script>
-
-<style></style>
