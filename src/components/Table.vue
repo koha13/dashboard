@@ -18,7 +18,7 @@
 					}"
 				>
 					<td>{{ a.name }}</td>
-					<td style="position: relative;">
+					<td style="position: relative;" :class="{ blink: blink[index] }">
 						{{ a.y }}
 						<ChangeStatus :v="a.change" :key="board.name + a.name" />
 					</td>
@@ -69,6 +69,7 @@ export default {
 		return {
 			interval: null,
 			log: "",
+			blink: JSON.parse(JSON.stringify(this.board.data)),
 		};
 	},
 	methods: {
@@ -76,6 +77,31 @@ export default {
 			this.$store.commit("deleteChart", this.board.i);
 			this.$emit("update");
 		},
+		blinkFunc() {
+			for (let i = 0; i < this.board.data.length; i++) {
+				if (this.board.data[i].change) {
+					this.blink[i] = true;
+				}
+			}
+			setTimeout(() => {
+				this.blink.fill(false);
+				this.$forceUpdate();
+			}, 150);
+		},
+	},
+	watch: {
+		board: {
+			handler(newVal, oldVal) {
+				this.blinkFunc();
+			},
+			deep: true,
+			immediate: false,
+		},
 	},
 };
 </script>
+<style scoped>
+.blink {
+	background-color: rgba(159, 235, 159, 0.878);
+}
+</style>
