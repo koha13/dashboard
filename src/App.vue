@@ -11,24 +11,33 @@
 			/>
 		</div>
 		<Sidebar />
-		<notifications group="noti" position="bottom left" />
 		<div class="rv">
 			<keep-alive exclude="chart,datasource,ActiveMQ,Redis">
 				<router-view :key="$route.fullPath" />
 			</keep-alive>
 		</div>
+		<Canvas v-if="showCanvas" />
+		<notifications group="noti" position="bottom left" />
 	</div>
 </template>
 <script>
 import Sidebar from "@/components/Sidebar";
+import Canvas from "@/components/Canvas";
 export default {
 	components: {
 		Sidebar,
+		Canvas,
+	},
+	data() {
+		return {
+			showCanvas: true,
+		};
 	},
 	created() {
 		this.$store.commit("deleteData");
 		$(document).ready(() => {
 			if ($(window).width() < 800) {
+				this.showCanvas = false;
 				$("#sidebar").removeClass("visible");
 			}
 			this.$store.commit("fixLayout");
