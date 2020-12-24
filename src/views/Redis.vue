@@ -17,20 +17,12 @@
 					</div>
 				</div>
 				<div class="field">
-					<label>Board type</label>
-					<select class="ui fluid dropdown" v-model="boardType">
-						<option value="Pie">Pie</option>
-						<option value="Line">Line</option>
-						<option value="Table">Table</option>
-					</select>
-				</div>
-				<div class="field">
-					<label>IntervalTime</label>
-					<input type="text" v-model="intervalTime" />
-				</div>
-				<div class="field">
 					<label>Add datasrouce to board (optional)</label>
-					<VueSimpleSuggest v-model="boardName" :list="this.$store.getters.getAllBoardName" />
+					<VueSimpleSuggest
+						v-model="boardName"
+						:list="this.$store.getters.getAllBoardName"
+						display-attribute="name"
+					/>
 				</div>
 				<button class="ui button primary" type="button" @click.prevent="createDS">
 					Create datasource
@@ -73,13 +65,8 @@ export default {
 		VueJsonPretty,
 		VueSimpleSuggest,
 	},
-	created() {
-		console.log(this.$store.getters.getAllBoardName);
-	},
 	data() {
 		return {
-			boardType: "Table",
-			intervalTime: 5000,
 			boardName: "",
 			url: "",
 			data: data,
@@ -116,13 +103,10 @@ export default {
 					value: 0,
 				});
 			}
-			if (this.boardName.trim() === "") {
-				this.$notify({
-					group: "noti",
-					title: `Created ${this.value.length} datasources`,
-				});
-				return;
-			}
+			this.$notify({
+				group: "noti",
+				title: `Created ${this.value.length} datasources`,
+			});
 		},
 		addToBoard() {
 			if (this.boardName.trim() === "") {
@@ -155,10 +139,10 @@ export default {
 					i: id,
 					x: 0,
 					y: 0,
-					intervalTime: this.intervalTime,
+					intervalTime: 5000,
 					fields: [],
 					data: [],
-					type: this.boardType,
+					type: "Table",
 				};
 			}
 			for (let o of this.value) {

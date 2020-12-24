@@ -116,7 +116,6 @@ export default {
 	},
 	methods: {
 		exitCanvas() {
-			console.log("here");
 			if (this.focusCanvas) this.focusCanvas = false;
 		},
 		toggleDrawMode() {

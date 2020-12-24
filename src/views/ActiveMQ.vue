@@ -9,10 +9,6 @@
 				</ul>
 			</div>
 			<form class="ui form">
-				<div class="field required">
-					<label>Board name</label>
-					<input type="text" placeholder="Board name" v-model="boardName" />
-				</div>
 				<div class="field">
 					<label>JMX URL</label>
 					<input type="text" placeholder="Jmx url" v-model="jmxUrl" />
@@ -29,39 +25,42 @@
 					<input type="text" v-model="password" />
 				</div>
 				<div class="field">
-					<label>Board type</label>
-					<select class="ui fluid dropdown" v-model="boardType">
-						<option value="Pie">Pie</option>
-						<option value="Line">Line</option>
-						<option value="Table">Table</option>
-					</select>
-				</div>
-				<div class="field">
-					<label>IntervalTime</label>
-					<input type="text" v-model="intervalTime" />
+					<label>Add datasrouce to board (optional)</label>
+					<VueSimpleSuggest v-model="boardName" :list="this.$store.getters.getAllBoardName" />
 				</div>
 				<button class="ui orange button" type="button" @click="show">Show</button>
-				<button class="ui button green" type="button" @click.prevent="submit">Create</button>
+				<button class="ui button green primary" type="button" @click.prevent="createDS">
+					Create DS
+				</button>
+				<button class="ui button green" type="button" @click.prevent="addToBoard">
+					Add to board
+				</button>
 			</form>
 		</div>
 
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
-			<vue-json-pretty
-				v-if="renderOK"
-				v-model="value"
-				:data="data"
-				:deep="deep"
-				:show-double-quotes="showDoubleQuotes"
-				:highlight-mouseover-node="highlightMouseoverNode"
-				:highlight-selected-node="highlightSelectedNode"
-				:show-length="showLength"
-				:show-line="showLine"
-				:select-on-click-node="selectOnClickNode"
-				:collapsed-on-click-brackets="collapsedOnClickBrackets"
-				:path-selectable="(path, data) => path.includes('attribute.')"
-				:selectable-type="selectableType"
-				:show-select-controller="showSelectController"
-			/>
+			<div class="ui segment">
+				<vue-json-pretty
+					v-model="value"
+					:data="data"
+					:deep="deep"
+					:show-double-quotes="true"
+					:highlight-mouseover-node="true"
+					:highlight-selected-node="true"
+					:show-length="false"
+					:show-line="true"
+					:select-on-click-node="false"
+					:collapsed-on-click-brackets="true"
+					:path-selectable="(path) => path.includes('attribute.')"
+					:selectable-type="selectableType"
+					:show-select-controller="true"
+					:virtual="true"
+					@click="elementClick"
+				/>
+				<div :class="['ui', { active: loading }, 'dimmer']">
+					<div class="ui loader"></div>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
@@ -69,38 +68,30 @@
 <script>
 import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
+import VueSimpleSuggest from "vue-simple-suggest";
+import "vue-simple-suggest/dist/styles.css";
 import axios from "axios";
 
 export default {
 	name: "ActiveMQ",
 	components: {
 		VueJsonPretty,
+		VueSimpleSuggest,
 	},
 	data() {
 		return {
-			boardType: "Table",
-			intervalTime: 5000,
 			boardName: "",
 			jmxUrl: "",
 			username: "",
 			password: "",
-			renderOK: true,
-			data: "",
+			data: null,
 			value: [],
 			selectableType: "multiple",
-			showSelectController: true,
-			showLength: false,
-			showLine: true,
-			showDoubleQuotes: true,
-			highlightMouseoverNode: true,
-			highlightSelectedNode: true,
-			selectOnClickNode: true,
-			collapsedOnClickBrackets: true,
-			useCustomLinkFormatter: false,
 			path: "res",
 			deep: 3,
 			itemData: {},
 			itemPath: "",
+			loading: false,
 		};
 	},
 	methods: {
@@ -130,15 +121,10 @@ export default {
 					});
 				});
 		},
-		submit() {
-			if (this.boardName.trim() === "") {
-				this.$notify({
-					group: "noti",
-					title: "Board name can't be empty",
-					type: "error",
-				});
-				return;
-			}
+		elementClick(path, data) {
+			console.log(path);
+		},
+		createDS() {
 			if (this.value.length === 0) {
 				this.$notify({
 					group: "noti",
@@ -147,19 +133,6 @@ export default {
 				});
 				return;
 			}
-			let id = this.$store.getters.getId;
-			let board = {
-				name: this.boardName,
-				w: 6,
-				h: 12,
-				i: id,
-				x: 0,
-				y: 0,
-				intervalTime: this.intervalTime,
-				fields: [],
-				data: [],
-				type: this.boardType,
-			};
 			for (let o of this.value) {
 				let spl = o.split(".");
 				let rs = "org.apache.activemq:";
@@ -201,6 +174,82 @@ export default {
 					},
 					value: 0,
 				});
+			}
+			this.$notify({
+				group: "noti",
+				title: `Created ${this.value.length} datasources`,
+			});
+		},
+		addToBoard() {
+			if (this.boardName.trim() === "") {
+				this.$notify({
+					group: "noti",
+					title: "Board name can't be empty",
+					type: "error",
+				});
+				return;
+			}
+			if (this.value.length === 0) {
+				this.$notify({
+					group: "noti",
+					title: "Pick atleast one attribute",
+					type: "error",
+				});
+				return;
+			}
+			let idCheck = -1;
+			if (this.isJson(this.boardName) && JSON.parse(this.boardName).id) {
+				idCheck = JSON.parse(this.boardName).id;
+			}
+			let board = this.$store.getters.getBoard(idCheck);
+			if (board == null) {
+				let id = this.$store.getters.getId;
+				board = {
+					name: this.boardName,
+					w: 6,
+					h: 12,
+					i: id,
+					x: 0,
+					y: 0,
+					intervalTime: 5000,
+					fields: [],
+					data: [],
+					type: "Table",
+				};
+			}
+			for (let o of this.value) {
+				let spl = o.split(".");
+				let rs = "org.apache.activemq:";
+				for (let i = 3; i < spl.length - 2; i++) {
+					rs = rs.concat(",").concat(spl[i]);
+				}
+				let prefixName = "";
+				for (let i = spl.length - 1; i >= 0; i--) {
+					if (spl[i].includes("clientId")) {
+						let temp = spl[i].split("=")[1].split("-");
+						prefixName = temp[temp.length - 1];
+						break;
+					} else if (spl[i].includes("destinationName")) {
+						prefixName = spl[i].split("=")[1];
+						break;
+					}
+				}
+				if (prefixName !== "") {
+					prefixName += "-";
+				}
+				rs = rs.replace(/:,/g, ":");
+				let datasourceName = prefixName + spl[spl.length - 1];
+				this.$store.commit("addDatasource", {
+					type: "jmx",
+					datasourceName,
+					jmx: {
+						url: this.jmxUrl,
+						objectName: rs,
+						attribute: spl[spl.length - 1],
+						username: this.username,
+						password: this.password,
+					},
+				});
 				board.fields.push({
 					name: prefixName + spl[spl.length - 1],
 					datasourceName: datasourceName,
@@ -210,6 +259,18 @@ export default {
 			this.$store.commit("addBoard", board);
 			this.data = "";
 			this.$router.push({ name: "Home" });
+		},
+		isJson(item) {
+			item = typeof item !== "string" ? JSON.stringify(item) : item;
+			try {
+				item = JSON.parse(item);
+			} catch (e) {
+				return false;
+			}
+			if (typeof item === "object" && item !== null) {
+				return true;
+			}
+			return false;
 		},
 	},
 };
