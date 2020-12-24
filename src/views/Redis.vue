@@ -1,5 +1,5 @@
 <template>
-	<div class="ui grid" style="padding: 20px">
+	<div class="ui stackable two column grid" style="padding: 20px">
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<div class="ui message">
 				<ul class="list">
@@ -10,10 +10,6 @@
 			</div>
 			<form class="ui form">
 				<div class="field required">
-					<label>Board name</label>
-					<input type="text" placeholder="Board name" v-model="boardName" />
-				</div>
-				<div class="field">
 					<label>Redis url</label>
 					<input type="text" placeholder="Redis url" v-model="url" />
 					<div class="ui pointing label">
@@ -32,26 +28,34 @@
 					<label>IntervalTime</label>
 					<input type="text" v-model="intervalTime" />
 				</div>
-				<button class="ui button green" type="button" @click.prevent="submit">Create</button>
+				<div class="field">
+					<label>Add datasrouce to board (optional)</label>
+					<VueSimpleSuggest v-model="boardName" :list="this.$store.getters.getAllBoardName" />
+				</div>
+				<button class="ui button primary" type="button" @click.prevent="createDS">
+					Create datasource
+				</button>
+				<button class="ui button green" type="button" @click.prevent="addToBoard">
+					Add to board
+				</button>
 			</form>
 		</div>
 
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<vue-json-pretty
-				v-if="renderOK"
 				v-model="value"
 				:data="data"
 				:deep="deep"
-				:show-double-quotes="showDoubleQuotes"
-				:highlight-mouseover-node="highlightMouseoverNode"
-				:highlight-selected-node="highlightSelectedNode"
-				:show-length="showLength"
-				:show-line="showLine"
-				:select-on-click-node="selectOnClickNode"
-				:collapsed-on-click-brackets="collapsedOnClickBrackets"
+				:show-double-quotes="true"
+				:highlight-mouseover-node="true"
+				:highlight-selected-node="true"
+				:show-length="false"
+				:show-line="true"
+				:select-on-click-node="false"
+				:collapsed-on-click-brackets="true"
 				:path-selectable="(path, data) => typeof data !== 'object'"
 				:selectable-type="selectableType"
-				:show-select-controller="showSelectController"
+				:show-select-controller="true"
 			/>
 		</div>
 	</div>
@@ -60,11 +64,17 @@
 <script>
 import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
+import VueSimpleSuggest from "vue-simple-suggest";
+import "vue-simple-suggest/dist/styles.css";
 
 export default {
 	name: "Redis",
 	components: {
 		VueJsonPretty,
+		VueSimpleSuggest,
+	},
+	created() {
+		console.log(this.$store.getters.getAllBoardName);
 	},
 	data() {
 		return {
@@ -72,26 +82,49 @@ export default {
 			intervalTime: 5000,
 			boardName: "",
 			url: "",
-			renderOK: true,
 			data: data,
 			value: [],
 			selectableType: "multiple",
-			showSelectController: true,
-			showLength: false,
-			showLine: true,
-			showDoubleQuotes: true,
-			highlightMouseoverNode: true,
-			highlightSelectedNode: true,
-			selectOnClickNode: true,
-			collapsedOnClickBrackets: true,
-			useCustomLinkFormatter: false,
 			deep: 1,
 			itemData: {},
 			itemPath: "",
 		};
 	},
 	methods: {
-		submit() {
+		createDS() {
+			for (let o of this.value) {
+				if (this.value.length === 0) {
+					this.$notify({
+						group: "noti",
+						title: "Pick atleast one attribute",
+						type: "error",
+					});
+					return;
+				}
+				let spl = o.split(".");
+				let section = spl[1];
+				let attribute = spl[2];
+				let datasourceName = this.url.substring(8).match(/.+(?=\/*)/)[0] + "-" + attribute;
+				this.$store.commit("addDatasource", {
+					type: "redis",
+					datasourceName,
+					redis: {
+						url: this.url,
+						section,
+						attribute,
+					},
+					value: 0,
+				});
+			}
+			if (this.boardName.trim() === "") {
+				this.$notify({
+					group: "noti",
+					title: `Created ${this.value.length} datasources`,
+				});
+				return;
+			}
+		},
+		addToBoard() {
 			if (this.boardName.trim() === "") {
 				this.$notify({
 					group: "noti",
@@ -108,19 +141,26 @@ export default {
 				});
 				return;
 			}
-			let id = this.$store.getters.getId;
-			let board = {
-				name: this.boardName,
-				w: 6,
-				h: 12,
-				i: id,
-				x: 0,
-				y: 0,
-				intervalTime: this.intervalTime,
-				fields: [],
-				data: [],
-				type: this.boardType,
-			};
+			let idCheck = -1;
+			if (this.isJson(this.boardName) && JSON.parse(this.boardName).id) {
+				idCheck = JSON.parse(this.boardName).id;
+			}
+			let board = this.$store.getters.getBoard(idCheck);
+			if (board == null) {
+				let id = this.$store.getters.getId;
+				board = {
+					name: this.boardName.trim(),
+					w: 6,
+					h: 12,
+					i: id,
+					x: 0,
+					y: 0,
+					intervalTime: this.intervalTime,
+					fields: [],
+					data: [],
+					type: this.boardType,
+				};
+			}
 			for (let o of this.value) {
 				let spl = o.split(".");
 				let section = spl[1];
@@ -145,6 +185,18 @@ export default {
 			this.$store.commit("addBoard", board);
 			this.data = "";
 			this.$router.push({ name: "Home" });
+		},
+		isJson(item) {
+			item = typeof item !== "string" ? JSON.stringify(item) : item;
+			try {
+				item = JSON.parse(item);
+			} catch (e) {
+				return false;
+			}
+			if (typeof item === "object" && item !== null) {
+				return true;
+			}
+			return false;
 		},
 	},
 };

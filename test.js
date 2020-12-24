@@ -1,5 +1,8 @@
-let a = "redis://localhost:6379";
-let re = new RegExp(/.+(?=\/*)/);
-let rs = a.substring(8).match(/.+(?=\/*)/);
-// let rs = re.exec(a.substring(8));
-console.log(rs[0]);
+let a = [
+	{ name: "koha", id: 1 },
+	{ name: "koha", id: 2 },
+	{ name: "koha", id: 3 },
+	{ name: "koha", id: 4 },
+];
+let r = a.reduce((rs, cur) => [...rs, cur.id], []);
+console.log(r);

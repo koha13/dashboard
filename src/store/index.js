@@ -249,10 +249,14 @@ export default new Vuex.Store({
 		getBoards(state) {
 			return state.boards;
 		},
+		getAllBoardName(state) {
+			return state.boards.reduce((rs, cur) => [...rs, { name: cur.name, id: cur.i }], []);
+		},
 		getBoard: (state) => (id) => {
 			for (let i = 0; i < state.boards.length; i++) {
 				if (state.boards[i].i === id) return state.boards[i];
 			}
+			return null;
 		},
 		getDatasource: (state) => (id) => {
 			for (let i = 0; i < state.datasources.length; i++) {

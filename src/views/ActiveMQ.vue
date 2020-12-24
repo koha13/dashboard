@@ -1,5 +1,5 @@
 <template>
-	<div class="ui centered grid" style="width:100%;margin:0;padding:10px">
+	<div class="ui stackable two column grid" style="width:100%;margin:0;padding:10px">
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<div class="ui message">
 				<ul class="list">
