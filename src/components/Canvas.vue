@@ -18,7 +18,7 @@
 				{ red: focusCanvas },
 				'button',
 			]"
-			style="position:absolute;bottom:10px;right:0;z-index:1000"
+			style="position:fixed;bottom:10px;right:0;z-index:1000"
 			@click="toggleDrawMode"
 		>
 			<i class="left chevron icon"></i>
