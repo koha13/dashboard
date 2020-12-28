@@ -1,13 +1,13 @@
 <template>
 	<div class="ui stackable two column grid" style="width:100%;margin:0;padding:10px">
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
-			<div class="ui message">
+			<!-- <div class="ui message">
 				<ul class="list">
 					<li>Enter jmx url then click show</li>
 					<li>Pick attribute in json viewer in the right</li>
 					<li>Enter boardname then click create</li>
 				</ul>
-			</div>
+			</div> -->
 			<form class="ui form">
 				<div class="field">
 					<label>JMX URL</label>
@@ -17,13 +17,44 @@
 					</div>
 				</div>
 				<div class="field">
-					<label>Username</label>
-					<input type="text" v-model="username" />
+					<div class="two fields">
+						<div class="field">
+							<label>Username</label>
+							<input type="text" v-model="username" placeholder="Username" />
+						</div>
+						<div class="field">
+							<label>Password</label>
+							<input type="text" v-model="password" placeholder="Password" />
+						</div>
+					</div>
 				</div>
-				<div class="field">
-					<label>Password</label>
-					<input type="text" v-model="password" />
-				</div>
+				<table class="ui basic selectable celled small table" style="padding:0;">
+					<thead>
+						<tr>
+							<th colspan="7">
+								Datasources
+							</th>
+						</tr>
+						<tr>
+							<th>Name</th>
+							<th>Option</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr v-for="(d, index) in ds" :key="d.name">
+							<td>{{ d.datasourceName }}</td>
+							<td class="collapsing">
+								<button
+									class="ui mini negative basic button"
+									type="button"
+									@click="deleteDS(index)"
+								>
+									Delete
+								</button>
+							</td>
+						</tr>
+					</tbody>
+				</table>
 				<div class="field">
 					<label>Add datasrouce to board (optional)</label>
 					<VueSimpleSuggest v-model="boardName" :list="this.$store.getters.getAllBoardName" />
@@ -41,23 +72,19 @@
 		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
 			<div class="ui segment">
 				<vue-json-pretty
-					v-model="value"
 					:data="data"
 					:deep="deep"
 					:show-double-quotes="true"
 					:highlight-mouseover-node="true"
-					:highlight-selected-node="true"
 					:show-length="false"
 					:show-line="true"
 					:select-on-click-node="false"
 					:collapsed-on-click-brackets="true"
-					:path-selectable="(path) => path.includes('attribute.')"
-					:selectable-type="selectableType"
-					:show-select-controller="true"
 					:virtual="true"
 					@click="elementClick"
+					style="cursor:pointer"
 				/>
-				<div :class="['ui', { active: loading }, 'dimmer']">
+				<div :class="['ui', { active: loading }, 'inverted', 'dimmer']">
 					<div class="ui loader"></div>
 				</div>
 			</div>
@@ -85,13 +112,9 @@ export default {
 			username: "",
 			password: "",
 			data: null,
-			value: [],
-			selectableType: "multiple",
-			path: "res",
 			deep: 3,
-			itemData: {},
-			itemPath: "",
 			loading: false,
+			ds: [],
 		};
 	},
 	methods: {
@@ -104,6 +127,7 @@ export default {
 				});
 				return;
 			}
+			this.loading = true;
 			axios
 				.post(process.env.VUE_APP_BASE_API + "/previewjmx", {
 					url: this.jmxUrl,
@@ -112,8 +136,10 @@ export default {
 				})
 				.then((res) => {
 					this.data = res.data;
+					this.loading = false;
 				})
 				.catch((err) => {
+					this.loading = false;
 					this.$notify({
 						group: "noti",
 						title: "Can't get jmx information",
@@ -122,40 +148,38 @@ export default {
 				});
 		},
 		elementClick(path, data) {
-			console.log(path);
-		},
-		createDS() {
-			if (this.value.length === 0) {
-				this.$notify({
-					group: "noti",
-					title: "Pick atleast one attribute",
-					type: "error",
-				});
+			if (!path.includes("attribute.")) {
 				return;
 			}
-			for (let o of this.value) {
-				let spl = o.split(".");
-				let rs = "org.apache.activemq:";
-				for (let i = 3; i < spl.length - 2; i++) {
-					rs = rs.concat(",").concat(spl[i]);
+			let spl = path.split(".");
+			let rs = "org.apache.activemq:";
+			for (let i = 3; i < spl.length - 2; i++) {
+				rs = rs.concat(",").concat(spl[i]);
+			}
+			let prefixName = "";
+			for (let i = spl.length - 1; i >= 0; i--) {
+				if (spl[i].includes("clientId")) {
+					let temp = spl[i].split("=")[1].split("-");
+					prefixName = temp[temp.length - 1];
+					break;
+				} else if (spl[i].includes("destinationName")) {
+					prefixName = spl[i].split("=")[1];
+					break;
 				}
-				let prefixName = "";
-				for (let i = spl.length - 1; i >= 0; i--) {
-					if (spl[i].includes("clientId")) {
-						let temp = spl[i].split("=")[1].split("-");
-						prefixName = temp[temp.length - 1];
-						break;
-					} else if (spl[i].includes("destinationName")) {
-						prefixName = spl[i].split("=")[1];
-						break;
-					}
+			}
+			if (prefixName !== "") {
+				prefixName += "-";
+			}
+			rs = rs.replace(/:,/g, ":");
+			let datasourceName = prefixName + spl[spl.length - 1];
+			let check = false;
+			for (let o of this.ds) {
+				if (o.datasourceName === datasourceName) {
+					check = true;
 				}
-				if (prefixName !== "") {
-					prefixName += "-";
-				}
-				rs = rs.replace(/:,/g, ":");
-				let datasourceName = prefixName + spl[spl.length - 1];
-				this.$store.commit("addDatasource", {
+			}
+			if (!check) {
+				this.ds.push({
 					type: "jmx",
 					datasourceName,
 					jmx: {
@@ -165,19 +189,61 @@ export default {
 						username: this.username,
 						password: this.password,
 					},
-					json: {
-						url: "",
-						path: "",
-						method: "GET",
-						config: "{}",
-						body: "{}",
-					},
-					value: 0,
 				});
 			}
+		},
+		deleteDS(index) {
+			this.ds.splice(index, 1);
+		},
+		createDS() {
+			if (this.ds.length === 0) {
+				this.$notify({
+					group: "noti",
+					title: "Pick atleast one attribute",
+					type: "error",
+				});
+				return;
+			}
+			for (let d of this.ds) {
+				this.$store.commit("addDatasource", d);
+			}
+			// for (let o of this.value) {
+			// 	let spl = o.split(".");
+			// 	let rs = "org.apache.activemq:";
+			// 	for (let i = 3; i < spl.length - 2; i++) {
+			// 		rs = rs.concat(",").concat(spl[i]);
+			// 	}
+			// 	let prefixName = "";
+			// 	for (let i = spl.length - 1; i >= 0; i--) {
+			// 		if (spl[i].includes("clientId")) {
+			// 			let temp = spl[i].split("=")[1].split("-");
+			// 			prefixName = temp[temp.length - 1];
+			// 			break;
+			// 		} else if (spl[i].includes("destinationName")) {
+			// 			prefixName = spl[i].split("=")[1];
+			// 			break;
+			// 		}
+			// 	}
+			// 	if (prefixName !== "") {
+			// 		prefixName += "-";
+			// 	}
+			// 	rs = rs.replace(/:,/g, ":");
+			// 	let datasourceName = prefixName + spl[spl.length - 1];
+			// 	this.$store.commit("addDatasource", {
+			// 		type: "jmx",
+			// 		datasourceName,
+			// 		jmx: {
+			// 			url: this.jmxUrl,
+			// 			objectName: rs,
+			// 			attribute: spl[spl.length - 1],
+			// 			username: this.username,
+			// 			password: this.password,
+			// 		},
+			// 	});
+			// }
 			this.$notify({
 				group: "noti",
-				title: `Created ${this.value.length} datasources`,
+				title: `Created ${this.ds.length} datasources`,
 			});
 		},
 		addToBoard() {
@@ -189,7 +255,7 @@ export default {
 				});
 				return;
 			}
-			if (this.value.length === 0) {
+			if (this.ds.length === 0) {
 				this.$notify({
 					group: "noti",
 					title: "Pick atleast one attribute",
@@ -217,47 +283,15 @@ export default {
 					type: "Table",
 				};
 			}
-			for (let o of this.value) {
-				let spl = o.split(".");
-				let rs = "org.apache.activemq:";
-				for (let i = 3; i < spl.length - 2; i++) {
-					rs = rs.concat(",").concat(spl[i]);
-				}
-				let prefixName = "";
-				for (let i = spl.length - 1; i >= 0; i--) {
-					if (spl[i].includes("clientId")) {
-						let temp = spl[i].split("=")[1].split("-");
-						prefixName = temp[temp.length - 1];
-						break;
-					} else if (spl[i].includes("destinationName")) {
-						prefixName = spl[i].split("=")[1];
-						break;
-					}
-				}
-				if (prefixName !== "") {
-					prefixName += "-";
-				}
-				rs = rs.replace(/:,/g, ":");
-				let datasourceName = prefixName + spl[spl.length - 1];
-				this.$store.commit("addDatasource", {
-					type: "jmx",
-					datasourceName,
-					jmx: {
-						url: this.jmxUrl,
-						objectName: rs,
-						attribute: spl[spl.length - 1],
-						username: this.username,
-						password: this.password,
-					},
-				});
+			for (let d of this.ds) {
+				this.$store.commit("addDatasource", d);
 				board.fields.push({
-					name: prefixName + spl[spl.length - 1],
-					datasourceName: datasourceName,
+					name: d.datasourceName,
+					datasourceName: d.datasourceName,
 					warning: "",
 				});
 			}
 			this.$store.commit("addBoard", board);
-			this.data = "";
 			this.$router.push({ name: "Home" });
 		},
 		isJson(item) {

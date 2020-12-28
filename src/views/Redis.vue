@@ -18,11 +18,17 @@
 				</div>
 				<div class="field">
 					<label>Add datasrouce to board (optional)</label>
-					<VueSimpleSuggest
+					<VueTaggedSelect
+						v-model="boardName"
+						:options="this.$store.getters.getAllBoardName"
+						:optionKey="'id'"
+						:taggable="true"
+					></VueTaggedSelect>
+					<!-- <VueSimpleSuggest
 						v-model="boardName"
 						:list="this.$store.getters.getAllBoardName"
 						display-attribute="name"
-					/>
+					/> -->
 				</div>
 				<button class="ui button primary" type="button" @click.prevent="createDS">
 					Create datasource
@@ -58,12 +64,16 @@ import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
 import VueSimpleSuggest from "vue-simple-suggest";
 import "vue-simple-suggest/dist/styles.css";
+import VueMultiSelect from "@/components/multiple-autocomplete-input";
+import VueTaggedSelect from "@/components/multiple-autocomplete-input/VueTaggedSelect";
 
 export default {
 	name: "Redis",
 	components: {
 		VueJsonPretty,
 		VueSimpleSuggest,
+		VueMultiSelect,
+		VueTaggedSelect,
 	},
 	data() {
 		return {
@@ -109,7 +119,15 @@ export default {
 			});
 		},
 		addToBoard() {
-			if (this.boardName.trim() === "") {
+			if (this.url === "" || this.url === null) {
+				this.$notify({
+					group: "noti",
+					title: "Redis url can't be empty",
+					type: "error",
+				});
+				return;
+			}
+			if (this.boardName.length == 0) {
 				this.$notify({
 					group: "noti",
 					title: "Board name can't be empty",
@@ -125,25 +143,27 @@ export default {
 				});
 				return;
 			}
-			let idCheck = -1;
-			if (this.isJson(this.boardName) && JSON.parse(this.boardName).id) {
-				idCheck = JSON.parse(this.boardName).id;
-			}
-			let board = this.$store.getters.getBoard(idCheck);
-			if (board == null) {
-				let id = this.$store.getters.getId;
-				board = {
-					name: this.boardName.trim(),
-					w: 6,
-					h: 12,
-					i: id,
-					x: 0,
-					y: 0,
-					intervalTime: 5000,
-					fields: [],
-					data: [],
-					type: "Table",
-				};
+			let boardList = [];
+			for (let b of this.boardName) {
+				if (b.id >= 0) {
+					boardList.push(this.$store.getters.getBoard(b.id));
+				} else {
+					let id = this.$store.getters.getId;
+					let board = {
+						name: b.name,
+						w: 6,
+						h: 12,
+						i: id,
+						x: 0,
+						y: 0,
+						intervalTime: 5000,
+						fields: [],
+						data: [],
+						type: "Table",
+					};
+					this.$store.commit("addBoard", board);
+					boardList.push(board);
+				}
 			}
 			for (let o of this.value) {
 				let spl = o.split(".");
@@ -160,13 +180,17 @@ export default {
 					},
 					value: 0,
 				});
-				board.fields.push({
-					name: attribute,
-					datasourceName,
-					warning: "",
-				});
+				for (let b of boardList) {
+					this.$store.commit("addFieldToBoard", {
+						i: b.i,
+						field: {
+							name: attribute,
+							datasourceName,
+							warning: "",
+						},
+					});
+				}
 			}
-			this.$store.commit("addBoard", board);
 			this.data = "";
 			this.$router.push({ name: "Home" });
 		},

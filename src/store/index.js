@@ -160,6 +160,14 @@ export default new Vuex.Store({
 				t += b.h;
 			}
 		},
+		addFieldToBoard(state, payload) {
+			for (let b of state.boards) {
+				if (b.i === payload.i) {
+					b.fields.push(payload.field);
+					return;
+				}
+			}
+		},
 	},
 	actions: {
 		updateBoard({ getters, commit }, value) {
