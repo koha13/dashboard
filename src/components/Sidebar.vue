@@ -2,9 +2,9 @@
 	<div
 		id="sidebar"
 		class="ui left demo vertical three item visible sidebar labeled inverted icon menu"
-		style="background:#24292e"
+		style="background:#24292e; border:none; box-shadow:none !important"
 	>
-		<router-link class="item" to="/">
+		<router-link class="item" to="/" active-class="test">
 			<i class="dashboard icon"></i>
 			Dashboard
 		</router-link>
@@ -120,3 +120,10 @@ export default {
 	},
 };
 </script>
+<style>
+.router-link-active,
+.router-link-exact-active {
+	background-color: #f6f8fa !important;
+	color: black !important;
+}
+</style>
