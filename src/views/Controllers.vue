@@ -28,7 +28,7 @@
 									query: { url: con.url },
 								}"
 								tag="button"
-								class="ui mini primary button"
+								class="ui mini green button"
 								>Control</router-link
 							>
 							<button

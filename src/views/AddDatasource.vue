@@ -89,7 +89,7 @@
 			>
 				Test
 			</button>
-			<button class="ui button primary" type="submit">Submit</button>
+			<button class="ui button green" type="submit">Submit</button>
 		</form>
 	</div>
 </template>

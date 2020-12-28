@@ -1,5 +1,5 @@
 <template>
-	<div id="app">
+	<div id="app" style="height:100vh">
 		<div class="header-main" style="width:100vw; height:35px;background:white;position: relative;">
 			<button class="ui icon button" style="background:transparent">
 				<i class="bars icon" @click="toggleSidebar"></i>
@@ -12,6 +12,21 @@
 		</div>
 		<Sidebar />
 		<div class="rv">
+			<div
+				style="position: relative; top:50vh; transform: translateY(-50%); text-align: center;"
+				v-if="$route.name === 'Home' && $store.getters.getBoards == 0"
+			>
+				<h3 class="ui">
+					No board to show
+				</h3>
+				<p>
+					Create new board
+					<router-link tag="button" to="/create" class="circular green ui icon button">
+						<i class="icon plus square"></i>
+					</router-link>
+				</p>
+			</div>
+
 			<keep-alive exclude="chart,datasource,ActiveMQ,Redis">
 				<router-view :key="$route.fullPath" />
 			</keep-alive>

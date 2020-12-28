@@ -14,7 +14,7 @@
 				'labeled',
 				'icon',
 				'mini',
-				{ blue: !focusCanvas },
+				{ green: !focusCanvas },
 				{ red: focusCanvas },
 				'button',
 			]"

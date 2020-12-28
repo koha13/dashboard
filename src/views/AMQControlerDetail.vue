@@ -33,7 +33,7 @@
 						<tr>
 							<th colspan="7">
 								All connectors
-								<button class="ui primary mini button" style="margin:0 10px" @click="fetchData">
+								<button class="ui green mini button" style="margin:0 10px" @click="fetchData">
 									Refresh
 								</button>
 							</th>
@@ -64,7 +64,7 @@
 							<td>{{ con.destinations }}</td>
 							<td class="collapsing">
 								<button
-									class="ui mini primary button"
+									class="ui mini green button"
 									v-if="con.destinations.length > 0"
 									@click="
 										$router.push({

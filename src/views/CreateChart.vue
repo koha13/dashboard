@@ -53,7 +53,7 @@
 						</div>
 					</div>
 					<div class="field">
-						<button class="ui button primary" @click.prevent="addField">Add</button>
+						<button class="ui button green" @click.prevent="addField">Add</button>
 					</div>
 				</div>
 				<table class="ui celled table">
@@ -82,7 +82,7 @@
 						</tr>
 					</tbody>
 				</table>
-				<button class="ui button primary" type="submit">Submit</button>
+				<button class="ui button green" type="submit">Submit</button>
 			</form>
 		</div>
 		<div class="ui basic modal" id="updateField">

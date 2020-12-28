@@ -342,8 +342,6 @@ export default {
 				// 	newOption = option;
 				// }
 
-				console.log("here", option);
-
 				this.$emit("option-created", option);
 
 				return option;
@@ -360,7 +358,6 @@ export default {
 			type: Function,
 			required: false,
 			default(option, givenOptions) {
-				console.log(option, givenOptions);
 				// if (this.optionValue) {
 				// 	return givenOptions.find((opt) => opt[this.optionKey] === this.getOptionValue(option));
 				// }
@@ -428,7 +425,6 @@ export default {
 			}
 
 			let opt = this.findExistingOption(value, this.mutableOptions.slice(0));
-			console.log("opt:", opt);
 
 			if (typeof opt === "undefined") {
 				this.setOption(this.createOption(value));
@@ -513,7 +509,6 @@ export default {
 			}
 
 			if (this.optionKey) {
-				console.log(this.optionKey);
 				return this.mutableOptions
 					.filter(
 						(option) =>

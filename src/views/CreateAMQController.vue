@@ -23,7 +23,7 @@
 				<label>Password</label>
 				<input type="text" v-model="password" placeholder="Password" />
 			</div>
-			<button class="ui button primary" type="submit">Submit</button>
+			<button class="ui button green" type="submit">Submit</button>
 		</form>
 	</div>
 </template>

@@ -15,7 +15,7 @@
 					<tr v-for="f in datasources" :key="f.name">
 						<td data-label="Field name">{{ f.datasourceName }}</td>
 						<td class="collapsing">
-							<button class="ui mini button primary" @click.prevent="updateDS(f.datasourceName)">
+							<button class="ui mini button green" @click.prevent="updateDS(f.datasourceName)">
 								Option
 							</button>
 							<button

@@ -65,7 +65,7 @@
 					></VueTaggedSelect>
 				</div>
 				<button class="ui orange button" type="button" @click="show">Show</button>
-				<button class="ui button green primary" type="button" @click.prevent="createDS">
+				<button class="ui button green green" type="button" @click.prevent="createDS">
 					Create DS
 				</button>
 				<button class="ui button green" type="button" @click.prevent="addToBoard">
@@ -74,7 +74,7 @@
 			</form>
 		</div>
 
-		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px">
+		<div class="eight wide column" style="padding:15px; background:white; border-radius:5px;">
 			<div class="ui segment">
 				<vue-json-pretty
 					:data="data"

@@ -30,10 +30,10 @@
 						display-attribute="name"
 					/> -->
 				</div>
-				<button class="ui button primary" type="button" @click.prevent="createDS">
+				<button class="ui button green" type="button" @click.prevent="createDS">
 					Create datasource
 				</button>
-				<button class="ui button green" type="button" @click.prevent="addToBoard">
+				<button class="ui button primary" type="button" @click.prevent="addToBoard">
 					Add to board
 				</button>
 			</form>
