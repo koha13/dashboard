@@ -16,7 +16,7 @@
 				<router-view :key="$route.fullPath" />
 			</keep-alive>
 		</div>
-		<Canvas v-if="showCanvas" />
+		<Canvas v-if="showCanvas && $route.name == 'Home'" />
 		<notifications group="noti" position="bottom left" />
 	</div>
 </template>
