@@ -62,17 +62,12 @@
 <script>
 import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
-import VueSimpleSuggest from "vue-simple-suggest";
-import "vue-simple-suggest/dist/styles.css";
-import VueMultiSelect from "@/components/multiple-autocomplete-input";
 import VueTaggedSelect from "@/components/multiple-autocomplete-input/VueTaggedSelect";
 
 export default {
 	name: "Redis",
 	components: {
 		VueJsonPretty,
-		VueSimpleSuggest,
-		VueMultiSelect,
 		VueTaggedSelect,
 	},
 	data() {
@@ -83,8 +78,6 @@ export default {
 			value: [],
 			selectableType: "multiple",
 			deep: 1,
-			itemData: {},
-			itemPath: "",
 		};
 	},
 	methods: {
@@ -191,20 +184,7 @@ export default {
 					});
 				}
 			}
-			this.data = "";
 			this.$router.push({ name: "Home" });
-		},
-		isJson(item) {
-			item = typeof item !== "string" ? JSON.stringify(item) : item;
-			try {
-				item = JSON.parse(item);
-			} catch (e) {
-				return false;
-			}
-			if (typeof item === "object" && item !== null) {
-				return true;
-			}
-			return false;
 		},
 	},
 };

@@ -57,7 +57,12 @@
 				</table>
 				<div class="field">
 					<label>Add datasrouce to board (optional)</label>
-					<VueSimpleSuggest v-model="boardName" :list="this.$store.getters.getAllBoardName" />
+					<VueTaggedSelect
+						v-model="boardName"
+						:options="this.$store.getters.getAllBoardName"
+						:optionKey="'id'"
+						:taggable="true"
+					></VueTaggedSelect>
 				</div>
 				<button class="ui orange button" type="button" @click="show">Show</button>
 				<button class="ui button green primary" type="button" @click.prevent="createDS">
@@ -95,15 +100,14 @@
 <script>
 import VueJsonPretty from "vue-json-pretty";
 import "vue-json-pretty/lib/styles.css";
-import VueSimpleSuggest from "vue-simple-suggest";
-import "vue-simple-suggest/dist/styles.css";
 import axios from "axios";
+import VueTaggedSelect from "@/components/multiple-autocomplete-input/VueTaggedSelect";
 
 export default {
 	name: "ActiveMQ",
 	components: {
 		VueJsonPretty,
-		VueSimpleSuggest,
+		VueTaggedSelect,
 	},
 	data() {
 		return {
@@ -207,47 +211,13 @@ export default {
 			for (let d of this.ds) {
 				this.$store.commit("addDatasource", d);
 			}
-			// for (let o of this.value) {
-			// 	let spl = o.split(".");
-			// 	let rs = "org.apache.activemq:";
-			// 	for (let i = 3; i < spl.length - 2; i++) {
-			// 		rs = rs.concat(",").concat(spl[i]);
-			// 	}
-			// 	let prefixName = "";
-			// 	for (let i = spl.length - 1; i >= 0; i--) {
-			// 		if (spl[i].includes("clientId")) {
-			// 			let temp = spl[i].split("=")[1].split("-");
-			// 			prefixName = temp[temp.length - 1];
-			// 			break;
-			// 		} else if (spl[i].includes("destinationName")) {
-			// 			prefixName = spl[i].split("=")[1];
-			// 			break;
-			// 		}
-			// 	}
-			// 	if (prefixName !== "") {
-			// 		prefixName += "-";
-			// 	}
-			// 	rs = rs.replace(/:,/g, ":");
-			// 	let datasourceName = prefixName + spl[spl.length - 1];
-			// 	this.$store.commit("addDatasource", {
-			// 		type: "jmx",
-			// 		datasourceName,
-			// 		jmx: {
-			// 			url: this.jmxUrl,
-			// 			objectName: rs,
-			// 			attribute: spl[spl.length - 1],
-			// 			username: this.username,
-			// 			password: this.password,
-			// 		},
-			// 	});
-			// }
 			this.$notify({
 				group: "noti",
 				title: `Created ${this.ds.length} datasources`,
 			});
 		},
 		addToBoard() {
-			if (this.boardName.trim() === "") {
+			if (this.boardName.length == 0) {
 				this.$notify({
 					group: "noti",
 					title: "Board name can't be empty",
@@ -263,35 +233,47 @@ export default {
 				});
 				return;
 			}
-			let idCheck = -1;
-			if (this.isJson(this.boardName) && JSON.parse(this.boardName).id) {
-				idCheck = JSON.parse(this.boardName).id;
-			}
-			let board = this.$store.getters.getBoard(idCheck);
-			if (board == null) {
-				let id = this.$store.getters.getId;
-				board = {
-					name: this.boardName,
-					w: 6,
-					h: 12,
-					i: id,
-					x: 0,
-					y: 0,
-					intervalTime: 5000,
-					fields: [],
-					data: [],
-					type: "Table",
-				};
+			let boardList = [];
+			for (let b of this.boardName) {
+				if (b.id >= 0) {
+					boardList.push(this.$store.getters.getBoard(b.id));
+				} else {
+					let id = this.$store.getters.getId;
+					let board = {
+						name: b.name,
+						w: 6,
+						h: 12,
+						i: id,
+						x: 0,
+						y: 0,
+						intervalTime: 5000,
+						fields: [],
+						data: [],
+						type: "Table",
+					};
+					this.$store.commit("addBoard", board);
+					boardList.push(board);
+				}
 			}
 			for (let d of this.ds) {
 				this.$store.commit("addDatasource", d);
-				board.fields.push({
-					name: d.datasourceName,
-					datasourceName: d.datasourceName,
-					warning: "",
-				});
+				// board.fields.push({
+				// 	name: d.datasourceName,
+				// 	datasourceName: d.datasourceName,
+				// 	warning: "",
+				// });
+				for (let b of boardList) {
+					this.$store.commit("addFieldToBoard", {
+						i: b.i,
+						field: {
+							name: d.datasourceName,
+							datasourceName: d.datasourceName,
+							warning: "",
+						},
+					});
+				}
 			}
-			this.$store.commit("addBoard", board);
+			// this.$store.commit("addBoard", board);
 			this.$router.push({ name: "Home" });
 		},
 		isJson(item) {

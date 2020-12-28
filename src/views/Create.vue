@@ -1,6 +1,6 @@
 <template>
 	<div style="padding:20px">
-		<h2 class="ui header">Create chart</h2>
+		<h2 class="ui header">Create</h2>
 		<div class="ui six doubling cards">
 			<div class="ui centered card" @click="$router.push({ name: 'Chart' })">
 				<div class="image">
@@ -28,8 +28,28 @@
 					<p class="header">Redis chart</p>
 				</div>
 			</div>
+			<router-link class="ui centered card" tag="div" :to="{ name: 'Datasource' }">
+				<div class="image">
+					<img
+						src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNLXjkMMHXBgG71TqX__8AnIYSjeL2v5ktnwMTRpEaMHFzZPfTk4sTQAtRLHnP0YRAHWXFlEWGA9kBOKcJC_E2bJFyPN1JtppiiQ&amp;usqp=CAU&amp;ec=45732301"
+					/>
+				</div>
+				<div class="content">
+					<p class="header">Create datasource</p>
+				</div>
+			</router-link>
+			<router-link class="ui centered card" tag="div" :to="{ name: 'CreateAMQController' }">
+				<div class="image">
+					<img
+						src="https://d1nhio0ox7pgb.cloudfront.net/_img/o_collection_png/green_dark_grey/512x512/plain/wrench.png"
+					/>
+				</div>
+				<div class="content">
+					<p class="header">ActiveMQ controller</p>
+				</div>
+			</router-link>
 		</div>
-		<div class="ui divider"></div>
+		<!-- <div class="ui divider"></div>
 		<h2 class="ui header">Create Other</h2>
 		<div class="ui six doubling cards">
 			<router-link class="ui centered card" tag="div" :to="{ name: 'Datasource' }">
@@ -52,7 +72,7 @@
 					<p class="header">ActiveMQ controller</p>
 				</div>
 			</router-link>
-		</div>
+		</div> -->
 	</div>
 </template>
 
