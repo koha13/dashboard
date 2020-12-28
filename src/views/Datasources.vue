@@ -2,18 +2,29 @@
 	<div class="ui centered grid" style="width:100%;margin:0;padding:10px">
 		<div class="row">
 			<table
-				class="ui fixed selectable single line celled small table"
+				class="ui selectable single line celled small table"
 				style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)"
 			>
 				<thead>
 					<tr>
-						<th class="twelve wide">Datasource Name</th>
-						<th class="four wide">option</th>
+						<th colspan="2">All Datasources</th>
+					</tr>
+					<tr>
+						<th>Datasource Name</th>
+						<th>option</th>
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td colspan="2" style="text-align:center" v-if="datasources.length == 0">
+							Create new datasource
+							<router-link tag="button" to="/create" class="mini green ui icon button">
+								<i class="icon plus square"></i>
+							</router-link>
+						</td>
+					</tr>
 					<tr v-for="f in datasources" :key="f.name">
-						<td data-label="Field name">{{ f.datasourceName }}</td>
+						<td>{{ f.datasourceName }}</td>
 						<td class="collapsing">
 							<button class="ui mini button green" @click.prevent="updateDS(f.datasourceName)">
 								Option

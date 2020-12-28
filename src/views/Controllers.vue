@@ -18,6 +18,18 @@
 					</tr>
 				</thead>
 				<tbody>
+					<tr>
+						<td
+							colspan="3"
+							style="text-align:center"
+							v-if="$store.getters.allControllers.length == 0"
+						>
+							Create new controller
+							<router-link tag="button" to="/create" class="mini green ui icon button">
+								<i class="icon plus square"></i>
+							</router-link>
+						</td>
+					</tr>
 					<tr v-for="con in $store.getters.allControllers" :key="con.url">
 						<td>{{ con.name }}</td>
 						<td>{{ con.url }}</td>

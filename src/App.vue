@@ -10,7 +10,7 @@
 				style="width:35px; position: absolute;left: 50%;-ms-transform: translateX(-50%);transform: translateX(-50%);"
 			/>
 		</div>
-		<Sidebar />
+		<Sidebar v-if="$route.name !== 'Error'" />
 		<div class="rv">
 			<div
 				style="position: relative; top:50vh; transform: translateY(-50%); text-align: center;"

@@ -16,10 +16,10 @@
 			<i class="wrench icon"></i>
 			Controllers
 		</router-link>
-		<a class="item" @click="$router.push({ name: 'Create' })">
+		<router-link class="item" :to="{ name: 'Create' }">
 			<i class="plus icon"></i>
 			Create
-		</a>
+		</router-link>
 		<a class="item" @click="showImportModal">
 			<i class="download icon"></i>
 			Import

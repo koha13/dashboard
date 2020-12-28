@@ -11,6 +11,7 @@ import CreateAMQController from "../views/CreateAMQController.vue";
 import Controllers from "../views/Controllers.vue";
 import AMQControlerDetail from "../views/AMQControlerDetail.vue";
 import ConnectorDetail from "../views/ConnectorDetail.vue";
+import ErrorPage from "../views/404.vue";
 
 Vue.use(VueRouter);
 
@@ -70,6 +71,12 @@ const routes = [
 		name: "ConnectorDetail",
 		component: ConnectorDetail,
 	},
+	{
+		path: "/404",
+		name: "Error",
+		component: ErrorPage,
+	},
+	{ path: "*", redirect: "/404" },
 ];
 
 const router = new VueRouter({
