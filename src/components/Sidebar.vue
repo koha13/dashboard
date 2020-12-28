@@ -1,5 +1,9 @@
 <template>
-	<div id="sidebar" class="ui left demo vertical three item visible sidebar labeled icon menu">
+	<div
+		id="sidebar"
+		class="ui left demo vertical three item visible sidebar labeled inverted icon menu"
+		style="background:#24292e"
+	>
 		<router-link class="item" to="/">
 			<i class="dashboard icon"></i>
 			Dashboard

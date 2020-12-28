@@ -1,7 +1,10 @@
 <template>
 	<div class="ui centered grid" style="width:100%;margin:0;padding:10px">
 		<div class="row">
-			<table class="ui selectable celled small table" style="padding:0;box-shadow: 3px 3px 10px;">
+			<table
+				class="ui selectable celled small table"
+				style="padding:0;box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);"
+			>
 				<thead>
 					<tr>
 						<th colspan="7">

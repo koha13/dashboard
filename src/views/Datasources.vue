@@ -3,7 +3,7 @@
 		<div class="row">
 			<table
 				class="ui fixed selectable single line celled small table"
-				style="box-shadow: 3px 3px 10px;"
+				style="box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24)"
 			>
 				<thead>
 					<tr>
