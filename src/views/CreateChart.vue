@@ -10,7 +10,7 @@
 					<input type="text" v-model="boardName" placeholder="Board name" />
 				</div>
 				<div class="field">
-					<label>Last Name</label>
+					<label>Board name</label>
 					<select class="ui fluid dropdown" v-model="boardType">
 						<option value="Pie">Pie</option>
 						<option value="Line">Line</option>

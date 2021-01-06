@@ -11,6 +11,7 @@
 		<button
 			:class="[
 				'ui',
+				'right',
 				'labeled',
 				'icon',
 				'mini',
@@ -18,10 +19,10 @@
 				{ red: focusCanvas },
 				'button',
 			]"
-			style="position:fixed;bottom:10px;right:0;z-index:1000"
+			style="position:fixed;bottom:10px;left:0;z-index:1000"
 			@click="toggleDrawMode"
 		>
-			<i class="left chevron icon"></i>
+			<i class="right chevron icon"></i>
 			{{ focusCanvas ? "Exit" : "Draw" }}
 		</button>
 		<div

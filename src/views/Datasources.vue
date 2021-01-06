@@ -27,7 +27,7 @@
 						<td>{{ f.datasourceName }}</td>
 						<td class="collapsing">
 							<button class="ui mini button green" @click.prevent="updateDS(f.datasourceName)">
-								Option
+								Edit
 							</button>
 							<button
 								class="ui mini button negative"
