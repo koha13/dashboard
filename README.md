@@ -4,6 +4,9 @@
 
 ## Dashboard to monitor api, jmx and redis
 
+[Docs](https://koha13.github.io/dashboard/docs)
+[Demo](https://koha13.github.io/dashboard/)
+
 ## Project setup
 ```
 npm install
