@@ -2,6 +2,8 @@
 
 ## Update source of api server in .env file
 
+## Dashboard to monitor api, jmx and redis
+
 ## Project setup
 ```
 npm install
