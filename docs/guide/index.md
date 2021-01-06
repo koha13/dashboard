@@ -3,7 +3,7 @@
 ## Create new datasource
 * Choose **Create**/**Create new datasource**
 
-![Create Datasource](/pictures/createds.png)
+![Create Datasource](/dashboard/docs/pictures/createds.png)
 
 * Choose type of datasource. It can be JSON, Jmx, Redis or Fixed Value 
 * Insert name of datasource, name of datasource is unique
@@ -32,7 +32,7 @@ path: data/0/address/buildingNumber return the value of buildingAddress
 ## Create new Chart
 * Choose **Create**/**Custom chart**
 
-![Create Chart](/pictures/createchart.png)
+![Create Chart](/dashboard/docs/pictures/createchart.png)
 
 * Enter chart name 
 * Enter chart type. Now Dashboard supports 3 types of chart: table, pie and line
@@ -43,12 +43,12 @@ path: data/0/address/buildingNumber return the value of buildingAddress
 ## Edit chart
 * In main screen, click pencil button on right top of the chart to edit.
 
-![Edit Chart](/pictures/edit.png)
+![Edit Chart](/dashboard/docs/pictures/edit.png)
 
 ## Edit datasource
 * Click **Datasource** in navbar
 
-![Datasources](/pictures/datasources.png)
+![Datasources](/dashboard/docs/pictures/datasources.png)
 
 * Click **Edit** to edit the datasource
 
@@ -58,7 +58,7 @@ path: data/0/address/buildingNumber return the value of buildingAddress
 ## ActiveMQ and Redis stuff :tada: :100:
 * Click **Create**/**ActiveMQ|Redis**
 
-![Redis](/pictures/redis.png)
+![Redis](/dashboard/docs/pictures/redis.png)
 
 * Choose attribures you want
 * Click **Create datasource** to create datasource based on attribute you chose. You can use these datasources in other chart

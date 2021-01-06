@@ -1,4 +1,5 @@
 module.exports = {
+	base: "/dashboard/docs/",
 	title: "Dashboard",
 	description: "Just playing around",
 	themeConfig: {

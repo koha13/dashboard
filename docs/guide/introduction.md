@@ -7,4 +7,4 @@ Dashboard is a monitor service.
 - Jms monitoring
 - API monitoring
 
-![Introduce](/pictures/introduce.png)
+![Introduce](/dashboard/docs/pictures/introduce.png)
